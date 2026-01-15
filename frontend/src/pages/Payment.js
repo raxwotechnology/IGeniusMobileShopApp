@@ -76,7 +76,7 @@ const Payment = ({ darkMode }) => {
         return;
       }
 
-      const response = await axios.get('https://raxwo-management.onrender.com/api/products', {
+      const response = await axios.get('https://igeniusmobileshopapp.onrender.com/api/products', {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -671,8 +671,8 @@ const Payment = ({ darkMode }) => {
                       required
                     >
                       <option value="" disabled>Select Technician</option>
-                      <option value="Prabath">Prabath</option>
-                      <option value="Nadeesh">Nadeesh</option>
+                      <option value="Prabath">2nd Floor</option>
+                      <option value="Nadeesh">1st Floor</option>
                       <option value="Accessories">Accessories</option>
                       <option value="Genex-EX">Genex EX</option>
                       <option value="I-Device">I Device</option>

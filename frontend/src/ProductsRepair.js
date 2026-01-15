@@ -24,9 +24,9 @@ import { faFile, faFilePdf, faFileExcel, faSearch, faPlus, faTimes, faHistory } 
 import ChangeHistory from './components/ChangeHistory';
 
 
-const API_URL = "https://raxwo-management.onrender.com/api/productsRepair";
-const PRODUCT_API_URL = "https://raxwo-management.onrender.com/api/product-uploads";
-const JOB_API = 'https://raxwo-management.onrender.com/api/productsRepair';
+const API_URL = "https://igeniusmobileshopapp.onrender.com/api/productsRepair";
+const PRODUCT_API_URL = "https://igeniusmobileshopapp.onrender.com/api/product-uploads";
+const JOB_API = 'https://igeniusmobileshopapp.onrender.com/api/productsRepair';
 
 // Add flattenLogs function directly here:
 function flattenLogs(data, entityType, entityIdField, entityNameField) {
@@ -488,12 +488,21 @@ const ProductRepairList = ({ darkMode }) => {
       setError("Only admins can delete repair records.");
       return;
     }
+    // 🔒 Prevent deletion if repairCart has items
+    const repair = repairs.find(r => r._id === id);
+    if (repair && repair.repairCart && repair.repairCart.length > 0) {
+      setError("Cannot delete this repair: it contains items in the cart.");
+      return;
+    }
+    
     if (window.confirm("Are you sure you want to delete this repair record?")) {
       try {
-        const response = await fetch(`${API_URL}/${id}`, { method: "DELETE" }, {headers: {
-          'Authorization': `Bearer ${token}`
-        }});
+        const response = await fetch(`${API_URL}/${id}`, { 
+          method: "DELETE", 
+          headers: {'Authorization': `Bearer ${token}`}
+        });
         if (!response.ok) throw new Error("Failed to delete repair record");
+        fetchRepairs();
         setRepairs(repairs.filter((repair) => repair._id !== id));
       } catch (err) {
         setError(err.message);
@@ -2957,14 +2966,17 @@ const ProductRepairList = ({ darkMode }) => {
                             </div>
                           </button>
                           {userRole === 'admin' && (
-                            <>
-                              <button onClick={() => handleDelete(repair._id)} className="p-delete-btn">
-                                <div className="action-btn-content">
-                                  <img src={deleteicon} alt="delete" width="30" height="30" className="p-delete-btn-icon" />
-                                  <span>Delete</span>
-                                </div>
-                              </button>
-                            </>
+                            <button
+                              onClick={() => handleDelete(repair._id)}
+                              className="p-delete-btn"
+                              disabled={repair.repairCart?.length > 0}
+                              title={repair.repairCart?.length > 0 ? "Cannot delete: items exist in repair cart" : "Delete repair"}
+                            >
+                              <div className="action-btn-content">
+                                <img src={deleteicon} alt="delete" width="30" height="30" className="p-delete-btn-icon" />
+                                <span>Delete</span>
+                              </div>
+                            </button>
                           )}
                           <button onClick={() => generateBill(repair)} className="p-bill-btn">
                             <div className="action-btn-content">
@@ -3127,7 +3139,12 @@ const ProductRepairList = ({ darkMode }) => {
                                   <span>Edit</span>
                                 </div>
                               </button>
-                              <button onClick={() => handleDelete(repair._id)} className="p-delete-btn">
+                              <button
+                                onClick={() => handleDelete(repair._id)}
+                                className="p-delete-btn"
+                                disabled={repair.repairCart?.length > 0}
+                                title={repair.repairCart?.length > 0 ? "Cannot delete: items exist in repair cart" : "Delete repair"}
+                              >
                                 <div className="action-btn-content">
                                   <img src={deleteicon} alt="delete" width="30" height="30" className="p-delete-btn-icon" />
                                   <span>Delete</span>
@@ -3218,6 +3235,74 @@ const ProductRepairList = ({ darkMode }) => {
               gap: "15px",
               marginBottom: "20px"
             }}>
+              {/* Job Date Field */}
+              {/* <div style={{ backgroundColor: darkMode ? "#555" : "#fff", padding: "10px", borderRadius: "5px", boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)" }}>
+                <strong style={{ color: darkMode ? "#ddd" : "#555", display: "block", marginBottom: "5px" }}>Job Date:</strong>
+                <input
+                  type="datetime-local"
+                  value={selectedRepair.date ? new Date(selectedRepair.date).toISOString().slice(0, 16) : ''}
+                  onChange={async (e) => {
+                    const newDate = e.target.value ? new Date(e.target.value) : null;
+                    // Optimistic UI update
+                    setSelectedRepair(prev => ({ ...prev, date: newDate }));
+                    try {
+                      await fetch(`${API_URL}/${selectedRepair._id}`, {
+                        method: "PATCH",
+                        headers: { "Content-Type": "application/json", "Authorization": `Bearer ${token}` },
+                        body: JSON.stringify({ date: newDate }),
+                      });
+                      // Optionally refresh or show success
+                    } catch (err) {
+                      console.error("Failed to update job date", err);
+                      setError("Failed to update job date");
+                      // Revert on error
+                      setSelectedRepair(prev => ({ ...prev, date: prev.date }));
+                    }
+                  }}
+                  style={{
+                    width: "100%",
+                    padding: "8px",
+                    borderRadius: "4px",
+                    border: "1px solid #ddd",
+                    backgroundColor: darkMode ? "#444" : "#fff",
+                    color: darkMode ? "#fff" : "#333",
+                  }}
+                />
+              </div> */}
+
+              {/* Completed At Field (only if completed or admin) */}
+              {userRole === 'admin' && (
+                <div style={{ backgroundColor: darkMode ? "#555" : "#fff", padding: "10px", borderRadius: "5px", boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)" }}>
+                  <strong style={{ color: darkMode ? "#ddd" : "#555", display: "block", marginBottom: "5px" }}>Completed At:</strong>
+                  <input
+                    type="datetime-local"
+                    value={selectedRepair.completedAt ? new Date(selectedRepair.completedAt).toISOString().slice(0, 16) : ''}
+                    onChange={async (e) => {
+                      const newDate = e.target.value ? new Date(e.target.value) : null;
+                      setSelectedRepair(prev => ({ ...prev, completedAt: newDate }));
+                      try {
+                        await fetch(`${API_URL}/${selectedRepair._id}`, {
+                          method: "PATCH",
+                          headers: { "Content-Type": "application/json", "Authorization": `Bearer ${token}` },
+                          body: JSON.stringify({ completedAt: newDate }),
+                        });
+                      } catch (err) {
+                        console.error("Failed to update completedAt", err);
+                        setError("Failed to update completion time");
+                        setSelectedRepair(prev => ({ ...prev, completedAt: prev.completedAt }));
+                      }
+                    }}
+                    style={{
+                      width: "100%",
+                      padding: "8px",
+                      borderRadius: "4px",
+                      border: "1px solid #ddd",
+                      backgroundColor: darkMode ? "#444" : "#fff",
+                      color: darkMode ? "#fff" : "#333",
+                    }}
+                  />
+                </div>
+              )}
               <div style={{ backgroundColor: darkMode ? "#555" : "#fff", padding: "10px", borderRadius: "5px", boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)" }}>
                 <strong style={{ color: darkMode ? "#ddd" : "#555", display: "block", marginBottom: "5px" }}>Customer Name:</strong>
                 <span style={{ color: darkMode ? "#fff" : "#333" }}>{selectedRepair.customerName}</span>
@@ -3240,10 +3325,10 @@ const ProductRepairList = ({ darkMode }) => {
                 <span style={{ color: darkMode ? "#fff" : "#333" }}>{selectedRepair.repairStatus}</span>
               </div>
 
-              <div style={{ backgroundColor: darkMode ? "#555" : "#fff", padding: "10px", borderRadius: "5px", boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)" }}>
+              {/* <div style={{ backgroundColor: darkMode ? "#555" : "#fff", padding: "10px", borderRadius: "5px", boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)" }}>
                 <strong style={{ color: darkMode ? "#ddd" : "#555", display: "block", marginBottom: "5px" }}>Payment Method:</strong>
                 <span style={{ color: darkMode ? "#fff" : "#333" }}>{selectedRepair.paymentMethod}</span>
-              </div>
+              </div> */}
 
               <div style={{ backgroundColor: darkMode ? "#555" : "#fff", padding: "10px", borderRadius: "5px", boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)" }}>
                 <strong style={{ color: darkMode ? "#ddd" : "#555", display: "block", marginBottom: "5px" }}>Repair Status:</strong>
@@ -3372,8 +3457,8 @@ const ProductRepairList = ({ darkMode }) => {
                   }}
                 >
                   <option value="" disabled>Select Person/Team</option>
-                  <option value="Prabath">Prabath</option>
-                  <option value="Nadeesh">Nadeesh</option>
+                  <option value="Prabath">2nd Floor</option>
+                  <option value="Nadeesh">1st Floor</option>
                   <option value="Accessories">Accessories</option>
                   <option value="Genex-EX">Genex EX</option>
                   <option value="I-Device">I Device</option>
@@ -3519,8 +3604,8 @@ const ProductRepairList = ({ darkMode }) => {
                             }}
                           >
                             <option value="" disabled>Select Person/Team</option>
-                            <option value="Prabath">Prabath</option>
-                            <option value="Nadeesh">Nadeesh</option>
+                            <option value="Prabath">2nd Floor</option>
+                            <option value="Nadeesh">1st Floor</option>
                             <option value="Accessories">Accessories</option>
                             <option value="Genex-EX">Genex EX</option>
                             <option value="I-Device">I Device</option>

@@ -13,7 +13,7 @@ import "../styles/ExtraIncome.css";
 import Select from 'react-select/creatable';
 import { components } from 'react-select';
 
-const API_URL = "https://raxwo-management.onrender.com/api/extra-income";
+const API_URL = "https://igeniusmobileshopapp.onrender.com/api/extra-income";
 
 const ExtraIncome = ({ darkMode }) => {
   // State for form inputs
@@ -820,8 +820,8 @@ const ExtraIncome = ({ darkMode }) => {
                   }}
                 >
                   <option value="" disabled selected>Select Technician/Team</option>
-                  <option value="Prabath">Prabath</option>
-                  <option value="Nadeesh">Nadeesh</option>
+                  <option value="Prabath">2nd Floor</option>
+                  <option value="Nadeesh">1st Floor</option>
                   <option value="Accessories">Accessories</option>
                   <option value="Genex-EX">Genex EX</option>
                   <option value="I-Device">I Device</option>
@@ -1107,8 +1107,8 @@ const ExtraIncome = ({ darkMode }) => {
                   }}
                 >
                   <option value="" disabled selected>Select Technician/Team</option>
-                  <option value="Prabath">Prabath</option>
-                  <option value="Nadeesh">Nadeesh</option>
+                  <option value="Prabath">2nd Floor</option>
+                  <option value="Nadeesh">1st Floor</option>
                   <option value="Accessories">Accessories</option>
                   <option value="Genex-EX">Genex EX</option>
                   <option value="I-Device">I Device</option>
