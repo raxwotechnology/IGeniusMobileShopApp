@@ -122,7 +122,7 @@ const PaymentTable = ({ darkMode }) => {
   };
 
   const generatePaymentBill = (paymentData) => {
-    const shopName = localStorage.getItem('shopName') || 'GENIUS';
+    const shopName = localStorage.getItem('shopName') || 'I GENIUS Pvt Ltd';
     const shopAddress = localStorage.getItem('shopAddress') || '#422 Thimbirigasyaya Road, Colombo 05';
     const shopPhone = localStorage.getItem('shopPhone') || '0770235330';
     const shopEmail = localStorage.getItem('shopEmail') || 'igentuslk@gmail.com';
@@ -358,9 +358,9 @@ const PaymentTable = ({ darkMode }) => {
   };
 
   const generateCustomBill = (paymentData) => {
-    const shopName = localStorage.getItem('shopName') || 'Default Shop';
-    const shopAddress = localStorage.getItem('shopAddress') || '123 Main St, City, Country';
-    const shopPhone = localStorage.getItem('shopPhone') || '(123) 456-7890';
+    const shopName = localStorage.getItem('shopName') || 'I Genius Pvt Ltd';
+    const shopAddress = localStorage.getItem('shopAddress') || 'No 422, Thimbirigasyaya Road, Colombo 05';
+    const shopPhone = localStorage.getItem('shopPhone') || '(+94)77 2025 330';
     const shopLogo = localStorage.getItem('shopLogo') || '';
     const currentDate = new Date(paymentData.date).toLocaleString();
 
