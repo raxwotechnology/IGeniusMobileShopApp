@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import '../styles/ReturnDetailsModal.css';
 
-const API_URL = 'https://igeniusmobileshopapp.onrender.com/api/return';
+const API_URL = 'https://igeniusmobileshopapp-xagk.onrender.com/api/return';
 
 const ReturnDetailsModal = ({ closeModal }) => {
   const [returnRecords, setReturnRecords] = useState([]);
