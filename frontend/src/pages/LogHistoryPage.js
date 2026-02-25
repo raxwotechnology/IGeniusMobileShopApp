@@ -4,7 +4,7 @@ import '../Products.css';
 import { FaUser, FaEdit, FaTrashAlt, FaPlusCircle, FaSignOutAlt, FaSignInAlt } from 'react-icons/fa';
 
 // Centralized activity log API
-const ACTIVITY_LOG_API = 'https://igeniusmobileshopapp-xagk.onrender.com/api/activity';
+const ACTIVITY_LOG_API = 'https://igeniusmobileshopapp-5oi6.onrender.com/api/activity';
 
 // Entity labels for display
 const ENTITY_LABELS = {

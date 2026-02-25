@@ -2,8 +2,8 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import "../styles/SalaryEdit.css";
 
-const API_URL = "https://igeniusmobileshopapp-xagk.onrender.com/api/salaries";
-const EMPLOYEE_API_URL = "https://igeniusmobileshopapp-xagk.onrender.com/api/salaries/employee";
+const API_URL = "https://igeniusmobileshopapp-5oi6.onrender.com/api/salaries";
+const EMPLOYEE_API_URL = "https://igeniusmobileshopapp-5oi6.onrender.com/api/salaries/employee";
 
 const SalaryEdit = ({ isOpen, onClose, salary, refreshSalaries, darkMode }) => {
   const [formData, setFormData] = useState({

@@ -15,7 +15,7 @@ import SalaryEdit from "./SalaryEdit";
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
-const API_URL = "https://igeniusmobileshopapp-xagk.onrender.com/api/salaries";
+const API_URL = "https://igeniusmobileshopapp-5oi6.onrender.com/api/salaries";
 
 const SalaryList = ({ darkMode }) => {
   const [salaries, setSalaries] = useState([]);

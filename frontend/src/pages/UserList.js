@@ -10,7 +10,7 @@ import usericon from '../icon/employee.png';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus, faFile, faFilePdf, faFileExcel, faSearch, faTimes } from '@fortawesome/free-solid-svg-icons';
 
-const API_URL = 'https://igeniusmobileshopapp-xagk.onrender.com/api/auth/users';
+const API_URL = 'https://igeniusmobileshopapp-5oi6.onrender.com/api/auth/users';
 
 const UserList = ({ darkMode }) => {
   const [users, setUsers] = useState([]);

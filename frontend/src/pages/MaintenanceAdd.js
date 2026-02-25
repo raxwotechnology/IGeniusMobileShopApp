@@ -4,7 +4,7 @@ import '../styles/MaintenanceAdd.css';
 import Select from 'react-select/creatable';
 import { useEffect } from 'react';
 
-const API_URL = "https://igeniusmobileshopapp-xagk.onrender.com/api/maintenance";
+const API_URL = "https://igeniusmobileshopapp-5oi6.onrender.com/api/maintenance";
 
 const getCurrentDate = () => new Date().toISOString().split("T")[0];
 const getCurrentTime = () => new Date().toLocaleTimeString();

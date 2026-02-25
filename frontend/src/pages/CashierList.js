@@ -12,7 +12,7 @@ import cashiericon from '../icon/people.png';
 import CashierAdd from "./CashierAdd";
 import CashierEdit from "./CashierEdit";
 
-const API_URL = "https://igeniusmobileshopapp-xagk.onrender.com/api/cashiers";
+const API_URL = "https://igeniusmobileshopapp-5oi6.onrender.com/api/cashiers";
 
 const CashierList = ({ darkMode }) => {
   const [cashiers, setCashiers] = useState([]);
