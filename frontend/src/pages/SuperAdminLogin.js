@@ -20,7 +20,7 @@ const SuperAdminLogin = ({ darkMode }) => {
     setError('');
     
     try {
-      const res = await axios.post('https://igeniusmobileshopapp-5oi6.onrender.com/api/auth/login', formData);
+      const res = await axios.post('https://igeniusmobileshopapp.onrender.com/api/auth/login', formData);
       console.log('SuperAdmin login successful:', res.data);
       localStorage.setItem('token', res.data.token);
       localStorage.setItem('userId', res.data.user.id);

@@ -21,7 +21,7 @@ const ResetPassword = () => {
       return;
     }
     try {
-      const res = await axios.post(`https://igeniusmobileshopapp-5oi6.onrender.com/api/auth/reset-password/${token}`, { password });
+      const res = await axios.post(`https://igeniusmobileshopapp.onrender.com/api/auth/reset-password/${token}`, { password });
       setMessage(res.data.msg || 'Password reset successfully!');
       setTimeout(() => {
         navigate('/cashier/login');

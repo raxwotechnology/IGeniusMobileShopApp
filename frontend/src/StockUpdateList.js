@@ -11,8 +11,8 @@ import edticon from "./icon/edit.png";
 import deleteicon from "./icon/delete.png";
 
 
-const API_URL = "https://igeniusmobileshopapp-5oi6.onrender.com/api/products";
-const CLICKED_PRODUCTS_API_URL = 'https://igeniusmobileshopapp-5oi6.onrender.com/api/clicked-products';
+const API_URL = "https://igeniusmobileshopapp.onrender.com/api/products";
+const CLICKED_PRODUCTS_API_URL = 'https://igeniusmobileshopapp.onrender.com/api/clicked-products';
 
 const StockUpdateList = ({ darkMode }) => {
   const location = useLocation();
