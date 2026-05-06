@@ -61,7 +61,7 @@ const BankPassbookAdd = ({ onClose, onUpdate, darkMode }) => {
     <div className={`bp-add-overlay ${darkMode ? "dark" : ""}`} onClick={onClose}>
       <div className={`bp-add-container ${darkMode ? "dark" : ""}`} onClick={(e) => e.stopPropagation()}>
         <h3 className={`bp-add-title ${darkMode ? "dark" : ""}`}>➕ Add Bank Transaction</h3>
-        
+
         {error && <p className="error-message">{error}</p>}
 
         <form onSubmit={handleSubmit}>

@@ -81,7 +81,7 @@ const SupplierList = ({ darkMode }) => {
         throw new Error(`Failed to fetch products: ${response.statusText}`);
       }
       const data = await response.json();
-      
+
       // For supplier functionality, we need to show all products (including deleted ones)
       // because supplier cart items should remain visible even if the product is deleted from main list
       const allProducts = Array.isArray(data) ? data : data.products || [];
@@ -99,7 +99,7 @@ const SupplierList = ({ darkMode }) => {
         `https://igeniusmobileshopapp.onrender.com/api/suppliers/${supplierId}/items/grn/${encodeURIComponent(grnNumber)}`
       );
       if (!response.ok) throw new Error('Failed to fetch GRN items');
-      
+
       const items = await response.json();
       if (!Array.isArray(items) || items.length === 0) return { items: [], returnStocks: {}, returnedValue: 0 };
 
@@ -150,7 +150,7 @@ const SupplierList = ({ darkMode }) => {
   };
 
   const token = localStorage.getItem('token');
-  
+
   const handleDelete = async (id) => {
     if (window.confirm('Are you sure you want to delete this supplier?')) {
       try {
@@ -197,7 +197,7 @@ const SupplierList = ({ darkMode }) => {
 
   const handlePay = (supplier) => {
     const grnOptions = getGrnOptionsFromSupplier(supplier, products);
-    setSelectedSupplier({ ...supplier, grnOptions }); 
+    setSelectedSupplier({ ...supplier, grnOptions });
     setShowPaymentModal(true);
     setShowActionMenu(null);
   };
@@ -265,9 +265,9 @@ const SupplierList = ({ darkMode }) => {
       const data = await response.json();
       const items = Array.isArray(data) ? data : [];
 
-       setItemDetails(items);
+      setItemDetails(items);
 
-       // ✅ Calculate total returned for this GRN
+      // ✅ Calculate total returned for this GRN
       if (items.length > 0) {
         calculateGrnReturnTotal(items);
       }
@@ -276,7 +276,7 @@ const SupplierList = ({ darkMode }) => {
       if (items.length > 0) {
         const stocks = {};
         const uniqueItemCodes = [...new Set(items.map(item => item.itemCode).filter(Boolean))];
-        
+
         for (const code of uniqueItemCodes) {
           stocks[code] = await fetchReturnStock(code);
         }
@@ -355,7 +355,7 @@ const SupplierList = ({ darkMode }) => {
     //   businessName.includes(word) ||
     //   phoneNumber.includes(word)
     // );
-  }); 
+  });
 
   const handleClearSearch = () => {
     setSearchQuery('');
@@ -485,10 +485,10 @@ const SupplierList = ({ darkMode }) => {
             </div>
             <div className="report-modal-buttons">
               <button onClick={generateExcel} className="report-btn black">
-                <FontAwesomeIcon icon={faFileExcel} style={{marginRight: 8}} /> Excel
+                <FontAwesomeIcon icon={faFileExcel} style={{ marginRight: 8 }} /> Excel
               </button>
               <button onClick={generatePDF} className="report-btn black">
-                <FontAwesomeIcon icon={faFilePdf} style={{marginRight: 8}} /> PDF
+                <FontAwesomeIcon icon={faFilePdf} style={{ marginRight: 8 }} /> PDF
               </button>
             </div>
           </div>
@@ -505,7 +505,7 @@ const SupplierList = ({ darkMode }) => {
       {showPaymentModal && selectedSupplier && (
         <PaymentForm
           supplier={selectedSupplier}
-          fetchGrnReturnStocks={(grnNumber) => 
+          fetchGrnReturnStocks={(grnNumber) =>
             fetchGrnReturnStocks(selectedSupplier._id, grnNumber)
           }
           closeModal={() => {
@@ -599,13 +599,13 @@ const SupplierList = ({ darkMode }) => {
                       backgroundColor: isSelected
                         ? (darkMode ? '#6c63ff' : '#007bff')
                         : isFocused
-                        ? (darkMode ? '#444' : '#e9ecef')
-                        : 'transparent',
+                          ? (darkMode ? '#444' : '#e9ecef')
+                          : 'transparent',
                       color: isSelected
                         ? 'white'
                         : darkMode
-                        ? 'white'
-                        : 'black',
+                          ? 'white'
+                          : 'black',
                       ':active': {
                         backgroundColor: darkMode ? '#555' : '#0056b3',
                       },
@@ -645,7 +645,7 @@ const SupplierList = ({ darkMode }) => {
             </div>
             {loading ? (
               <p className="loading">Loading item details...</p>
-            ) : itemDetails.length > 0 ? ( 
+            ) : itemDetails.length > 0 ? (
               <>
                 {(() => {
                   // Calculate original total (what was received)
@@ -668,7 +668,7 @@ const SupplierList = ({ darkMode }) => {
                   const totalDiscounts = grnDiscounts.reduce((sum, d) => sum + (d.discountCharge || 0), 0);
 
                   const adjustedTotal = originalTotal - returnedValue - totalDiscounts;
-                  
+
                   return (
                     <>
                       <div className="grn-totals-summary">
@@ -677,14 +677,14 @@ const SupplierList = ({ darkMode }) => {
                         <div><strong>Discounts:</strong> Rs. {totalDiscounts.toFixed(2)}</div> {/* ✅ New */}
                         <div><strong>Payable Amount:</strong> Rs. {adjustedTotal.toFixed(2)}</div> {/* ✅ Renamed */}
                       </div>
-                  
+
                       <table className={`product-table-supplierfetch ${darkMode ? 'dark' : ''}`}>
                         <thead>
                           <tr>
                             <th>GRN</th>
                             <th>Item Name</th>
                             <th>Category</th>
-                            
+
                             {/* <th>Selling Price</th> */}
                             <th>Stock</th>
                             {/* <th>Supplier</th> */}
@@ -701,7 +701,7 @@ const SupplierList = ({ darkMode }) => {
                                 <td>{product.grnNumber || 'N/A'}</td>
                                 <td className={`text-wrap ${darkMode ? 'dark' : ''}`} title={product.itemName}>{product.itemName}</td>
                                 <td>{product.category}</td>
-                                
+
                                 {/* <td>Rs. {product.sellingPrice.toFixed(2)}</td> */}
                                 <td>{product.quantity}</td>
                                 {/* <td>{product.supplierName || 'N/A'}</td> */}
@@ -716,7 +716,7 @@ const SupplierList = ({ darkMode }) => {
                             <td><strong>Sub Total</strong></td>
                             <td></td>
                             <td></td>
-                            
+
                             <td>
                               <strong>
                                 {itemDetails.reduce((sum, item) => sum + (item.quantity || 0), 0)}
@@ -734,20 +734,20 @@ const SupplierList = ({ darkMode }) => {
                                   .toFixed(2)}
                               </strong>
                             </td>
-                            
+
                           </tr>
                           <tr className="summary-total-row">
                             <td colspan="5">
-                              <strong>Total Pay for </strong> 
+                              <strong>Total Pay for </strong>
                               <strong style={{ color: adjustedTotal < 0 ? '#e74c3c' : '#28a745' }}>
                                 {itemDetails.reduce((sum, item) => {
                                   const net = (item.quantity || 0) - (returnStocks[item.itemCode] || 0);
                                   return sum + net;
                                 }, 0)}
                               </strong>
-                              <strong> Items </strong> 
+                              <strong> Items </strong>
                             </td>
-                            
+
                             <td>
                               <strong>
                                 Rs. {adjustedTotal.toFixed(2)}
@@ -757,10 +757,10 @@ const SupplierList = ({ darkMode }) => {
                         </tbody>
                       </table>
                     </>
-                  );  
+                  );
                 })()}
-            </>
-           ) : (
+              </>
+            ) : (
               <p className="no-products">No items found for the selected supplier and item code.</p>
             )}
           </div>
@@ -786,7 +786,7 @@ const SupplierList = ({ darkMode }) => {
             {filteredSuppliers.map((supplier) => (
               <tr key={supplier._id}>
                 <td>{supplier.supplierName || 'N/A'}</td>
-                <td style={{  fontWeight:  'bold'  }}>{supplier.businessName || 'N/A'}</td>
+                <td style={{ fontWeight: 'bold' }}>{supplier.businessName || 'N/A'}</td>
                 <td>{supplier.phoneNumber || 'N/A'}</td>
                 <td>{supplier.address || 'N/A'}</td>
                 <td>
@@ -828,7 +828,7 @@ const SupplierList = ({ darkMode }) => {
                               <span>Add Repair Service</span>
                             </div>
                           </button>
-                          
+
                           <button onClick={() => handleEdit(supplier)} className="p-edit-btn">
                             <div className="action-btn-content">
                               <img src={editicon} alt="edit" width="30" height="30" className="p-edit-btn-icon" />
@@ -888,7 +888,7 @@ const SupplierList = ({ darkMode }) => {
             await fetchSuppliers();
           }}
           supplierId={selectedSupplier._id}
-          refreshSuppliers={() => {}}
+          refreshSuppliers={() => { }}
           darkMode={darkMode}
         />
       )}

@@ -52,8 +52,8 @@ const DeletedProducts = () => {
               {activeProducts.map(product => (
                 <li key={product._id} style={{ marginBottom: 16, listStyle: 'none', borderBottom: '1px solid #e2e8f0', paddingBottom: 8 }}>
                   <span style={{ color: '#22c55e', fontWeight: 700, marginRight: 8 }}>[ACTIVE]</span>
-                  Category: {product.category} | Supplier: {product.supplierName}<br/>
-                  <strong>{product.itemName}</strong> (Code: {product.itemCode})<br/>
+                  Category: {product.category} | Supplier: {product.supplierName}<br />
+                  <strong>{product.itemName}</strong> (Code: {product.itemCode})<br />
                   <div style={{ color: '#888', fontSize: 13, marginTop: 4 }}>
                     <strong>Change History:</strong>
                     {Array.isArray(product.changeHistory) && product.changeHistory.length > 0 ? (
@@ -81,8 +81,8 @@ const DeletedProducts = () => {
               {deletedProducts.map(product => (
                 <li key={product._id} style={{ marginBottom: 16, listStyle: 'none', borderBottom: '1px solid #e2e8f0', paddingBottom: 8 }}>
                   <span style={{ color: '#ef4444', fontWeight: 700, marginRight: 8 }}>[INACTIVE]</span>
-                  Category: {product.category} | Supplier: {product.supplierName} | Deleted At: {product.deletedAt ? new Date(product.deletedAt).toLocaleString() : 'N/A'} | Deleted By: {product.deletedBy || 'N/A'}<br/>
-                  <strong>{product.itemName}</strong> (Code: {product.itemCode})<br/>
+                  Category: {product.category} | Supplier: {product.supplierName} | Deleted At: {product.deletedAt ? new Date(product.deletedAt).toLocaleString() : 'N/A'} | Deleted By: {product.deletedBy || 'N/A'}<br />
+                  <strong>{product.itemName}</strong> (Code: {product.itemCode})<br />
                   <div style={{ color: '#888', fontSize: 13, marginTop: 4 }}>
                     <strong>Change History:</strong>
                     {Array.isArray(product.changeHistory) && product.changeHistory.length > 0 ? (
@@ -109,15 +109,15 @@ const DeletedProducts = () => {
             <ul style={{ paddingLeft: 0 }}>
               {deletionLogs.map(log => (
                 <li key={log._id} style={{ marginBottom: 16, listStyle: 'none', borderBottom: '1px solid #e2e8f0', paddingBottom: 8 }}>
-                  <span style={{ 
-                    color: log.deletionType === 'hard' ? '#dc2626' : '#f59e0b', 
-                    fontWeight: 700, 
-                    marginRight: 8 
+                  <span style={{
+                    color: log.deletionType === 'hard' ? '#dc2626' : '#f59e0b',
+                    fontWeight: 700,
+                    marginRight: 8
                   }}>
                     [{log.deletionType?.toUpperCase() || 'UNKNOWN'} DELETE]
                   </span>
-                  Category: {log.category} | Supplier: {log.supplierName} | Deleted At: {log.deletedAt ? new Date(log.deletedAt).toLocaleString() : 'N/A'} | Deleted By: {log.deletedBy || 'N/A'}<br/>
-                  <strong>{log.itemName}</strong> (Code: {log.itemCode})<br/>
+                  Category: {log.category} | Supplier: {log.supplierName} | Deleted At: {log.deletedAt ? new Date(log.deletedAt).toLocaleString() : 'N/A'} | Deleted By: {log.deletedBy || 'N/A'}<br />
+                  <strong>{log.itemName}</strong> (Code: {log.itemCode})<br />
                   <div style={{ color: '#888', fontSize: 13, marginTop: 4 }}>
                     <strong>Change History:</strong>
                     {Array.isArray(log.changeHistory) && log.changeHistory.length > 0 ? (

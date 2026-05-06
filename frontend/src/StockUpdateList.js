@@ -186,12 +186,12 @@ const StockUpdateList = ({ darkMode }) => {
   };
 
   const handleEdit = (product) => {
-    navigate("/StockUpdate", { 
-      state: { 
+    navigate("/StockUpdate", {
+      state: {
         darkMode,
         editProduct: product,
         isEditing: true
-      } 
+      }
     });
     setShowActionMenu(null);
   };
@@ -199,23 +199,23 @@ const StockUpdateList = ({ darkMode }) => {
   const handleAddProduct = (product) => {
     // Show confirmation dialog
     const isConfirmed = window.confirm(`Are you sure you want to delete "${product.itemName}"? This action cannot be undone.`);
-    
+
     if (!isConfirmed) {
       return; // User cancelled the deletion
     }
-    
+
     console.log('Delete clicked for:', product);
-    
+
     // Store clicked product in localStorage
     const clickedProducts = JSON.parse(localStorage.getItem('clickedProducts') || '[]');
-        const username = localStorage.getItem('username') || localStorage.getItem('cashierName') || 'system';
+    const username = localStorage.getItem('username') || localStorage.getItem('cashierName') || 'system';
     const newClickedProduct = {
       ...product,
       clickedAt: new Date().toISOString(),
       clickedFrom: 'stock-management',
       clickedBy: username
     };
-    
+
     // Check if product is already clicked
     const isAlreadyClicked = clickedProducts.some(cp => cp._id === product._id);
     if (!isAlreadyClicked) {
@@ -223,13 +223,13 @@ const StockUpdateList = ({ darkMode }) => {
       localStorage.setItem('clickedProducts', JSON.stringify(clickedProducts));
       console.log('Product added to localStorage:', newClickedProduct);
     }
-    
+
     // Immediately remove the clicked product from the current list
     setProducts(prevProducts => prevProducts.filter(p => p._id !== product._id));
-    
+
     // Show success message
     alert(`${product.itemName} has been deleted and moved to the deleted products page.`);
-    
+
     // Navigate to AddProduct page with product data
     console.log('StockUpdateList - Navigating to DeleteProduct with product:', product);
     navigate('/AddProduct', {
@@ -240,7 +240,7 @@ const StockUpdateList = ({ darkMode }) => {
         darkMode: darkMode
       }
     });
-    
+
     setShowActionMenu(null);
   };
 
@@ -269,7 +269,7 @@ const StockUpdateList = ({ darkMode }) => {
   // const handleToggleVisibility = async (productId) => {
   //   const product = products.find(p => p._id === productId);
   //   const action = product.visible ? 'hide' : 'make visible';
-    
+
   //   if (window.confirm(`Are you sure you want to ${action} this stock record?`)) {
   //     try {
   //       const username = localStorage.getItem('username') || localStorage.getItem('cashierName') || 'system';
@@ -278,15 +278,15 @@ const StockUpdateList = ({ darkMode }) => {
   //         headers: { 'Content-Type': 'application/json' },
   //         body: JSON.stringify({ username })
   //       });
-        
+
   //     if (!response.ok) {
   //       const errorData = await response.json();
   //       throw new Error(errorData.message || 'Failed to toggle stock record visibility');
   //     }
-        
+
   //     // Remove the product from the local state since it's now hidden
   //     setProducts(products.filter(product => product._id !== productId));
-        
+
   //     // Show success message
   //     alert(`Stock record ${action} successfully!`);
   //     setShowActionMenu(null);
@@ -314,21 +314,21 @@ const StockUpdateList = ({ darkMode }) => {
 
   return (
     <div className={`product-repair-list-container ${darkMode ? "dark" : ""}`}>
-      
+
       <div className="header-section">
-        
+
 
         <h2 className={`product-repair-list-title ${darkMode ? "dark" : ""}`}>
           Stock Update List
         </h2>
         {/* Product count moved to action row below */}
       </div>
-      
+
       {/* Helpful message about cart functionality */}
       <div className={`info-message ${darkMode ? "dark" : ""}`}>
         <p>💡 <strong>Tip:</strong> Items added to supplier carts will automatically appear here. Use the "Refresh" button to see the latest items.</p>
       </div>
-      
+
       <div className="search-action-container">
         <div className={`search-bar-container ${darkMode ? "dark" : ""}`}>
           <FontAwesomeIcon icon={faSearch} className="search-icon" />
@@ -359,19 +359,19 @@ const StockUpdateList = ({ darkMode }) => {
         >
           <FontAwesomeIcon icon={faPlus} /> Add Stock
         </button> */}
-        {/* <button
+          {/* <button
           onClick={handleRefresh}
           className={`btn-primary ${darkMode ? "dark" : ""}`}
           title="Refresh Stock List"
         >
           <FontAwesomeIcon icon={faRefresh} /> Refresh
         </button> */}
-        <button
-          onClick={() => setShowReportOptions(true)}
-          className={`btn-report ${darkMode ? "dark" : ""}`}
-        >
-          <FontAwesomeIcon icon={faFile} /> Reports
-        </button>
+          <button
+            onClick={() => setShowReportOptions(true)}
+            className={`btn-report ${darkMode ? "dark" : ""}`}
+          >
+            <FontAwesomeIcon icon={faFile} /> Reports
+          </button>
         </div>
       </div>
       {showReportOptions && (
@@ -396,10 +396,10 @@ const StockUpdateList = ({ darkMode }) => {
             </div>
             <div className="report-modal-buttons">
               <button onClick={generateExcel} className="report-btn black">
-                <FontAwesomeIcon icon={faFileExcel} style={{marginRight: 8}} /> Excel
+                <FontAwesomeIcon icon={faFileExcel} style={{ marginRight: 8 }} /> Excel
               </button>
               <button onClick={generatePDF} className="report-btn black">
-                <FontAwesomeIcon icon={faFilePdf} style={{marginRight: 8}} /> PDF
+                <FontAwesomeIcon icon={faFilePdf} style={{ marginRight: 8 }} /> PDF
               </button>
             </div>
           </div>

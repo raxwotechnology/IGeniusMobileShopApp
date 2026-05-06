@@ -42,11 +42,11 @@ const CashierEdit = ({ isOpen, onClose, cashier, refreshCashiers, darkMode }) =>
         <form className="edit-cashier-form" onSubmit={handleSubmit}>
           <div className="form-row">
             <div className="left-column">
-           
+
               <label className={`ce-input-group-label ${darkMode ? "dark" : ""}`}>ID</label>
               <input className={`ce-input-group-input ${darkMode ? "dark" : ""}`} type="text" name="id" value={updatedCashier.id} onChange={handleChange} required />
-              
-          
+
+
               <label className={`ce-input-group-label ${darkMode ? "dark" : ""}`}>Name</label>
               <input className={`ce-input-group-input ${darkMode ? "dark" : ""}`} type="text" name="cashierName" value={updatedCashier.cashierName} onChange={handleChange} required />
 
@@ -57,7 +57,7 @@ const CashierEdit = ({ isOpen, onClose, cashier, refreshCashiers, darkMode }) =>
 
               <label className={`ce-input-group-label ${darkMode ? "dark" : ""}`}>NIC</label>
               <input className={`ce-input-group-input ${darkMode ? "dark" : ""}`} type="text" name="nic" value={updatedCashier.nic} onChange={handleChange} required />
-                 
+
             </div>
             <div className="right-column">
 
@@ -81,7 +81,7 @@ const CashierEdit = ({ isOpen, onClose, cashier, refreshCashiers, darkMode }) =>
                 min="0"
                 step="0.01"
               />
-             
+
             </div>
           </div>
           <div className="button-group">

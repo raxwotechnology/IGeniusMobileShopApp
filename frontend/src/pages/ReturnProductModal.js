@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import '../styles/ReturnProduct.css';
 
-const ReturnProductModal = ({ product, closeModal, darkMode}) => {
+const ReturnProductModal = ({ product, closeModal, darkMode }) => {
   const [returnQuantity, setReturnQuantity] = useState('');
   const [returnType, setReturnType] = useState('in-stock'); // Default: Return in stock
 
   const token = localStorage.getItem('token');
-  
+
   const handleReturn = async () => {
     if (!returnQuantity || returnQuantity <= 0) {
       alert('Enter a valid return quantity');

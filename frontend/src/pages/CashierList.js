@@ -44,7 +44,7 @@ const CashierList = ({ darkMode }) => {
   const handleDelete = async (id) => {
     if (window.confirm("Are you sure you want to delete this cashier?")) {
       try {
-        await axios.delete(`${API_URL}/${id}`,{
+        await axios.delete(`${API_URL}/${id}`, {
           headers: {
             "Authorization": `Bearer ${token}`
           }
@@ -124,12 +124,12 @@ const CashierList = ({ darkMode }) => {
 
   return (
     <div className={`product-repair-list-container ${darkMode ? "dark" : ""}`}>
-      
+
       <div className="header-section">
-        
+
 
         <h2 className={`product-repair-list-title ${darkMode ? "dark" : ""}`}>
-        Employee List
+          Employee List
         </h2>
       </div>
       <div className="search-action-container">
@@ -150,13 +150,13 @@ const CashierList = ({ darkMode }) => {
         </div>
         <div className='filter-action-row'>
 
-        <button onClick={() => setAddModalOpen(true)} className="btn-primary">
-          <FontAwesomeIcon icon={faPlus} /> Add Cashier or Employee
+          <button onClick={() => setAddModalOpen(true)} className="btn-primary">
+            <FontAwesomeIcon icon={faPlus} /> Add Cashier or Employee
 
-        </button>
-        <button onClick={() => setShowReportOptions(true)} className="btn-report">
-          <FontAwesomeIcon icon={faFile} /> Reports
-        </button>
+          </button>
+          <button onClick={() => setShowReportOptions(true)} className="btn-report">
+            <FontAwesomeIcon icon={faFile} /> Reports
+          </button>
         </div>
       </div>
       {showReportOptions && (
@@ -218,7 +218,7 @@ const CashierList = ({ darkMode }) => {
                 <td>{cashier.cashierName}</td>
                 <td>{cashier.phone}</td>
                 <td>{cashier.nic}</td>
-                <td>Rs. {cashier.basicSalary||0.00}</td>
+                <td>Rs. {cashier.basicSalary || 0.00}</td>
                 <td>{cashier.email}</td>
                 <td>{cashier.remarks || 'N/A'}</td>
                 <td>

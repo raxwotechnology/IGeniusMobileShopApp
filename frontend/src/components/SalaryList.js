@@ -45,7 +45,7 @@ const SalaryList = ({ darkMode }) => {
   }, [chartType]);
 
   useEffect(() => {
-    if ( !startDate && !endDate) {
+    if (!startDate && !endDate) {
       const today = new Date();
       const firstDay = new Date(today.getFullYear(), today.getMonth(), 1);
       const lastDay = new Date(today.getFullYear(), today.getMonth() + 1, 0);
@@ -57,7 +57,7 @@ const SalaryList = ({ darkMode }) => {
     }
 
     // Fetch summary when both dates are set (after auto-fill)
-    if ( startDate && endDate && Object.keys(summaryData.groupedByEmployee).length === 0) {
+    if (startDate && endDate && Object.keys(summaryData.groupedByEmployee).length === 0) {
       fetchSummary();
     }
   }, [showSummary, startDate, endDate]);
@@ -86,7 +86,7 @@ const SalaryList = ({ darkMode }) => {
   const handleDelete = async (id) => {
     if (window.confirm("Are you sure you want to delete this salary?")) {
       try {
-        await axios.delete(`${API_URL}/${id}`,{
+        await axios.delete(`${API_URL}/${id}`, {
           headers: {
             "Authorization": `Bearer ${token}`
           }
@@ -159,7 +159,7 @@ const SalaryList = ({ darkMode }) => {
 
     try {
       const res = await axios.get(`${API_URL}/summary/${startDate}/${endDateInclusive}`);
-      console.log("Summery data ",res.data);
+      console.log("Summery data ", res.data);
       setSummaryData(res.data);
       setShowSummary(true);
     } catch (err) {
@@ -183,16 +183,16 @@ const SalaryList = ({ darkMode }) => {
     labels: chartType === 'due'
       ? Object.values(summaryData.dueByEmployee || {}).map(emp => emp.employeeName)
       : (groupBy === 'employee'
-          ? Object.keys(summaryData.groupedByEmployee || {})
-          : Object.keys(summaryData.groupedByDate || {}).sort()),
+        ? Object.keys(summaryData.groupedByEmployee || {})
+        : Object.keys(summaryData.groupedByDate || {}).sort()),
     datasets: [
       {
         label: chartType === 'due' ? 'Due Amount' : 'Advance Amount',
         data: chartType === 'due'
           ? Object.values(summaryData.dueByEmployee || {}).map(emp => emp.due)
           : (groupBy === 'employee'
-              ? Object.values(summaryData.groupedByEmployee || {})
-              : Object.values(summaryData.groupedByDate || [])),
+            ? Object.values(summaryData.groupedByEmployee || {})
+            : Object.values(summaryData.groupedByDate || [])),
         backgroundColor: darkMode ? 'rgba(255, 99, 132, 0.6)' : chartType === 'due' ? 'rgba(255, 99, 132, 1)' : 'rgba(54, 162, 235, 0.6)',
         borderColor: darkMode ? 'rgba(255, 99, 132, 1)' : 'rgba(54, 162, 235, 1)',
         borderWidth: 1,
@@ -205,20 +205,22 @@ const SalaryList = ({ darkMode }) => {
     maintainAspectRatio: false,
     plugins: {
       legend: { position: 'top' },
-      title: { display: true, text: 
-        groupBy === 'employee' 
-          ? 'Salary Advance by Employee' 
-          : 'Salary Advance by Date',
-      font: { size: 18, family: 'Inter' } },
+      title: {
+        display: true, text:
+          groupBy === 'employee'
+            ? 'Salary Advance by Employee'
+            : 'Salary Advance by Date',
+        font: { size: 18, family: 'Inter' }
+      },
     },
     scales: {
-      y: { 
-        beginAtZero: true, 
+      y: {
+        beginAtZero: true,
         title: { display: true, text: 'Advance (LKR)', font: { size: 14, family: 'Inter' } },
         grid: { color: darkMode ? '#4a5568' : '#e0e0e0' },
       },
-      x: { 
-        title: { display: true, text: groupBy === 'employee' ? 'Employee ID' : 'Date' , font: { size: 14, family: 'Inter' } },
+      x: {
+        title: { display: true, text: groupBy === 'employee' ? 'Employee ID' : 'Date', font: { size: 14, family: 'Inter' } },
         grid: { display: false },
       },
     },
@@ -226,12 +228,12 @@ const SalaryList = ({ darkMode }) => {
 
   return (
     <div className={`product-repair-list-container ${darkMode ? "dark" : ""}`}>
-      
+
       <div className="header-section">
-        
+
 
         <h2 className={`product-repair-list-title ${darkMode ? "dark" : ""}`}>
-        Salary List
+          Salary List
         </h2>
       </div>
       <div className="search-action-container">
@@ -252,15 +254,15 @@ const SalaryList = ({ darkMode }) => {
         </div>
         <div className='filter-action-row'>
 
-        {/* <button onClick={() => setShowSummary(true)} className="btn-summary">
+          {/* <button onClick={() => setShowSummary(true)} className="btn-summary">
           <FontAwesomeIcon icon={faChartSimple} /> Summary
         </button> */}
-        <button onClick={() => setAddModalOpen(true)} className="btn-primary">
-          <FontAwesomeIcon icon={faPlus} /> Add Salary
-        </button>
-        <button onClick={() => setShowReportOptions(true)} className="btn-report">
-          <FontAwesomeIcon icon={faFile} /> Reports
-        </button>
+          <button onClick={() => setAddModalOpen(true)} className="btn-primary">
+            <FontAwesomeIcon icon={faPlus} /> Add Salary
+          </button>
+          <button onClick={() => setShowReportOptions(true)} className="btn-report">
+            <FontAwesomeIcon icon={faFile} /> Reports
+          </button>
         </div>
       </div>
       {showReportOptions && (
@@ -285,10 +287,10 @@ const SalaryList = ({ darkMode }) => {
             </div>
             <div className="report-modal-buttons">
               <button onClick={generateExcel} className="report-btn black">
-                <FontAwesomeIcon icon={faFileExcel} style={{marginRight: 8}} /> Excel
+                <FontAwesomeIcon icon={faFileExcel} style={{ marginRight: 8 }} /> Excel
               </button>
               <button onClick={generatePDF} className="report-btn black">
-                <FontAwesomeIcon icon={faFilePdf} style={{marginRight: 8}} /> PDF
+                <FontAwesomeIcon icon={faFilePdf} style={{ marginRight: 8 }} /> PDF
               </button>
             </div>
           </div>
@@ -346,39 +348,39 @@ const SalaryList = ({ darkMode }) => {
       ) : filteredSalaries.length === 0 ? (
         <p className="no-salaries">No salaries available.</p>
       ) : (
-      <div>
-        <div className="salary-summary-content">
-          <div className="date-range-selector">
-            <label className={`date-range-label ${darkMode ? 'dark' : ''}`}>Start Date:</label>
-            <input
-              type="date"
-              value={startDate}
-              onChange={(e) => setStartDate(e.target.value)}
-              className={`date-range-input ${darkMode ? 'dark' : ''}`}
-            />
-            <label className={`date-range-label ${darkMode ? 'dark' : ''}`}>End Date:</label>
-            <input
-              type="date"
-              value={endDate}
-              onChange={(e) => setEndDate(e.target.value)}
-              className={`date-range-input ${darkMode ? 'dark' : ''}`}
-            /> 
-            {groupBy !== 'date' && (
-              <>         
-                <label className={`date-range-label ${darkMode ? 'dark' : ''}`}>
-                  View:
-                </label>
-                <select
-                  value={chartType}
-                  onChange={(e) => setChartType(e.target.value)}
-                  className={`date-range-input-select ${darkMode ? 'dark' : ''}`}
-                >
-                  <option value="advance">Advance</option>
-                  <option value="due">Due Amount</option>
-                </select>
-              </>
-            )}
-            {chartType !== 'due' && (
+        <div>
+          <div className="salary-summary-content">
+            <div className="date-range-selector">
+              <label className={`date-range-label ${darkMode ? 'dark' : ''}`}>Start Date:</label>
+              <input
+                type="date"
+                value={startDate}
+                onChange={(e) => setStartDate(e.target.value)}
+                className={`date-range-input ${darkMode ? 'dark' : ''}`}
+              />
+              <label className={`date-range-label ${darkMode ? 'dark' : ''}`}>End Date:</label>
+              <input
+                type="date"
+                value={endDate}
+                onChange={(e) => setEndDate(e.target.value)}
+                className={`date-range-input ${darkMode ? 'dark' : ''}`}
+              />
+              {groupBy !== 'date' && (
+                <>
+                  <label className={`date-range-label ${darkMode ? 'dark' : ''}`}>
+                    View:
+                  </label>
+                  <select
+                    value={chartType}
+                    onChange={(e) => setChartType(e.target.value)}
+                    className={`date-range-input-select ${darkMode ? 'dark' : ''}`}
+                  >
+                    <option value="advance">Advance</option>
+                    <option value="due">Due Amount</option>
+                  </select>
+                </>
+              )}
+              {chartType !== 'due' && (
                 <>
                   <label className={`date-range-label ${darkMode ? 'dark' : ''}`}>
                     Group By:
@@ -394,78 +396,78 @@ const SalaryList = ({ darkMode }) => {
                   </select>
                 </>
               )}
-            <button onClick={fetchSummary} className="fetch-summary-btn">
-              Fetch Summary
-            </button>
+              <button onClick={fetchSummary} className="fetch-summary-btn">
+                Fetch Summary
+              </button>
+            </div>
+            {summaryData.totalCost > 0 && (
+              <>
+                <p className={`total-cost ${darkMode ? 'dark' : ''}`}>
+                  Total Salary Cost: LKR {summaryData.totalCost.toLocaleString()}
+                </p>
+                <div className="salary-summary-chart-container">
+                  <Bar data={chartData} options={chartOptions} height={300} width={500} />
+                </div>
+              </>
+            )}
           </div>
-          {summaryData.totalCost > 0 && (
-            <>
-              <p className={`total-cost ${darkMode ? 'dark' : ''}`}>
-                Total Salary Cost: LKR {summaryData.totalCost.toLocaleString()}
-              </p>
-              <div className="salary-summary-chart-container">
-                <Bar data={chartData} options={chartOptions} height={300} width={500}/>
-              </div>
-            </>
-          )}
-        </div>
-        <br/>
-        <table className={`salary-table ${darkMode ? 'dark' : ''}`}>
-          <thead>
-            <tr>
-              <th>Employee ID</th>
-              <th>Employee Name</th>
-              <th>Advance</th>
-              <th>Remarks</th>
-              <th>Date</th>
-              <th>Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            {filteredSalaries.map((salary) => (
-              <tr key={salary._id}>
-                <td>{salary.employeeId}</td>
-                <td>{salary.employeeName}</td>
-                <td>{salary.advance.toLocaleString()}</td>
-                <td>{salary.remarks || 'N/A'}</td>
-                <td>{new Date(salary.date).toLocaleDateString()}</td>
-                <td>
-                  <div className="action-container">
-                    <button
-                      onClick={(e) => {
-                        e.preventDefault();
-                        setShowActionMenu(showActionMenu === salary._id ? null : salary._id);
-                      }}
-                      className="action-dot-btn"
-                    >
-                      ⋮
-                    </button>
-                    {showActionMenu === salary._id && (
-                      <>
-                        <div className="action-menu-overlay" onClick={() => setShowActionMenu(null)} />
-                        <div className={`action-menu ${darkMode ? 'dark' : ''}`}>
-                          <button onClick={() => handleEditClick(salary)} className="salary-edit-btn">
-                            <div className="action-btn-content">
-                              <img src={editicon} alt="edit" className="salary-edit-btn-icon" />
-                              <span>Edit</span>
-                            </div>
-                          </button>
-                          <button onClick={() => handleDelete(salary._id)} className="salary-delete-btn">
-                            <div className="action-btn-content">
-                              <img src={deleteicon} alt="delete" className="salary-delete-btn-icon" />
-                              <span>Delete</span>
-                            </div>
-                          </button>
-                        </div>
-                      </>
-                    )}
-                  </div>
-                </td>
+          <br />
+          <table className={`salary-table ${darkMode ? 'dark' : ''}`}>
+            <thead>
+              <tr>
+                <th>Employee ID</th>
+                <th>Employee Name</th>
+                <th>Advance</th>
+                <th>Remarks</th>
+                <th>Date</th>
+                <th>Action</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+            </thead>
+            <tbody>
+              {filteredSalaries.map((salary) => (
+                <tr key={salary._id}>
+                  <td>{salary.employeeId}</td>
+                  <td>{salary.employeeName}</td>
+                  <td>{salary.advance.toLocaleString()}</td>
+                  <td>{salary.remarks || 'N/A'}</td>
+                  <td>{new Date(salary.date).toLocaleDateString()}</td>
+                  <td>
+                    <div className="action-container">
+                      <button
+                        onClick={(e) => {
+                          e.preventDefault();
+                          setShowActionMenu(showActionMenu === salary._id ? null : salary._id);
+                        }}
+                        className="action-dot-btn"
+                      >
+                        ⋮
+                      </button>
+                      {showActionMenu === salary._id && (
+                        <>
+                          <div className="action-menu-overlay" onClick={() => setShowActionMenu(null)} />
+                          <div className={`action-menu ${darkMode ? 'dark' : ''}`}>
+                            <button onClick={() => handleEditClick(salary)} className="salary-edit-btn">
+                              <div className="action-btn-content">
+                                <img src={editicon} alt="edit" className="salary-edit-btn-icon" />
+                                <span>Edit</span>
+                              </div>
+                            </button>
+                            <button onClick={() => handleDelete(salary._id)} className="salary-delete-btn">
+                              <div className="action-btn-content">
+                                <img src={deleteicon} alt="delete" className="salary-delete-btn-icon" />
+                                <span>Delete</span>
+                              </div>
+                            </button>
+                          </div>
+                        </>
+                      )}
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       )}
       {isAddModalOpen && (
         <SalaryAdd

@@ -5,7 +5,7 @@ import signupImage from "../images/blue3.png"; // Adjust the path to your image
 
 const API_URL = "https://igeniusmobileshopapp.onrender.com/api/auth/register";
 
-const SuperAdminSignup = ({darkMode}) => {
+const SuperAdminSignup = ({ darkMode }) => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     username: "",

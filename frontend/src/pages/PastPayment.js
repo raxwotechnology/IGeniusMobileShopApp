@@ -17,10 +17,10 @@ const CartForm = ({ supplier, closeModal, darkMode, refreshProducts }) => {
 
 
   useEffect(() => {
-      setItems([{
-        paymentdescription: '',
-        paymentCharge: '',
-      }]);
+    setItems([{
+      paymentdescription: '',
+      paymentCharge: '',
+    }]);
     setMessage('');
     setError('');
     setIsSubmitted(false);
@@ -48,45 +48,45 @@ const CartForm = ({ supplier, closeModal, darkMode, refreshProducts }) => {
     }
 
     if (!items.paymentCharge || Number(items.paymentCharge) < 0) {
-        setError(`Payment Charge must be a non-negative number`);
-        setLoading(false);
-        return false;
+      setError(`Payment Charge must be a non-negative number`);
+      setLoading(false);
+      return false;
     }
     const token = localStorage.getItem('token');
     try {
       // Get the current user's name from localStorage
       const changedBy = localStorage.getItem('username') || 'system';
-      
-        const itemData = {
-          ...items,
-          paymentCharge: Number(items.paymentCharge) || 0,
-          changedBy // Add changedBy to the request body
-        };
 
-        const url = `${API_URL}/${supplier._id}/pastpayments`;
-        const method = 'POST';
-        const response = await fetch(url, {
-          method,
-          headers: { 'Content-Type': 'application/json', "Authorization": `Bearer ${token}` },
-          body: JSON.stringify(itemData),
-        });
+      const itemData = {
+        ...items,
+        paymentCharge: Number(items.paymentCharge) || 0,
+        changedBy // Add changedBy to the request body
+      };
 
-        if (!response.ok) {
-          const errorData = await response.json();
-          throw new Error(errorData.message || `Failed to add past charge`);
-        }
+      const url = `${API_URL}/${supplier._id}/pastpayments`;
+      const method = 'POST';
+      const response = await fetch(url, {
+        method,
+        headers: { 'Content-Type': 'application/json', "Authorization": `Bearer ${token}` },
+        body: JSON.stringify(itemData),
+      });
 
-        const result = await response.json(); // Parse JSON response
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || `Failed to add past charge`);
+      }
+
+      const result = await response.json(); // Parse JSON response
 
       if (refreshProducts) {
         refreshProducts();
       }
 
-        setItems([{
-          paymentdescription: '',
-          paymentCharge: '',
-        }]);
-      
+      setItems([{
+        paymentdescription: '',
+        paymentCharge: '',
+      }]);
+
 
       setMessage('');
       setError('');
@@ -108,39 +108,39 @@ const CartForm = ({ supplier, closeModal, darkMode, refreshProducts }) => {
     setError('');
     closeModal();
   };
-  
+
   return (
     <div className="modal-overlay">
       <div className={`pro-edit-modal-container ${darkMode ? 'dark' : ''}`}>
         <h2 className="modal-title">Add Past Payment</h2>
         {loading && <p className="loading">Adding Past Payment...</p>}
         {error && <p className="error-message">{error}</p>}
-        <form className="edit-product-form" onSubmit={handleSubmit}>          
-            <div className="form-row">
-              <div className="left-column">
-                <label className={`pro-edit-label ${darkMode ? 'dark' : ''}`}>Payment Description</label>
-                <input
-                  className={`pro-edit-input ${darkMode ? 'dark' : ''}`}
-                  type="text"
-                  name="paymentdescription"
-                  value={items.paymentdescription}
-                  onChange={handleItemChange}
-                  required
-                />
-                <label className={`pro-edit-label ${darkMode ? 'dark' : ''}`}>Payment</label>
-                <input
-                  className={`pro-edit-input ${darkMode ? 'dark' : ''}`}
-                  type="number"
-                  onWheel={(e) => e.target.blur()}
-                  name="paymentCharge"
-                  onFocus={(e) => e.target.select()}
-                  value={items.paymentCharge}
-                  onChange={handleItemChange}
-                  required
-                  min="0"
-                />
-              </div>
+        <form className="edit-product-form" onSubmit={handleSubmit}>
+          <div className="form-row">
+            <div className="left-column">
+              <label className={`pro-edit-label ${darkMode ? 'dark' : ''}`}>Payment Description</label>
+              <input
+                className={`pro-edit-input ${darkMode ? 'dark' : ''}`}
+                type="text"
+                name="paymentdescription"
+                value={items.paymentdescription}
+                onChange={handleItemChange}
+                required
+              />
+              <label className={`pro-edit-label ${darkMode ? 'dark' : ''}`}>Payment</label>
+              <input
+                className={`pro-edit-input ${darkMode ? 'dark' : ''}`}
+                type="number"
+                onWheel={(e) => e.target.blur()}
+                name="paymentCharge"
+                onFocus={(e) => e.target.select()}
+                value={items.paymentCharge}
+                onChange={handleItemChange}
+                required
+                min="0"
+              />
             </div>
+          </div>
           <div className="button-group">
             <button type="submit" className="pro-edit-submit-btn" disabled={loading}>
               {loading ? 'Saving...' : `Add Past Payment`}

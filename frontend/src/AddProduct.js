@@ -53,7 +53,7 @@ const AddProduct = ({ darkMode }) => {
   };
 
   const token = localStorage.getItem('token');
-  
+
   useEffect(() => {
 
     fetchDeletedProducts();
@@ -61,12 +61,12 @@ const AddProduct = ({ darkMode }) => {
     // console.log('AddProduct useEffect - Location state:', location.state);
     // console.log('AddProduct useEffect - Product:', product);
     // console.log('AddProduct useEffect - Click DateTime:', clickDateTime);
-    
+
     // setLoading(true);
     // try {
     //   let clickedProductsLS = JSON.parse(localStorage.getItem('clickedProducts') || '[]');
     //   console.log('AddProduct useEffect - Initial localStorage data:', clickedProductsLS);
-      
+
     //   // If a product was just clicked, add it if not already present
     //   if (product && product._id) {
     //     console.log('AddProduct useEffect - Adding product to localStorage:', product);
@@ -86,7 +86,7 @@ const AddProduct = ({ darkMode }) => {
     //       console.log('AddProduct useEffect - Product already exists in localStorage');
     //     }
     //   }
-      
+
     //   console.log('AddProduct useEffect - Final clickedProductsLS:', clickedProductsLS);
     //   setClickedProducts(clickedProductsLS);
     // } catch (err) {
@@ -113,13 +113,13 @@ const AddProduct = ({ darkMode }) => {
     try {
       const response = await fetch(`${API_URL}/restore-all`, {
         method: 'PATCH',
-        headers: {  'Authorization': `Bearer ${token}` },
+        headers: { 'Authorization': `Bearer ${token}` },
       });
 
       if (!response.ok) throw new Error('Failed to restore all');
 
       localStorage.removeItem('clickedProducts');
-    
+
       setClickedProducts([]);
       alert('All products restored successfully!');
     } catch (err) {
@@ -133,9 +133,9 @@ const AddProduct = ({ darkMode }) => {
     }
 
     try {
-      const username = localStorage.getItem('username') || 
-                      localStorage.getItem('cashierName') || 
-                      'system';
+      const username = localStorage.getItem('username') ||
+        localStorage.getItem('cashierName') ||
+        'system';
 
       const response = await fetch(`${API_URL}/${productToRestore._id}/restoreProduct`, {
         method: 'PATCH',
@@ -172,18 +172,18 @@ const AddProduct = ({ darkMode }) => {
   //     let clickedProductsLS = JSON.parse(localStorage.getItem('clickedProducts') || '[]');
   //     const updatedClickedProducts = clickedProductsLS.filter(cp => cp._id !== productToRestore._id);
   //     localStorage.setItem('clickedProducts', JSON.stringify(updatedClickedProducts));
-      
+
   //     // Store the restored product with added back timestamp
   //     const restoredProduct = {
   //       ...productToRestore,
   //       addedBackAt: new Date().toISOString(),
   //       addedBackBy: localStorage.getItem('username') || localStorage.getItem('cashierName') || 'system'
   //     };
-      
+
   //     // Get existing restored products and add the new one
   //     let restoredProductsLS = JSON.parse(localStorage.getItem('restoredProducts') || '[]');
   //     const existingIndex = restoredProductsLS.findIndex(rp => rp._id === productToRestore._id);
-      
+
   //     if (existingIndex !== -1) {
   //       // Update existing entry
   //       restoredProductsLS[existingIndex] = restoredProduct;
@@ -191,17 +191,17 @@ const AddProduct = ({ darkMode }) => {
   //       // Add new entry
   //       restoredProductsLS.push(restoredProduct);
   //     }
-      
+
   //     localStorage.setItem('restoredProducts', JSON.stringify(restoredProductsLS));
-      
+
   //     // Update the state
   //     setClickedProducts(updatedClickedProducts);
-      
+
   //     console.log('Product restored:', productToRestore.itemName);
-      
+
   //     // Show success message (you can add a toast notification here if needed)
   //     alert(`${productToRestore.itemName} has been restored to the product list and stock management.`);
-      
+
   //   } catch (err) {
   //     console.error('Error restoring product:', err);
   //     alert('Failed to restore product. Please try again.');
@@ -230,8 +230,8 @@ const AddProduct = ({ darkMode }) => {
                   <p><strong>Category:</strong> {clickedProduct.category}</p>
                   <p><strong>Price:</strong> Rs. {clickedProduct.sellingPrice?.toFixed(2)}</p>
                   <p><strong>Stock:</strong> {clickedProduct.stock}</p>
-                  <button 
-                    type="button" 
+                  <button
+                    type="button"
                     className="add-product-btn"
                     onClick={() => handleAddProduct(clickedProduct)}
                     style={{
@@ -271,21 +271,21 @@ const AddProduct = ({ darkMode }) => {
                   >
                     ➕ Add Product
                   </button> */}
-            </div>
+                </div>
               ))}
             </div>
           </div>
         )}
-          <div className="button-group">
+        <div className="button-group">
           <button type="button" className="a-p-cancel-btn" onClick={handleBack}>
             Back to Products
-            </button>
+          </button>
           {clickedProducts.length > 0 && (
             <button type="button" className="a-p-cancel-btn" onClick={handleRestoreAll} style={{ marginLeft: '10px', backgroundColor: '#dc3545' }}>
               Restore All
             </button>
           )}
-          </div>
+        </div>
       </div>
     </div>
   );

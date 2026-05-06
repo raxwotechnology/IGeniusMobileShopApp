@@ -163,12 +163,12 @@ const StockUpdateList = ({ darkMode }) => {
   };
 
   const handleEdit = (product) => {
-    navigate("/StockUpdate", { 
-      state: { 
+    navigate("/StockUpdate", {
+      state: {
         darkMode,
         editProduct: product,
         isEditing: true
-      } 
+      }
     });
     setShowActionMenu(null);
   };
@@ -198,7 +198,7 @@ const StockUpdateList = ({ darkMode }) => {
   const handleToggleVisibility = async (productId) => {
     const product = products.find(p => p._id === productId);
     const action = product.visible ? 'hide' : 'make visible';
-    
+
     if (window.confirm(`Are you sure you want to ${action} this stock record?`)) {
       try {
         const username = localStorage.getItem('username') || localStorage.getItem('cashierName') || 'system';
@@ -207,15 +207,15 @@ const StockUpdateList = ({ darkMode }) => {
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ username })
         });
-        
+
         if (!response.ok) {
           const errorData = await response.json();
           throw new Error(errorData.message || 'Failed to toggle stock record visibility');
         }
-        
+
         // Remove the product from the local state since it's now hidden
         setProducts(products.filter(product => product._id !== productId));
-        
+
         // Show success message
         alert(`Stock record ${action} successfully!`);
         setShowActionMenu(null);

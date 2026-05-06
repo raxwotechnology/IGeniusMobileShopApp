@@ -46,8 +46,8 @@ const Dashboard = ({ darkMode }) => {
 
   const getUserName = () => {
     return localStorage.getItem('cashierName') ||
-           localStorage.getItem('userName') ||
-           localStorage.getItem('username') || 'User';
+      localStorage.getItem('userName') ||
+      localStorage.getItem('username') || 'User';
   };
 
   useEffect(() => {
@@ -153,12 +153,12 @@ const Dashboard = ({ darkMode }) => {
       .reduce((sum, ei) => sum + (ei.amount || 0), 0);
 
     const totalPurchaseIncome = payments
-      .filter(p => ![ 'refund'].includes((p.paymentMethod || '').toLowerCase()))
+      .filter(p => !['refund'].includes((p.paymentMethod || '').toLowerCase()))
       .reduce((sum, p) => sum + (p.totalAmount || 0), 0);
 
     const totalPurchaseRefund = payments
-    .filter(p => [ 'refund'].includes((p.paymentMethod || '').toLowerCase()))
-    .reduce((sum, p) => sum + (p.totalAmount || 0), 0);
+      .filter(p => ['refund'].includes((p.paymentMethod || '').toLowerCase()))
+      .reduce((sum, p) => sum + (p.totalAmount || 0), 0);
 
     const totalIncomeValue = totalRepairIncome + totalExtraIncome + totalPurchaseIncome + totalPurchaseRefund;
     setTotalIncome(totalIncomeValue);
@@ -248,7 +248,7 @@ const Dashboard = ({ darkMode }) => {
         .reduce((sum, repair) => sum + (repair.totalAdditionalServicesAmount + repair.checkingCharge + repair.totalRepairCost - repair.totalDiscountAmount || 0), 0);
       const extra = extraIncomeData.filter(ei => getMonthKey(ei.date) === monthKey)
         .reduce((sum, ei) => sum + (ei.amount || 0), 0);
-      const sales = paymentsData.filter(p => getMonthKey(p.date) === monthKey )
+      const sales = paymentsData.filter(p => getMonthKey(p.date) === monthKey)
         .reduce((sum, p) => sum + (p.totalAmount || 0), 0);
       return repairs + extra + sales;
     });
@@ -262,7 +262,7 @@ const Dashboard = ({ darkMode }) => {
         .reduce((sum, m) => sum + (m.price || 0), 0);
       const supplier = supplierPaymentsData.filter(p => getMonthKey(p.date) === monthKey)
         .reduce((sum, p) => sum + Number(p.currentPayment || 0), 0);
-      return products + salaries + maintenance ;
+      return products + salaries + maintenance;
     });
 
     const profitArr = incomeArr.map((inc, i) => inc - (costArr[i] || 0));
@@ -335,7 +335,7 @@ const Dashboard = ({ darkMode }) => {
     tooltip: {
       backgroundColor: isDarkMode ? "#232b39" : "#f1f5f9",
       borderColor: isDarkMode ? "#374151" : "#e5e7eb",
-      formatter: function() {
+      formatter: function () {
         return `<b>${this.x}</b><br/><span style="color:${this.color}">●</span> ${this.series.name}: <b>Rs. ${formatShortNumber(this.y)}</b>`;
       }
     }

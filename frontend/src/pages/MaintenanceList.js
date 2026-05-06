@@ -53,10 +53,10 @@ const MaintenanceList = ({ darkMode }) => {
   const handleDelete = async (id) => {
     if (window.confirm("Are you sure you want to delete this maintenance record?")) {
       try {
-        const response = await fetch(`${API_URL}/${id}`, { 
-          method: "DELETE", 
+        const response = await fetch(`${API_URL}/${id}`, {
+          method: "DELETE",
           headers: {
-          'Authorization': `Bearer ${token}`
+            'Authorization': `Bearer ${token}`
           }
         });
         const data = await response.json();
@@ -65,7 +65,7 @@ const MaintenanceList = ({ darkMode }) => {
           // Handle 404, 500, etc.
           throw new Error(data.message || "Failed to delete the record");
         }
-        
+
         setMaintenanceRecords(maintenanceRecords.filter(record => record._id !== id));
         setShowActionMenu(null);
         setSuccess("Record deleted successfully!");
@@ -249,12 +249,12 @@ const MaintenanceList = ({ darkMode }) => {
 
   return (
     <div className={`product-repair-list-container ${darkMode ? "dark" : ""}`}>
-      
+
       <div className="header-section">
-        
+
 
         <h2 className={`product-repair-list-title ${darkMode ? "dark" : ""}`}>
-        Bills and Other Expences
+          Bills and Other Expences
         </h2>
       </div>
       <div className="search-action-container">
@@ -275,17 +275,17 @@ const MaintenanceList = ({ darkMode }) => {
         </div>
         <div className='filter-action-row'>
 
-        <button onClick={() => setShowSummaryModal(true)} className="btn-summary">
-          <FontAwesomeIcon icon={faChartSimple} /> Summary
-        </button>
-        <button onClick={() => setShowAddModal(true)} className="btn-primary">
-          <FontAwesomeIcon icon={faPlus} /> Add Maintenance
-        </button>
-        <button onClick={() => setShowReportOptions(true)} className="btn-report">
-          <FontAwesomeIcon icon={faFile} /> Reports
-        </button>
+          <button onClick={() => setShowSummaryModal(true)} className="btn-summary">
+            <FontAwesomeIcon icon={faChartSimple} /> Summary
+          </button>
+          <button onClick={() => setShowAddModal(true)} className="btn-primary">
+            <FontAwesomeIcon icon={faPlus} /> Add Maintenance
+          </button>
+          <button onClick={() => setShowReportOptions(true)} className="btn-report">
+            <FontAwesomeIcon icon={faFile} /> Reports
+          </button>
         </div>
-        
+
       </div>
       {showReportOptions && (
         <div className="report-modal-overlay" onClick={() => setShowReportOptions(false)}>

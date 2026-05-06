@@ -7,7 +7,7 @@ import Select from 'react-select';
 const PaymentForm = ({ supplier, closeModal, fetchGrnReturnStocks, refreshSuppliers, darkMode }) => {
   const [paymentAmount, setPaymentAmount] = useState('');
   const [paymentMethod, setPaymentMethod] = useState('');     // ← New
-  const [assignedTo, setAssignedTo] = useState('');  
+  const [assignedTo, setAssignedTo] = useState('');
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState("");
   const [returnedProductsValue, setReturnedProductsValue] = useState(0);
@@ -22,7 +22,7 @@ const PaymentForm = ({ supplier, closeModal, fetchGrnReturnStocks, refreshSuppli
   const [returnedGrnItems, setReturnedGrnItems] = useState([]);
   const [grnOptionsLoading, setGrnOptionsLoading] = useState(false);
 
-  const [selectedPayments, setSelectedPayments] = useState([]); 
+  const [selectedPayments, setSelectedPayments] = useState([]);
 
   const today = new Date().toISOString().split('T')[0];
 
@@ -187,9 +187,9 @@ const PaymentForm = ({ supplier, closeModal, fetchGrnReturnStocks, refreshSuppli
   const selectedGrnOption = grnNumber
     ? allGrnOptions.find(opt => opt.value === grnNumber)
     : null;
-  
+
   const isSpecialPayment = grnNumber === '__PAST_PAYMENT__' || grnNumber === '__REPAIR_SERVICE__';
-  
+
 
   useEffect(() => {
     const fetchReturnedValue = async () => {
@@ -247,21 +247,21 @@ const PaymentForm = ({ supplier, closeModal, fetchGrnReturnStocks, refreshSuppli
   const remainingDue = (totalAmountDue || 0) - (parseFloat(paymentAmount) || 0);
 
   // ====== NEW: Calculate paid amounts per category ======
-const paidForItems = supplier.paymentHistory
-  .filter(p => 
-    p.grnNumber && 
-    p.grnNumber !== '__PAST_PAYMENT__' && 
-    p.grnNumber !== '__REPAIR_SERVICE__'
-  )
-  .reduce((sum, p) => sum + parseFloat(p.currentPayment || 0), 0);
+  const paidForItems = supplier.paymentHistory
+    .filter(p =>
+      p.grnNumber &&
+      p.grnNumber !== '__PAST_PAYMENT__' &&
+      p.grnNumber !== '__REPAIR_SERVICE__'
+    )
+    .reduce((sum, p) => sum + parseFloat(p.currentPayment || 0), 0);
 
-const paidForRepairServices = supplier.paymentHistory
-  .filter(p => p.grnNumber === '__REPAIR_SERVICE__')
-  .reduce((sum, p) => sum + parseFloat(p.currentPayment || 0), 0);
+  const paidForRepairServices = supplier.paymentHistory
+    .filter(p => p.grnNumber === '__REPAIR_SERVICE__')
+    .reduce((sum, p) => sum + parseFloat(p.currentPayment || 0), 0);
 
-const paidForPastPayments = supplier.paymentHistory
-  .filter(p => p.grnNumber === '__PAST_PAYMENT__')
-  .reduce((sum, p) => sum + parseFloat(p.currentPayment || 0), 0);
+  const paidForPastPayments = supplier.paymentHistory
+    .filter(p => p.grnNumber === '__PAST_PAYMENT__')
+    .reduce((sum, p) => sum + parseFloat(p.currentPayment || 0), 0);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -321,20 +321,20 @@ const paidForPastPayments = supplier.paymentHistory
     }
 
     const token = localStorage.getItem('token');
-    
+
     try {
       // Submit each payment individually
       for (const pay of validPayments) {
         const response = await fetch(`https://igeniusmobileshopapp.onrender.com/api/suppliers/${supplier._id}/payments`, {
           method: 'POST',
-          headers: { 
-            'Content-Type': 'application/json', 
-            "Authorization": `Bearer ${token}` 
+          headers: {
+            'Content-Type': 'application/json',
+            "Authorization": `Bearer ${token}`
           },
-          body: JSON.stringify({ 
-            paymentAmount: pay.paymentAmount, 
-            paymentMethod, 
-            assignedTo, 
+          body: JSON.stringify({
+            paymentAmount: pay.paymentAmount,
+            paymentMethod,
+            assignedTo,
             returnedProductsValue: 0, // or compute per GRN if needed
             grnNumber: pay.grnNumber,
             description: pay.description,
@@ -422,16 +422,16 @@ const paidForPastPayments = supplier.paymentHistory
           </div>
 
           <div style={{ margin: '16px 0' }}>
-            <button 
-              type="button" 
-              onClick={() => setSelectedPayments(prev => [...prev, { 
-                id: Date.now(), 
-                grnOption: null, 
-                amount: '', 
+            <button
+              type="button"
+              onClick={() => setSelectedPayments(prev => [...prev, {
+                id: Date.now(),
+                grnOption: null,
+                amount: '',
                 description: '',
-                grnItems: [], 
+                grnItems: [],
                 returnedGrnItems: {},
-                paymentDate: today,  
+                paymentDate: today,
               }])}
 
               className="add-payment-btn"
@@ -496,7 +496,7 @@ const paidForPastPayments = supplier.paymentHistory
                         const result = await fetchGrnReturnStocks(selectedOption.value);
                         // result should have: { items, returnedValue, returnStocks? }
                         // Assume `returnStocks` is an array like [{ itemCode, returnstock }, ...]
-                        
+
                         const returnStockMap = {};
                         if (Array.isArray(result.returnStocks)) {
                           result.returnStocks.forEach(rs => {
@@ -539,9 +539,9 @@ const paidForPastPayments = supplier.paymentHistory
 
                 {/* GRN Items List */}
                 {payment.grnItems.length > 0 && (
-                  <div style={{ 
-                    marginTop: '10px', 
-                    maxHeight: '150px', 
+                  <div style={{
+                    marginTop: '10px',
+                    maxHeight: '150px',
                     overflowY: 'auto',
                     fontSize: '0.9rem',
                     padding: '8px',
@@ -591,8 +591,8 @@ const paidForPastPayments = supplier.paymentHistory
                 )}
 
                 {/* Remove button */}
-                <button 
-                  type="button" 
+                <button
+                  type="button"
                   onClick={() => setSelectedPayments(prev => prev.filter((_, i) => i !== index))}
                   className="remove-btn"
                 >
@@ -604,7 +604,7 @@ const paidForPastPayments = supplier.paymentHistory
           {/* Searchable GRN Selector */}
           {/* {supplierGrnOptions.length > 0 && ( */}
 
-            {/* <div>
+          {/* <div>
               <label className="payment-label">Select GRN</label>
               <Select
                 value={selectedGrnOption}

@@ -43,7 +43,7 @@ const Payment = ({ darkMode }) => {
   const [cashierName, setCashierName] = useState(localStorage.getItem('username') || 'Unknown');
 
   const [selectedCategories, setSelectedCategories] = useState(new Set());
-  const [showCategoryFilter, setShowCategoryFilter] = useState(false);  
+  const [showCategoryFilter, setShowCategoryFilter] = useState(false);
 
   const [focusedField, setFocusedField] = useState({ index: null, field: null });
   // e.g., { index: 2, field: 'sellingPrice' }
@@ -55,15 +55,15 @@ const Payment = ({ darkMode }) => {
 
   const today = new Date().toISOString().split('T')[0]; // "YYYY-MM-DD"
 
-  const [paymentDate, setPaymentDate] = useState(today);  
+  const [paymentDate, setPaymentDate] = useState(today);
 
   const isCartFullyAssigned = () => {
     return cart.length > 0 && cart.every(item => item.assignedTo && item.assignedTo.trim() !== "");
   };
 
   const filteredCategoriesForSearch = categorySearch.trim() === ''
-  ? allCategories
-  : allCategories.filter(cat =>
+    ? allCategories
+    : allCategories.filter(cat =>
       cat.toLowerCase().includes(categorySearch.toLowerCase().trim())
     );
 
@@ -122,7 +122,7 @@ const Payment = ({ darkMode }) => {
     setAddress(localStorage.getItem('address') || '');
     setDescription(localStorage.getItem('description') || '');
     setAssignedTo(localStorage.getItem('assignedTo') || '');
-    
+
 
     // Load cart from localStorage
     const savedCart = localStorage.getItem('paymentCart');
@@ -157,11 +157,11 @@ const Payment = ({ darkMode }) => {
   }, [showCategoryFilter]);
 
   useEffect(() => {
-    if (error) {  
+    if (error) {
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
   }, [error]);
-  
+
 
   const addToCart = (product) => {
     setCart([...cart, { ...product, quantity: 1, sellingPrice: 0, discount: 0, assignedTo: "", }]);
@@ -237,15 +237,15 @@ const Payment = ({ darkMode }) => {
     if (searchQuery.trim() !== '') {
       let subresult1 = products.filter(product => {
         const name = product.itemName.toLowerCase()
-        .trim()
-        .replace(/\s+/g, '');
-        
+          .trim()
+          .replace(/\s+/g, '');
+
 
         // Split query into meaningful words, remove empty
         const queryWords = searchQuery
-        .toLowerCase()
-        .trim()
-        .replace(/\s+/g, '');
+          .toLowerCase()
+          .trim()
+          .replace(/\s+/g, '');
         // .replace(/[^a-z0-9\s]/g, '') // Remove punctuation
         // .split(/\s+/)
         // .filter(Boolean);
@@ -260,15 +260,15 @@ const Payment = ({ darkMode }) => {
 
       let subresult2 = products.filter(product => {
         const name = product.itemName.toLowerCase()
-        .trim()
-        .replace(/\s+/g, '');
-        
+          .trim()
+          .replace(/\s+/g, '');
+
 
         // Split query into meaningful words, remove empty
         const queryWords = searchQuery
-        .toLowerCase()
-        .trim()
-        .replace(/\s+/g, '');
+          .toLowerCase()
+          .trim()
+          .replace(/\s+/g, '');
         // .replace(/[^a-z0-9\s]/g, '') // Remove punctuation
         // .split(/\s+/)
         // .filter(Boolean);
@@ -277,14 +277,14 @@ const Payment = ({ darkMode }) => {
         if (queryWords.length === 0) return true;
 
         // console.log("Search query", queryWords);
-        
+
         return fuzzyIncludes(name, queryWords);
       }).sort((a, b) => a.itemName.localeCompare(b.itemName));
 
       if (subresult1.length === 0) {
         result = subresult2;
       }
-      else{
+      else {
         result = subresult1;
       }
     }
@@ -298,11 +298,11 @@ const Payment = ({ darkMode }) => {
 
     // Apply low stock filter if checkbox is checked
     if (showLowStockOnly) {
-      result = result.filter(product => (product.stock || 0) <= 2 );
+      result = result.filter(product => (product.stock || 0) <= 2);
     }
 
     if (hideLowStockOnly) {
-      result = result.filter(product => (product.stock || 0) > 2 );
+      result = result.filter(product => (product.stock || 0) > 2);
     }
 
     if (show0StockOnly) {
@@ -313,13 +313,13 @@ const Payment = ({ darkMode }) => {
       result = result.filter(product => (product.stock || 0) !== 0);
     }
 
-    else{
+    else {
       result = result;
-      
+
     }
 
     return result;
-  })([ searchQuery, showLowStockOnly, show0StockOnly, hide0StockOnly, hideLowStockOnly]);
+  })([searchQuery, showLowStockOnly, show0StockOnly, hide0StockOnly, hideLowStockOnly]);
 
   const filteredCart = cart.filter((item) =>
     item.itemName.toLowerCase().includes(cartSearchQuery.toLowerCase())
@@ -355,46 +355,46 @@ const Payment = ({ darkMode }) => {
   };
 
   const handlePaymentClear = () => {
-      setCart([]);
-      
-      // Clear wholesale customer details after payment
-      localStorage.removeItem('wholesaleCustomer');
-      localStorage.removeItem('paymentCart');
-      // Clear from localStorage
-      localStorage.removeItem('customerName');
-      localStorage.removeItem('contactNumber');
-      localStorage.removeItem('address');
-      localStorage.removeItem('description');
-      localStorage.removeItem('assignedTo');
-      // ... clear customer details
-      // Clear customer details after payment
-      setCustomerName('');
-      setContactNumber('');
-      setAddress('');
-      setDescription('');
-      setAssignedTo('');
+    setCart([]);
 
-      setIsWholesale(false);
-      setCustomerDetails(null);
+    // Clear wholesale customer details after payment
+    localStorage.removeItem('wholesaleCustomer');
+    localStorage.removeItem('paymentCart');
+    // Clear from localStorage
+    localStorage.removeItem('customerName');
+    localStorage.removeItem('contactNumber');
+    localStorage.removeItem('address');
+    localStorage.removeItem('description');
+    localStorage.removeItem('assignedTo');
+    // ... clear customer details
+    // Clear customer details after payment
+    setCustomerName('');
+    setContactNumber('');
+    setAddress('');
+    setDescription('');
+    setAssignedTo('');
+
+    setIsWholesale(false);
+    setCustomerDetails(null);
   };
 
   const handlePriceChange = (index, newPrice) => {
-  if (isNaN(newPrice) || newPrice < 0) return;
+    if (isNaN(newPrice) || newPrice < 0) return;
 
-  const updatedCart = [...cart];
-  const oldPrice = updatedCart[index].sellingPrice;
-  const quantity = updatedCart[index].quantity;
+    const updatedCart = [...cart];
+    const oldPrice = updatedCart[index].sellingPrice;
+    const quantity = updatedCart[index].quantity;
 
-  // Update selling price
-  updatedCart[index] = {
-    ...updatedCart[index],
-    sellingPrice: newPrice,
-    // Optionally: recalculate total if you don't compute on render
+    // Update selling price
+    updatedCart[index] = {
+      ...updatedCart[index],
+      sellingPrice: newPrice,
+      // Optionally: recalculate total if you don't compute on render
+    };
+
+    setCart(updatedCart);
+    localStorage.setItem('paymentCart', JSON.stringify(cart));
   };
-
-  setCart(updatedCart);
-  localStorage.setItem('paymentCart', JSON.stringify(cart));
-};
 
   const handleReturnClose = (returnInvoiceNumber) => {
     setShowReturnPopup(false);
@@ -414,7 +414,7 @@ const Payment = ({ darkMode }) => {
     localStorage.removeItem('address');
     localStorage.removeItem('description');
     localStorage.removeItem('assignedTo');
-    
+
     if (returnInvoiceNumber) {
       setLatestInvoiceNumber(returnInvoiceNumber);
     }
@@ -499,15 +499,15 @@ const Payment = ({ darkMode }) => {
   return (
     <div className={`payment-container ${darkMode ? 'dark' : ''}`}>
       {/* Debug: Show current state */}
-    
-      <br/><br/>
-      <br/><br/>
+
+      <br /><br />
+      <br /><br />
 
       <div className={`cart ${darkMode ? 'dark' : ''}`}>
         <div className="cart-header">
           <h2 className={`salary-list-title ${darkMode ? 'dark' : ''}`}>Cart</h2>
           {error && <p className="error-message">{error}</p>}
-          
+
           <div className="cart-search-container">
 
             {/* <button
@@ -545,7 +545,7 @@ const Payment = ({ darkMode }) => {
             className={`customer-input ${darkMode ? 'dark' : ''}`}
             style={{ marginTop: '8px' }}
           />
-          
+
           <input
             type="text"
             placeholder="Customer Name"
@@ -682,7 +682,7 @@ const Payment = ({ darkMode }) => {
                   <td>
                     <button
                       onClick={() => removeFromCart(index)}
-                      
+
                     >
                       <FontAwesomeIcon icon={faTimes} />
                     </button>
@@ -711,18 +711,18 @@ const Payment = ({ darkMode }) => {
             </h3>
           </div>
           <div className="summary-row">
-          <input
-            type="text"
-            placeholder="Description"
-            value={description}
-            onChange={(e) => {
-              setDescription(e.target.value);
-              localStorage.setItem('description', e.target.value);
-            }}
-            className={`customer-input ${darkMode ? 'dark' : ''}`}
-          />
+            <input
+              type="text"
+              placeholder="Description"
+              value={description}
+              onChange={(e) => {
+                setDescription(e.target.value);
+                localStorage.setItem('description', e.target.value);
+              }}
+              className={`customer-input ${darkMode ? 'dark' : ''}`}
+            />
           </div>
-          
+
           {/* Assigned To Dropdown - Added Here */}
           {/* <div className="summary-row">
             <select
@@ -748,14 +748,14 @@ const Payment = ({ darkMode }) => {
             </p>
           )}
           <div className="summary-row">
-          <button
-            className={`pay-btn ${darkMode ? 'dark' : ''}`}
-            onClick={() => {
-              if (validateBeforePayment()) {
-                setShowPopup(true);
-              }
-              // If validation fails, error is already shown via setError
-            }}
+            <button
+              className={`pay-btn ${darkMode ? 'dark' : ''}`}
+              onClick={() => {
+                if (validateBeforePayment()) {
+                  setShowPopup(true);
+                }
+                // If validation fails, error is already shown via setError
+              }}
             // disabled={
             //   cart.length === 0 ||
             //   !isCartFullyAssigned() || // ← ADD THIS
@@ -764,24 +764,24 @@ const Payment = ({ darkMode }) => {
             //   !cashierName ||
             //   cashierId === 'N/A'
             // }
-          >
-            Complete Payment
-          </button>
-          <button
-            className={`pay-btn ${darkMode ? 'dark' : ''}`}
-            onClick={() => handlePaymentClear()}
-          >
-            Clear All Data
-          </button>
+            >
+              Complete Payment
+            </button>
+            <button
+              className={`pay-btn ${darkMode ? 'dark' : ''}`}
+              onClick={() => handlePaymentClear()}
+            >
+              Clear All Data
+            </button>
           </div>
-          
+
         </div>
 
         {showPopup && (
           <PaymentPaid
             totalAmount={calculateTotal()}
             items={cart}
-            onClose={handlePaymentClose }
+            onClose={handlePaymentClose}
             darkMode={darkMode}
             cashierId={cashierId}
             cashierName={cashierName}
@@ -868,12 +868,12 @@ const Payment = ({ darkMode }) => {
         <div className="product-search-container">
           <span style={{ display: 'flex', alignItems: 'center', fontSize: 14, color: '#666', marginRight: 4 }}>
             Show Low Stock
-          
+
             <span style={{ fontSize: 14, color: '#666', marginLeft: 8, marginTop: 8, marginRight: 8 }}>
               <input
                 type="checkbox"
                 checked={showLowStockOnly}
-                onChange={(e) => {setShowLowStockOnly(e.target.checked); setHideLowStockOnly(false);}}
+                onChange={(e) => { setShowLowStockOnly(e.target.checked); setHideLowStockOnly(false); }}
               />
             </span>
 
@@ -883,34 +883,34 @@ const Payment = ({ darkMode }) => {
               <input
                 type="checkbox"
                 checked={hideLowStockOnly}
-                onChange={(e) => {setHideLowStockOnly(e.target.checked); setShowLowStockOnly(false);}}
+                onChange={(e) => { setHideLowStockOnly(e.target.checked); setShowLowStockOnly(false); }}
               />
             </span>
-          
+
           </span>
           <span>/</span>
           {/* Low Stock Filter Checkbox */}
           <span style={{ display: 'flex', alignItems: 'center', fontSize: 14, color: '#666', marginRight: 8 }}>
-            Show 0 Stock 
-          
+            Show 0 Stock
+
             <span style={{ fontSize: 14, color: '#666', marginLeft: 8, marginTop: 8, marginRight: 8 }}>
               <input
                 type="checkbox"
                 checked={show0StockOnly}
-                onChange={(e) => {setShow0StockOnly(e.target.checked); setHide0StockOnly(false);}}
+                onChange={(e) => { setShow0StockOnly(e.target.checked); setHide0StockOnly(false); }}
               />
             </span>
 
-            Hide 0 Stock 
-          
+            Hide 0 Stock
+
             <span style={{ fontSize: 14, color: '#666', marginLeft: 8, marginTop: 8 }}>
               <input
                 type="checkbox"
                 checked={hide0StockOnly}
-                onChange={(e) => {setHide0StockOnly(e.target.checked); setShow0StockOnly(false);}}
+                onChange={(e) => { setHide0StockOnly(e.target.checked); setShow0StockOnly(false); }}
               />
             </span>
-          
+
           </span>
         </div>
         {/* Category Filter Toggle & Search */}
@@ -1036,7 +1036,7 @@ const Payment = ({ darkMode }) => {
                       fontSize: '13px',
                       padding: '8px 0'
                     }}
-                  >         
+                  >
                     No categories
                   </span>
                 ) : (
@@ -1098,20 +1098,20 @@ const Payment = ({ darkMode }) => {
                 {filteredProducts.map((product) => (
                   <tr key={product._id} className={darkMode ? 'dark-row' : ''}>
                     <td>
-                      <span style={{ color: product.stock <= 2 ? product.stock == 0 ? 'red' : '#2957F0' : 'black', fontWeight:  'bold'  }}>
-                        {product.itemName} 
+                      <span style={{ color: product.stock <= 2 ? product.stock == 0 ? 'red' : '#2957F0' : 'black', fontWeight: 'bold' }}>
+                        {product.itemName}
                       </span>
                     </td>
                     <td>
-                      <span style={{ color: product.stock <= 2 ? product.stock == 0 ? 'red' : '#2957F0' : 'black', fontWeight: 'bold'  }}>
-                        {product.category} 
+                      <span style={{ color: product.stock <= 2 ? product.stock == 0 ? 'red' : '#2957F0' : 'black', fontWeight: 'bold' }}>
+                        {product.category}
                       </span>
                     </td>
                     {/* <td>
                       Rs.{product.sellingPrice.toFixed(2)}
                     </td> */}
                     <td>
-                      <span style={{ color: product.stock <= 2 ? product.stock == 0 ? 'red' : '#2957F0' : 'black', fontWeight: 'bold'  }}>
+                      <span style={{ color: product.stock <= 2 ? product.stock == 0 ? 'red' : '#2957F0' : 'black', fontWeight: 'bold' }}>
                         {product.stock}
                       </span>
                     </td>

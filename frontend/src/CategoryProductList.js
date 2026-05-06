@@ -4,7 +4,7 @@ import autoTable from "jspdf-autotable";
 import * as XLSX from "xlsx";
 import "./Products.css";
 import editicon from './icon/edit.png';
-import viewicon from './icon/clipboard.png'; 
+import viewicon from './icon/clipboard.png';
 import deleteicon from './icon/delete.png';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFile, faFilePdf, faFileExcel, faSearch } from '@fortawesome/free-solid-svg-icons';
@@ -32,14 +32,14 @@ const CategoryProductList = ({ darkMode }) => {
   const [showEditModal, setShowEditModal] = useState(false);
   const productsPerPage = 20;
   const [sortConfig, setSortConfig] = useState({ key: null, direction: 'asc' });
-  
+
   const [showLowStockOnly, setShowLowStockOnly] = useState(false);
   const [hideLowStockOnly, setHideLowStockOnly] = useState(false);
   const [show0StockOnly, setShow0StockOnly] = useState(false);
   const [hide0StockOnly, setHide0StockOnly] = useState(false);
-  
+
   const [selectedCategories, setSelectedCategories] = useState(new Set());
-  const [showCategoryFilter, setShowCategoryFilter] = useState(false);  
+  const [showCategoryFilter, setShowCategoryFilter] = useState(false);
 
   const [trackItemData, setTrackItemData] = useState(null);
   const [showTrackModal, setShowTrackModal] = useState(false);
@@ -50,13 +50,13 @@ const CategoryProductList = ({ darkMode }) => {
 
   const [categorySearch, setCategorySearch] = useState('');
   const categoryFilterRef = useRef(null);
-  
-    const filteredCategoriesForSearch = categorySearch.trim() === ''
+
+  const filteredCategoriesForSearch = categorySearch.trim() === ''
     ? allCategories
     : allCategories.filter(cat =>
-        cat.toLowerCase().includes(categorySearch.toLowerCase().trim())
-      );
-  
+      cat.toLowerCase().includes(categorySearch.toLowerCase().trim())
+    );
+
 
   // Paginated fetch for display
   const fetchProducts = () => {
@@ -150,7 +150,7 @@ const CategoryProductList = ({ darkMode }) => {
 
   function fuzzyIncludes(haystack, needle) {
 
-  
+
     // Remove non-alphanumeric and split needle into chars
     const cleanHaystack = Array.from(haystack);
     const cleanNeedle = Array.from(needle);
@@ -190,7 +190,7 @@ const CategoryProductList = ({ darkMode }) => {
   //     });
 
   const sortedAndFilteredProducts = useMemo(() => {
-    
+
     let result = products;
 
     // Apply search filter only if query exists
@@ -213,16 +213,16 @@ const CategoryProductList = ({ darkMode }) => {
       //   });
       // });
       let subresult1 = products.filter(product => {
-        const name = (product.grnNumber  + product.itemName).toLowerCase()
-        .trim()
-        .replace(/\s+/g, '');
-        
+        const name = (product.grnNumber + product.itemName).toLowerCase()
+          .trim()
+          .replace(/\s+/g, '');
+
 
         // Split query into meaningful words, remove empty
         const queryWords = searchQuery
-        .toLowerCase()
-        .trim()
-        .replace(/\s+/g, '');
+          .toLowerCase()
+          .trim()
+          .replace(/\s+/g, '');
         // .replace(/[^a-z0-9\s]/g, '') // Remove punctuation
         // .split(/\s+/)
         // .filter(Boolean);
@@ -236,16 +236,16 @@ const CategoryProductList = ({ darkMode }) => {
       }).sort((a, b) => a.itemName.localeCompare(b.itemName));
 
       let subresult2 = products.filter(product => {
-        const name = (product.grnNumber  + product.itemName).toLowerCase()
-        .trim()
-        .replace(/\s+/g, '');
-        
+        const name = (product.grnNumber + product.itemName).toLowerCase()
+          .trim()
+          .replace(/\s+/g, '');
+
 
         // Split query into meaningful words, remove empty
         const queryWords = searchQuery
-        .toLowerCase()
-        .trim()
-        .replace(/\s+/g, '');
+          .toLowerCase()
+          .trim()
+          .replace(/\s+/g, '');
         // .replace(/[^a-z0-9\s]/g, '') // Remove punctuation
         // .split(/\s+/)
         // .filter(Boolean);
@@ -254,14 +254,14 @@ const CategoryProductList = ({ darkMode }) => {
         if (queryWords.length === 0) return true;
 
         // console.log("Search query", queryWords);
-        
+
         return fuzzyIncludes(name, queryWords);
       }).sort((a, b) => a.itemName.localeCompare(b.itemName));
 
       if (subresult1.length === 0) {
         result = subresult2;
       }
-      else{
+      else {
         result = subresult1;
       }
     }
@@ -274,11 +274,11 @@ const CategoryProductList = ({ darkMode }) => {
 
     // Apply low stock filter if checkbox is checked
     if (showLowStockOnly) {
-      result = result.filter(product => (product.stock || 0) <= 2 );
+      result = result.filter(product => (product.stock || 0) <= 2);
     }
 
     if (hideLowStockOnly) {
-      result = result.filter(product => (product.stock || 0) > 2 );
+      result = result.filter(product => (product.stock || 0) > 2);
     }
 
     if (show0StockOnly) {
@@ -289,9 +289,9 @@ const CategoryProductList = ({ darkMode }) => {
       result = result.filter(product => (product.stock || 0) !== 0);
     }
 
-    else{
+    else {
       result = result;
-      
+
     }
 
     // Apply sorting
@@ -347,7 +347,7 @@ const CategoryProductList = ({ darkMode }) => {
 
   // Group products by category (for current page)
   const groupedByCategory = paginatedProductsForModal.reduce((acc, product) => {
-    const category = product.supplier === "Unknown" ?  `${product.category}` : `${product.category}`;
+    const category = product.supplier === "Unknown" ? `${product.category}` : `${product.category}`;
     if (!acc[category]) acc[category] = [];
     acc[category].push(product);
     return acc;
@@ -476,7 +476,7 @@ const CategoryProductList = ({ darkMode }) => {
       const repairsRes = await fetch(`${REPAIRS_API_URL}`);
       if (!repairsRes.ok) throw new Error("Failed to fetch repair data");
       const repairsList = await repairsRes.json();
-      
+
       const repairsUsed = repairsList
         .filter((repair) =>
           repair.repairCart?.some((cartItem) => cartItem.itemCode === itemCode)
@@ -540,21 +540,21 @@ const CategoryProductList = ({ darkMode }) => {
   };
 
   const handleSort = (key) => {
-  setSortConfig((prevConfig) => {
-    const direction =
-      prevConfig.key === key && prevConfig.direction === 'asc' ? 'desc' : 'asc';
-    return { key, direction };
-  });
-};
+    setSortConfig((prevConfig) => {
+      const direction =
+        prevConfig.key === key && prevConfig.direction === 'asc' ? 'desc' : 'asc';
+      return { key, direction };
+    });
+  };
 
   return (
-    <div className={`product-list-container ${darkMode ? "dark" : ""}`}>  
+    <div className={`product-list-container ${darkMode ? "dark" : ""}`}>
       <div className="header-section">
         <h2 className={`product-list-title ${darkMode ? "dark" : ""}`}>Stock Update List</h2>
       </div>
       <div className="search-action-container">
         <div className={`search-bar-container ${darkMode ? "dark" : ""}`}>
-          {(!searchQuery) ? <FontAwesomeIcon icon={faSearch} className="search-icon" /> : <></> }
+          {(!searchQuery) ? <FontAwesomeIcon icon={faSearch} className="search-icon" /> : <></>}
           <input
             type="text"
             placeholder="       Search Item Name"
@@ -578,12 +578,12 @@ const CategoryProductList = ({ darkMode }) => {
           {/* Low Stock Filter Checkbox */}
           <span style={{ display: 'flex', alignItems: 'center', fontSize: 14, color: '#666', marginRight: 4 }}>
             Show Low Stock
-          
+
             <span style={{ fontSize: 14, color: '#666', marginLeft: 8, marginTop: 8, marginRight: 8 }}>
               <input
                 type="checkbox"
                 checked={showLowStockOnly}
-                onChange={(e) => {setShowLowStockOnly(e.target.checked); setHideLowStockOnly(false);}}
+                onChange={(e) => { setShowLowStockOnly(e.target.checked); setHideLowStockOnly(false); }}
               />
             </span>
 
@@ -593,34 +593,34 @@ const CategoryProductList = ({ darkMode }) => {
               <input
                 type="checkbox"
                 checked={hideLowStockOnly}
-                onChange={(e) => {setHideLowStockOnly(e.target.checked); setShowLowStockOnly(false);}}
+                onChange={(e) => { setHideLowStockOnly(e.target.checked); setShowLowStockOnly(false); }}
               />
             </span>
-          
+
           </span>
           <span>/</span>
           {/* Low Stock Filter Checkbox */}
           <span style={{ display: 'flex', alignItems: 'center', fontSize: 14, color: '#666', marginRight: 8 }}>
-            Show 0 Stock 
-          
+            Show 0 Stock
+
             <span style={{ fontSize: 14, color: '#666', marginLeft: 8, marginTop: 8, marginRight: 8 }}>
               <input
                 type="checkbox"
                 checked={show0StockOnly}
-                onChange={(e) => {setShow0StockOnly(e.target.checked); setHide0StockOnly(false);}}
+                onChange={(e) => { setShow0StockOnly(e.target.checked); setHide0StockOnly(false); }}
               />
             </span>
 
-            Hide 0 Stock 
-          
+            Hide 0 Stock
+
             <span style={{ fontSize: 14, color: '#666', marginLeft: 8, marginTop: 8 }}>
               <input
                 type="checkbox"
                 checked={hide0StockOnly}
-                onChange={(e) => {setHide0StockOnly(e.target.checked); setShow0StockOnly(false);}}
+                onChange={(e) => { setHide0StockOnly(e.target.checked); setShow0StockOnly(false); }}
               />
             </span>
-          
+
           </span>
           <button
             onClick={() => setShowReportOptions(true)}
@@ -801,10 +801,10 @@ const CategoryProductList = ({ darkMode }) => {
             </div>
             <div className="report-modal-buttons">
               <button onClick={generateExcel} className="report-btn black">
-                <FontAwesomeIcon icon={faFileExcel} style={{marginRight: 8}} /> Excel
+                <FontAwesomeIcon icon={faFileExcel} style={{ marginRight: 8 }} /> Excel
               </button>
               <button onClick={generatePDF} className="report-btn black">
-                <FontAwesomeIcon icon={faFilePdf} style={{marginRight: 8}} /> PDF
+                <FontAwesomeIcon icon={faFilePdf} style={{ marginRight: 8 }} /> PDF
               </button>
             </div>
           </div>
@@ -933,8 +933,8 @@ const CategoryProductList = ({ darkMode }) => {
                     {groupedByCategory[category].map((product, idx) => (
                       <tr key={product._id || product.itemCode || idx}>
                         <td>
-                          <span style={{ color: product.stock <= 2 ? product.stock == 0 ? 'red' : '#2957F0' : 'black', fontWeight:  'bold'  }}>
-                            {product.grnNumber} 
+                          <span style={{ color: product.stock <= 2 ? product.stock == 0 ? 'red' : '#2957F0' : 'black', fontWeight: 'bold' }}>
+                            {product.grnNumber}
                           </span>
                         </td>
                         {/* <td>
@@ -943,28 +943,28 @@ const CategoryProductList = ({ darkMode }) => {
                           </span>
                         </td> */}
                         <td>
-                          <span style={{ color: product.stock <= 2 ? product.stock == 0 ? 'red' : '#2957F0' : 'black', fontWeight:  'bold'  }}>
-                            {product.itemName} 
+                          <span style={{ color: product.stock <= 2 ? product.stock == 0 ? 'red' : '#2957F0' : 'black', fontWeight: 'bold' }}>
+                            {product.itemName}
                           </span>
                         </td>
                         <td>
-                          <span style={{ color: product.stock <= 2 ? product.stock == 0 ? 'red' : '#2957F0' : 'black', fontWeight:  'bold'  }}>
+                          <span style={{ color: product.stock <= 2 ? product.stock == 0 ? 'red' : '#2957F0' : 'black', fontWeight: 'bold' }}>
                             {product.buyingPrice}
                           </span>
                         </td>
                         <td>
-                          <span style={{ color: product.stock <= 2 ? product.stock == 0 ? 'red' : '#2957F0' : 'black', fontWeight:  'bold'  }}>
+                          <span style={{ color: product.stock <= 2 ? product.stock == 0 ? 'red' : '#2957F0' : 'black', fontWeight: 'bold' }}>
                             {product.sellingPrice}
                           </span>
                         </td>
                         <td>
-                          <span style={{ color: product.stock <= 2 ? product.stock == 0 ? 'red' : '#2957F0' : 'black', fontWeight:  'bold'  }}>
+                          <span style={{ color: product.stock <= 2 ? product.stock == 0 ? 'red' : '#2957F0' : 'black', fontWeight: 'bold' }}>
                             {product.stock}
                           </span>
                         </td>
                         <td>
-                          <span style={{ color: product.stock <= 2 ? product.stock == 0 ? 'red' : '#2957F0' : 'black', fontWeight:  'bold'  }}>
-                            {product.supplier === 'Unknown' ? 'SYSTEM' : product.supplier }
+                          <span style={{ color: product.stock <= 2 ? product.stock == 0 ? 'red' : '#2957F0' : 'black', fontWeight: 'bold' }}>
+                            {product.supplier === 'Unknown' ? 'SYSTEM' : product.supplier}
                           </span>
                         </td>
                         {/* <td>{product.createdAt ? new Date(product.createdAt).toLocaleString() : ""}</td> */}

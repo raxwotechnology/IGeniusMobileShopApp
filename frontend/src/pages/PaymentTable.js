@@ -67,7 +67,7 @@ const PaymentTable = ({ darkMode }) => {
         const errorData = await response.json(); // ← Wait for JSON parsing
         if (errorData.message === "User is not an admin") {
           throw new Error("User is not an admin");
-        } 
+        }
         // throw new Error(`Server error: ${response.statusText}`);
         throw new Error(`Authentication Expired Please Log in`);
       }
@@ -372,7 +372,7 @@ const PaymentTable = ({ darkMode }) => {
     const items = paymentData.items || [];
     const totalAmount = paymentData.totalAmount || 0;
     const paidAmount = paymentData.totalPaid || 0;
-    const balance = paidAmount - totalAmount ;
+    const balance = paidAmount - totalAmount;
 
     const subtotal = items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
     const totalDiscount = items.reduce((sum, item) => sum + (item.discount || 0), 0);
@@ -542,13 +542,12 @@ const PaymentTable = ({ darkMode }) => {
                 <p>
                   <strong>Payment Method(s):</strong>
                   <ul style="margin: 5px 0; list-style-type: disc;">
-                    ${
-                      Array.isArray(paymentData.paymentMethods) && paymentData.paymentMethods.length > 0
-                        ? paymentData.paymentMethods.map(pm => 
-                            `<li>${pm.method}: Rs. ${Number(pm.amount || 0).toFixed(2)}</li>`
-                          ).join('')
-                        : `<li>${paymentData.paymentMethod || 'Not Selected'}: Rs. ${Number(paymentData.totalAmount || 0).toFixed(2)}</li>`
-                    }
+                    ${Array.isArray(paymentData.paymentMethods) && paymentData.paymentMethods.length > 0
+        ? paymentData.paymentMethods.map(pm =>
+          `<li>${pm.method}: Rs. ${Number(pm.amount || 0).toFixed(2)}</li>`
+        ).join('')
+        : `<li>${paymentData.paymentMethod || 'Not Selected'}: Rs. ${Number(paymentData.totalAmount || 0).toFixed(2)}</li>`
+      }
                   </ul>
                 </p>
               </div>
@@ -568,13 +567,13 @@ const PaymentTable = ({ darkMode }) => {
             </thead>
             <tbody>
               ${items.map(item => {
-                const itemName = item.itemName || 'Unknown Item';
-                const quantity = item.quantity || 0;
-                const price = item.price || 0;
-                const discount = typeof item.discount === 'number' ? item.discount : 0;
-                const total = (price * quantity - discount).toFixed(2);
-                const category = item.category || '—';
-                return `
+        const itemName = item.itemName || 'Unknown Item';
+        const quantity = item.quantity || 0;
+        const price = item.price || 0;
+        const discount = typeof item.discount === 'number' ? item.discount : 0;
+        const total = (price * quantity - discount).toFixed(2);
+        const category = item.category || '—';
+        return `
                   <tr>
                     <td>${itemName}</td>
                     <td>${category}</td>
@@ -584,7 +583,7 @@ const PaymentTable = ({ darkMode }) => {
                     <td>Rs. ${total}</td>
                   </tr>
                 `;
-              }).join('')}
+      }).join('')}
             </tbody>
           </table>
 
@@ -852,45 +851,45 @@ const PaymentTable = ({ darkMode }) => {
     let result = payments;
 
     if (searchQuery.trim() !== '') {
-    // const normalizedQuery = normalize(searchQuery);
+      // const normalizedQuery = normalize(searchQuery);
 
-    const normalizedQuery = searchQuery
-    .toLowerCase()
-    .trim()
-    .replace(/\s+/g, '');
-
-    result = payments.filter(payment => {
-      // Combine all searchable fields properly
-      const invoice = normalize(payment.invoiceNumber || '');
-      const customerName = normalize(payment.customerName || '');
-      const contactNumber = normalize(payment.contactNumber || '');
-      const cashierName = normalize(payment.cashierName || '');
-      const cashierId = normalize(payment.cashierId || '');
-      const paymentMethod = normalize(payment.paymentMethod || '');
-      const dateStr = normalize(new Date(payment.date).toLocaleDateString());
-      const timeStr = normalize(new Date(payment.date).toLocaleTimeString());
-
-      // ✅ Correctly extract and join all item names
-      const itemNames = payment.items
-        .map(item => normalize(item.itemName || ''))
-        .join(' ');
-
-      const fullText = (invoice + customerName + contactNumber + cashierName + cashierId + paymentMethod + dateStr + timeStr + itemNames)
+      const normalizedQuery = searchQuery
         .toLowerCase()
         .trim()
         .replace(/\s+/g, '');
 
-      const search1 = fullText.includes(normalizedQuery);
-      const search2 = fuzzyIncludes(fullText, normalizedQuery);
+      result = payments.filter(payment => {
+        // Combine all searchable fields properly
+        const invoice = normalize(payment.invoiceNumber || '');
+        const customerName = normalize(payment.customerName || '');
+        const contactNumber = normalize(payment.contactNumber || '');
+        const cashierName = normalize(payment.cashierName || '');
+        const cashierId = normalize(payment.cashierId || '');
+        const paymentMethod = normalize(payment.paymentMethod || '');
+        const dateStr = normalize(new Date(payment.date).toLocaleDateString());
+        const timeStr = normalize(new Date(payment.date).toLocaleTimeString());
 
-      if (search1.length === 0){
-        return search2;
-      }
-      return search1;
-      // Use fuzzy or simple substring match
-       
-    });
-  }
+        // ✅ Correctly extract and join all item names
+        const itemNames = payment.items
+          .map(item => normalize(item.itemName || ''))
+          .join(' ');
+
+        const fullText = (invoice + customerName + contactNumber + cashierName + cashierId + paymentMethod + dateStr + timeStr + itemNames)
+          .toLowerCase()
+          .trim()
+          .replace(/\s+/g, '');
+
+        const search1 = fullText.includes(normalizedQuery);
+        const search2 = fuzzyIncludes(fullText, normalizedQuery);
+
+        if (search1.length === 0) {
+          return search2;
+        }
+        return search1;
+        // Use fuzzy or simple substring match
+
+      });
+    }
 
     // Apply payment method filter
     if (paymentMethodFilter) {
@@ -976,12 +975,12 @@ const PaymentTable = ({ darkMode }) => {
 
   return (
     <div className={`product-repair-list-container ${darkMode ? "dark" : ""}`}>
-      
+
       <div className="header-section">
-        
+
 
         <h2 className={`product-repair-list-title ${darkMode ? "dark" : ""}`}>
-        Payment Transactions
+          Payment Transactions
         </h2>
       </div>
       <div className="search-action-container">
@@ -1001,14 +1000,14 @@ const PaymentTable = ({ darkMode }) => {
           )}
         </div>
         <div className='filter-action-row'>
-        {userRole === 'admin' && (
-          <button onClick={() => setShowModal(true)} className="btn-summary">
-            <FontAwesomeIcon icon={faChartSimple} /> Summary
+          {userRole === 'admin' && (
+            <button onClick={() => setShowModal(true)} className="btn-summary">
+              <FontAwesomeIcon icon={faChartSimple} /> Summary
+            </button>
+          )}
+          <button onClick={() => setShowReportOptions(true)} className="btn-report">
+            <FontAwesomeIcon icon={faFile} /> Reports
           </button>
-        )}
-        <button onClick={() => setShowReportOptions(true)} className="btn-report">
-          <FontAwesomeIcon icon={faFile} /> Reports
-        </button>
         </div>
       </div>
       {showReportOptions && (
@@ -1090,7 +1089,7 @@ const PaymentTable = ({ darkMode }) => {
               <th>
                 Contact No
               </th>
-              <th onClick={() => handleSort('itemName')} style={{ cursor: 'pointer', userSelect: 'none', whiteSpace: 'normal', wordBreak: 'break-word'  }}>
+              <th onClick={() => handleSort('itemName')} style={{ cursor: 'pointer', userSelect: 'none', whiteSpace: 'normal', wordBreak: 'break-word' }}>
                 Item Name
                 {sortConfig.key === 'itemName' && (
                   <span style={{ marginLeft: '6px' }}>
@@ -1227,91 +1226,91 @@ const PaymentTable = ({ darkMode }) => {
           </thead>
           <tbody>
             {sortedAndFilteredPayments.flatMap(payment => (
-                <tr key={payment._id}>
-                  <td>{new Date(payment.date).toLocaleDateString()}</td>
-                  <td>{new Date(payment.date).toLocaleTimeString()}</td>
-                  <td style={{whiteSpace: 'normal', wordBreak: 'break-word'}}>{payment.invoiceNumber} {payment.returnAlert === "returned" ? "(Ret)" : ""} {payment.customerName}</td>
-                  <td>{payment.contactNumber}</td>
-                  <td style={{whiteSpace: 'normal', wordBreak: 'break-word'}}>{/* Combine all item names */}
-                    {payment.items.map((item, idx) => (
-                      <div key={idx}>{item.itemName} ({item.category || '—'} / {item.quantity || '—'}),</div>
-                    ))}
-                  </td>
-                  {/* <td> */}
-                    {/* Combine quantities */}
-                    {/* {payment.items.map(item => item.quantity).join(', ')} */}
-                  {/* </td> */}
-                  <td>
-                    {Array.isArray(payment.paymentMethods) && payment.paymentMethods.length > 0
-                      ? payment.paymentMethods.map(pm => `${pm.method}`).join(', ')
-                      : payment.paymentMethod || '—'}
-                  </td>
-                  <td>{payment.cashierName}</td>
-                  <td>Rs. {(payment.discountApplied || 0).toFixed(2)}</td>
-                  <td>Rs. {payment.totalAmount.toFixed(2)}</td>
-                  {/* <td>{payment.cashierId}</td> */}
-                  <td>
-                    <div className="action-container">
-                      <button
-                        onClick={(e) => {
-                          e.preventDefault();
-                          setShowActionMenu(showActionMenu === payment._id ? null : payment._id);
-                        }}
-                        className="action-dot-btn"
-                      >
-                        ⋮
-                      </button>
-                      {showActionMenu === payment._id && (
-                        <>
-                          <div className="action-menu-overlay" onClick={() => setShowActionMenu(null)} />
-                          <div className="action-menu">
-                            {userRole === 'admin' && (
-                              <button onClick={() => handleEdit(payment)} className="p-edit-btn">
-                                <div className="action-btn-content">
-                                  <img src={editicon} alt="edit" width="30" height="30" className="p-edit-btn-icon" />
-                                  <span>Edit</span>
-                                </div>
-                              </button>
-                            )}
-                            {userRole === 'admin' && (
-                              <button onClick={() => handleDelete(payment._id)} className="p-delete-btn">
-                                <div className="action-btn-content">
-                                  <img src={deleteIcon} alt="delete" width="30" height="30" className="p-delete-btn-icon" />
-                                  <span>Delete</span>
-                                </div>
-                              </button>
-                            )}
-                            {userRole === 'admin' && (
-                              <button onClick={() => handleReturn(payment)} className="p-edit-btn">
-                                <div className="action-btn-content">
-                                  <span className="p-edit-btn-icon" style={{width:"30", height:"30"}}>↩️ </span>
-                                  <span> Return</span>
-                                </div>
-                              </button>
-                            )}
-                              <button 
-                              onClick={() => generatePaymentBill(payment)}
-                              className="p-edit-btn"
-                            >
+              <tr key={payment._id}>
+                <td>{new Date(payment.date).toLocaleDateString()}</td>
+                <td>{new Date(payment.date).toLocaleTimeString()}</td>
+                <td style={{ whiteSpace: 'normal', wordBreak: 'break-word' }}>{payment.invoiceNumber} {payment.returnAlert === "returned" ? "(Ret)" : ""} {payment.customerName}</td>
+                <td>{payment.contactNumber}</td>
+                <td style={{ whiteSpace: 'normal', wordBreak: 'break-word' }}>{/* Combine all item names */}
+                  {payment.items.map((item, idx) => (
+                    <div key={idx}>{item.itemName} ({item.category || '—'} / {item.quantity || '—'}),</div>
+                  ))}
+                </td>
+                {/* <td> */}
+                {/* Combine quantities */}
+                {/* {payment.items.map(item => item.quantity).join(', ')} */}
+                {/* </td> */}
+                <td>
+                  {Array.isArray(payment.paymentMethods) && payment.paymentMethods.length > 0
+                    ? payment.paymentMethods.map(pm => `${pm.method}`).join(', ')
+                    : payment.paymentMethod || '—'}
+                </td>
+                <td>{payment.cashierName}</td>
+                <td>Rs. {(payment.discountApplied || 0).toFixed(2)}</td>
+                <td>Rs. {payment.totalAmount.toFixed(2)}</td>
+                {/* <td>{payment.cashierId}</td> */}
+                <td>
+                  <div className="action-container">
+                    <button
+                      onClick={(e) => {
+                        e.preventDefault();
+                        setShowActionMenu(showActionMenu === payment._id ? null : payment._id);
+                      }}
+                      className="action-dot-btn"
+                    >
+                      ⋮
+                    </button>
+                    {showActionMenu === payment._id && (
+                      <>
+                        <div className="action-menu-overlay" onClick={() => setShowActionMenu(null)} />
+                        <div className="action-menu">
+                          {userRole === 'admin' && (
+                            <button onClick={() => handleEdit(payment)} className="p-edit-btn">
                               <div className="action-btn-content">
-                                <span>Print Receipt</span>
+                                <img src={editicon} alt="edit" width="30" height="30" className="p-edit-btn-icon" />
+                                <span>Edit</span>
                               </div>
                             </button>
-                            <button 
-                              onClick={() => generateCustomBill(payment)}
-                              className="p-edit-btn"
-                            >
+                          )}
+                          {userRole === 'admin' && (
+                            <button onClick={() => handleDelete(payment._id)} className="p-delete-btn">
                               <div className="action-btn-content">
-                                <span>Print Full Bill</span>
+                                <img src={deleteIcon} alt="delete" width="30" height="30" className="p-delete-btn-icon" />
+                                <span>Delete</span>
                               </div>
                             </button>
-                          </div>
-                        </>
-                      )}
-                    </div>
-                  </td>
-                </tr>
-              )
+                          )}
+                          {userRole === 'admin' && (
+                            <button onClick={() => handleReturn(payment)} className="p-edit-btn">
+                              <div className="action-btn-content">
+                                <span className="p-edit-btn-icon" style={{ width: "30", height: "30" }}>↩️ </span>
+                                <span> Return</span>
+                              </div>
+                            </button>
+                          )}
+                          <button
+                            onClick={() => generatePaymentBill(payment)}
+                            className="p-edit-btn"
+                          >
+                            <div className="action-btn-content">
+                              <span>Print Receipt</span>
+                            </div>
+                          </button>
+                          <button
+                            onClick={() => generateCustomBill(payment)}
+                            className="p-edit-btn"
+                          >
+                            <div className="action-btn-content">
+                              <span>Print Full Bill</span>
+                            </div>
+                          </button>
+                        </div>
+                      </>
+                    )}
+                  </div>
+                </td>
+              </tr>
+            )
             )}
           </tbody>
         </table>

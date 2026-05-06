@@ -43,16 +43,18 @@ const UserList = ({ darkMode }) => {
         setLoading(false);
       });
   };
-  
+
   const token = localStorage.getItem('token');
 
   const handleDelete = async (id) => {
     if (!window.confirm('Are you sure you want to delete this user?')) return;
 
     try {
-      const response = await fetch(`${API_URL}/${id}`, { method: 'DELETE' } , {headers: {
-            "Authorization": `Bearer ${token}`,
-          }});
+      const response = await fetch(`${API_URL}/${id}`, { method: 'DELETE' }, {
+        headers: {
+          "Authorization": `Bearer ${token}`,
+        }
+      });
       if (!response.ok) throw new Error(`Failed to delete user: ${response.statusText}`);
       setUsers(users.filter(user => user._id !== id));
       setShowActionMenu(null);
@@ -108,9 +110,9 @@ const UserList = ({ darkMode }) => {
 
   return (
     <div className={`product-repair-list-container ${darkMode ? "dark" : ""}`}>
-      
+
       <div className="header-section">
-        
+
 
         <h2 className={`product-repair-list-title ${darkMode ? "dark" : ""}`}>User List</h2>
       </div>
@@ -130,7 +132,7 @@ const UserList = ({ darkMode }) => {
             </button>
           )}
         </div>
-        
+
         <button onClick={() => setShowReportOptions(true)} className={`btn-report ${darkMode ? 'dark' : ''}`}>
           <FontAwesomeIcon icon={faFile} />&nbsp; Reports
         </button>
@@ -157,10 +159,10 @@ const UserList = ({ darkMode }) => {
             </div>
             <div className="report-modal-buttons">
               <button onClick={generateExcel} className="report-btn black">
-                <FontAwesomeIcon icon={faFileExcel} style={{marginRight: 8}} /> Excel
+                <FontAwesomeIcon icon={faFileExcel} style={{ marginRight: 8 }} /> Excel
               </button>
               <button onClick={generatePDF} className="report-btn black">
-                <FontAwesomeIcon icon={faFilePdf} style={{marginRight: 8}} /> PDF
+                <FontAwesomeIcon icon={faFilePdf} style={{ marginRight: 8 }} /> PDF
               </button>
             </div>
           </div>

@@ -3,7 +3,7 @@ import axios from 'axios';
 import { useNavigate, Link } from 'react-router-dom';
 import '../styles/ForgotPassword.css';
 
-const ForgotPassword = ({darkMode}) => {
+const ForgotPassword = ({ darkMode }) => {
   const [email, setEmail] = useState('');
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');

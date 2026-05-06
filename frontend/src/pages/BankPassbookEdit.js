@@ -39,10 +39,10 @@ const BankPassbookEdit = ({ transaction, onClose, onUpdate, darkMode }) => {
     try {
       const response = await fetch(`${API_URL}/${edited._id}`, {
         method: "PUT",
-        headers: { 
+        headers: {
           "Content-Type": "application/json",
           "Authorization": `Bearer ${token}`,
-         },
+        },
         body: JSON.stringify(edited),
       });
 
@@ -62,7 +62,7 @@ const BankPassbookEdit = ({ transaction, onClose, onUpdate, darkMode }) => {
     <div className="bp-edit-overlay" onClick={onClose}>
       <div className={`bp-edit-container ${darkMode ? "dark" : ""}`} onClick={(e) => e.stopPropagation()}>
         <h3 className={`bp-edit-title ${darkMode ? "dark" : ""}`}>✏️ Edit Transaction</h3>
-        
+
         {error && <p className="error-message">{error}</p>}
 
         <form onSubmit={handleSave}>

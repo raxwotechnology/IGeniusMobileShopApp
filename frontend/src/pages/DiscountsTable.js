@@ -72,7 +72,7 @@ const CartDetailsTable = ({ supplierId, darkMode, refreshSuppliers }) => {
           <tbody>
             {items.map((item, index) => (
               <tr key={index}>
-                
+
                 <td>{item.grnNumber || 'N/A'}</td>
                 <td>{item.discountdescription || 'N/A'}</td>
                 <td>Rs. {item.discountCharge || '0'}</td>
@@ -115,7 +115,7 @@ const CartDetailsTable = ({ supplierId, darkMode, refreshSuppliers }) => {
       )}
       {showEditModal && editItem && (
         <CartForm
-          supplier={{ _id: supplierId, supplierName:supplierName }}
+          supplier={{ _id: supplierId, supplierName: supplierName }}
           item={editItem}
           closeModal={() => {
             setShowEditModal(false);

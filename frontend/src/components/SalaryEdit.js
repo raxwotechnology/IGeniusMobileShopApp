@@ -12,7 +12,7 @@ const SalaryEdit = ({ isOpen, onClose, salary, refreshSalaries, darkMode }) => {
     advance: salary.advance,
     remarks: salary.remarks,
     paymentMethod: salary.paymentMethod || "",   // ← Add with fallback
-    assignedTo: salary.assignedTo || "", 
+    assignedTo: salary.assignedTo || "",
   });
   const [error, setError] = useState(null);
 
@@ -51,7 +51,7 @@ const SalaryEdit = ({ isOpen, onClose, salary, refreshSalaries, darkMode }) => {
         headers: {
           "Authorization": `Bearer ${token}`
         }
-      } ,formData);
+      }, formData);
       alert("Salary updated successfully");
       refreshSalaries();
       onClose();

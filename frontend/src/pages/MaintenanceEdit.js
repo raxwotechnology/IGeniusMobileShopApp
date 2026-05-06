@@ -41,7 +41,7 @@ const MaintenanceEdit = ({ record, onClose, onUpdate, darkMode }) => {
 
   useEffect(() => {
     const fetchServiceTypes = async () => {
-       setLoading(true);
+      setLoading(true);
       try {
         const response = await fetch(`${API_URL}`);
         if (!response.ok) throw new Error('Failed to fetch records');
@@ -64,7 +64,7 @@ const MaintenanceEdit = ({ record, onClose, onUpdate, darkMode }) => {
     try {
       const response = await fetch(`${API_URL}/${editedRecord._id}`, {
         method: "PUT",
-        headers: { "Content-Type": "application/json","Authorization": `Bearer ${token}` },
+        headers: { "Content-Type": "application/json", "Authorization": `Bearer ${token}` },
         body: JSON.stringify(editedRecord),
       });
       if (!response.ok) throw new Error("Error updating Bills and Other Expences record");

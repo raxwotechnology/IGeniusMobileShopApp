@@ -3,7 +3,7 @@ import '../styles/EditUser.css';
 
 const API_URL = 'https://igeniusmobileshopapp.onrender.com/api/auth/users';
 
-const EditUser = ({ user, closeModal,darkMode }) => {
+const EditUser = ({ user, closeModal, darkMode }) => {
   const [formData, setFormData] = useState(user);
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);

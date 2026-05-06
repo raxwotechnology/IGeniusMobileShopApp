@@ -14,7 +14,7 @@ const getCurrentTime = () => {
   return `${hours}:${minutes}:${seconds}`;
 };
 
-const CashierAttendance = ({darkMode}) => {
+const CashierAttendance = ({ darkMode }) => {
   const [cashierId, setCashierId] = useState("");
   const [cashierData, setCashierData] = useState(null);
   const [message, setMessage] = useState("");
@@ -53,7 +53,7 @@ const CashierAttendance = ({darkMode}) => {
         headers: {
           "Authorization": `Bearer ${token}`
         }
-      } ,{ cashierId, remarks, clientTime });
+      }, { cashierId, remarks, clientTime });
       setMessage(res.data.message);
       setRemarks("");
       setShowRemarks(false);
@@ -66,12 +66,12 @@ const CashierAttendance = ({darkMode}) => {
   return (
 
 
-      
+
 
     <div className={`attendance-container ${darkMode ? 'dark' : ''}`}>
       <div className={`form-wrapper ${darkMode ? 'dark' : ''}`}>
-      <h2 className={`product-repair-list-title ${darkMode ? "dark" : ""}`}>
-      Mark Attendance</h2>
+        <h2 className={`product-repair-list-title ${darkMode ? "dark" : ""}`}>
+          Mark Attendance</h2>
         <input
           type="text"
           placeholder="Enter Cashier ID"
@@ -88,20 +88,20 @@ const CashierAttendance = ({darkMode}) => {
               <p><strong>DATE :</strong> {new Date().toISOString().split("T")[0]}</p>
               <p><strong>TIME :</strong> {getCurrentTime()}</p>
             </div>
-            
-            
-              <label className={`input-ca-lbl ${darkMode ? 'dark' : ''}`}>REMARKS</label>
-              <input
-                type="text"
-                placeholder="Enter Remarks"
-                value={remarks}
-                onChange={(e) => setRemarks(e.target.value)}
-                className={`input-field ${darkMode ? 'dark' : ''}`}
-              />
-            </div>
-          
+
+
+            <label className={`input-ca-lbl ${darkMode ? 'dark' : ''}`}>REMARKS</label>
+            <input
+              type="text"
+              placeholder="Enter Remarks"
+              value={remarks}
+              onChange={(e) => setRemarks(e.target.value)}
+              className={`input-field ${darkMode ? 'dark' : ''}`}
+            />
+          </div>
+
         )}
-        
+
         <button onClick={markAttendance} className="mark-btn">Mark Attendance</button>
         {message && <p className="message">{message}</p>}
       </div>

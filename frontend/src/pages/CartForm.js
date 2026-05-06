@@ -23,7 +23,7 @@ const CartForm = ({ supplier, item, closeModal, darkMode, refreshProducts }) => 
   const [error, setError] = useState('');
   const [isSubmitted, setIsSubmitted] = useState(false);
   const navigate = useNavigate();
-  const [showCartView, setShowCartView] = useState(false); 
+  const [showCartView, setShowCartView] = useState(false);
   const [itemNames, setItemNames] = useState([]);
   const [productStocks, setProductStocks] = useState({});
   const [stockLoading, setStockLoading] = useState(false);
@@ -47,7 +47,7 @@ const CartForm = ({ supplier, item, closeModal, darkMode, refreshProducts }) => 
       //     Authorization: `Bearer ${token}`,
       //   },
       // });
-            
+
       if (!response.ok) {
         throw new Error(`Failed to fetch supplier items: ${response.statusText}`);
       }
@@ -59,7 +59,7 @@ const CartForm = ({ supplier, item, closeModal, darkMode, refreshProducts }) => 
       setLoading(false);
     }
   };
-  
+
 
   useEffect(() => {
     if (item) {
@@ -115,10 +115,10 @@ const CartForm = ({ supplier, item, closeModal, darkMode, refreshProducts }) => 
   useEffect(() => {
     if (!item) {
       // Only save if there's meaningful data
-      const hasData = grn.trim() || items.some(i => 
-        i.itemName.trim() || 
-        i.category.trim() || 
-        i.stock.trim() || 
+      const hasData = grn.trim() || items.some(i =>
+        i.itemName.trim() ||
+        i.category.trim() ||
+        i.stock.trim() ||
         i.buyingPrice.trim()
       );
 
@@ -131,43 +131,43 @@ const CartForm = ({ supplier, item, closeModal, darkMode, refreshProducts }) => 
       }
     }
   }, [grn, items, item]); // Only runs when these change
-  
+
 
   useEffect(() => {
     const fetchLiveStock = async () => {
-          if (!item?.itemCode) {
-            setProductStocks(0);
-            return;
-          }
-    
-          setStockLoading(true);
-          try {
-            const response = await axios.get(
-              `${PRODUCTS_API_URL}/${encodeURIComponent(item.itemCode)}`,
-              { headers: { Authorization: `Bearer ${token}` } }
-            );
-    
-            const product = response.data;
-            setProductStocks(product.stock || 0);
-          } catch (err) {
-            console.error('Failed to fetch product stock:', err);
-            setProductStocks(0);
-            setError('Failed to load current stock. Please try again.');
-          } finally {
-            setStockLoading(false);
-          }
-        };
-    
-        fetchLiveStock();
-      }, [item?.itemCode, token]);
+      if (!item?.itemCode) {
+        setProductStocks(0);
+        return;
+      }
+
+      setStockLoading(true);
+      try {
+        const response = await axios.get(
+          `${PRODUCTS_API_URL}/${encodeURIComponent(item.itemCode)}`,
+          { headers: { Authorization: `Bearer ${token}` } }
+        );
+
+        const product = response.data;
+        setProductStocks(product.stock || 0);
+      } catch (err) {
+        console.error('Failed to fetch product stock:', err);
+        setProductStocks(0);
+        setError('Failed to load current stock. Please try again.');
+      } finally {
+        setStockLoading(false);
+      }
+    };
+
+    fetchLiveStock();
+  }, [item?.itemCode, token]);
 
   useEffect(() => {
     const handleBeforeUnload = (e) => {
       if (!item) {
-        const hasData = grn.trim() || items.some(i => 
-          i.itemName.trim() || 
-          i.category.trim() || 
-          i.stock.trim() || 
+        const hasData = grn.trim() || items.some(i =>
+          i.itemName.trim() ||
+          i.category.trim() ||
+          i.stock.trim() ||
           i.buyingPrice.trim()
         );
         if (hasData) {
@@ -279,8 +279,8 @@ const CartForm = ({ supplier, item, closeModal, darkMode, refreshProducts }) => 
           sellingPrice: Number(items[i].sellingPrice) || 0,
           changedBy // Add changedBy to the request body
         };
-        
-        
+
+
         const url = item ? `${API_URL}/${supplier._id}/items/${item._id}` : `${API_URL}/${supplier._id}/items`;
         const method = item ? 'PATCH' : 'POST';
         const response = await fetch(url, {
@@ -379,76 +379,76 @@ const CartForm = ({ supplier, item, closeModal, darkMode, refreshProducts }) => 
   const uniqueCategories = [...new Set(itemNames.map(item => item.category))];
 
   const getSelectStyles = (darkMode) => ({
-  control: (provided, state) => ({
-    ...provided,
-    width: '100%',
-    padding: '0',
-    marginbottom: '20px',
-    fontSize: '1rem',
-    fontFamily: 'Inter, sans-serif',
-    backgroundColor: darkMode ? '#1F2A44' : '#ffffff',
-    borderColor: state.isFocused ? '#1abc9c' : '#ccc',
-    borderWidth: '1px',
-    borderRadius: '8px',
-    boxShadow: state.isFocused ? '0 0 8px rgba(26, 188, 156, 0.3)' : 'none',
-    '&:hover': {
-      borderColor: state.isFocused ? '#1abc9c' : '#999'
-    },
-    height: '48px',
-    minHeight: '48px'
-  }),
-  input: (provided) => ({
-    ...provided,
-    color: darkMode ? '#E5E7EB' : '#333'
-  }),
-  singleValue: (provided) => ({
-    ...provided,
-    color: darkMode ? '#E5E7EB' : '#333'
-  }),
-  placeholder: (provided) => ({
-    ...provided,
-    color: darkMode ? '#9ca3af' : '#6b7280'
-  }),
-  menu: (provided) => ({
-    ...provided,
-    zIndex: 1000,
-    backgroundColor: darkMode ? '#1F2A44' : '#ffffff',
-    border: '1px solid #ccc',
-    borderRadius: '8px',
-    boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)'
-  }),
-  option: (provided, state) => ({
-    ...provided,
-    backgroundColor: state.isFocused
-      ? '#1abc9c'
-      : state.isSelected
-      ? '#000000'
-      : 'transparent',
-    color: state.isFocused || state.isSelected ? '#ffffff' : darkMode ? '#E5E7EB' : '#333',
-    '&:hover': {
-      backgroundColor: '#1abc9c',
-      color: '#fff'
-    }
-  }),
-  indicatorsContainer: () => ({
-    display: 'flex',
-    paddingRight: '8px'
-  }),
-  dropdownIndicator: (provided) => ({
-    ...provided,
-    color: darkMode ? '#9ca3af' : '#6b7280',
-    '&:hover': {
-      color: '#1abc9c'
-    }
-  }),
-  clearIndicator: (provided) => ({
-    ...provided,
-    color: darkMode ? '#9ca3af' : '#6b7280',
-    '&:hover': {
-      color: '#e74c3c'
-    }
-  })
-});
+    control: (provided, state) => ({
+      ...provided,
+      width: '100%',
+      padding: '0',
+      marginbottom: '20px',
+      fontSize: '1rem',
+      fontFamily: 'Inter, sans-serif',
+      backgroundColor: darkMode ? '#1F2A44' : '#ffffff',
+      borderColor: state.isFocused ? '#1abc9c' : '#ccc',
+      borderWidth: '1px',
+      borderRadius: '8px',
+      boxShadow: state.isFocused ? '0 0 8px rgba(26, 188, 156, 0.3)' : 'none',
+      '&:hover': {
+        borderColor: state.isFocused ? '#1abc9c' : '#999'
+      },
+      height: '48px',
+      minHeight: '48px'
+    }),
+    input: (provided) => ({
+      ...provided,
+      color: darkMode ? '#E5E7EB' : '#333'
+    }),
+    singleValue: (provided) => ({
+      ...provided,
+      color: darkMode ? '#E5E7EB' : '#333'
+    }),
+    placeholder: (provided) => ({
+      ...provided,
+      color: darkMode ? '#9ca3af' : '#6b7280'
+    }),
+    menu: (provided) => ({
+      ...provided,
+      zIndex: 1000,
+      backgroundColor: darkMode ? '#1F2A44' : '#ffffff',
+      border: '1px solid #ccc',
+      borderRadius: '8px',
+      boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)'
+    }),
+    option: (provided, state) => ({
+      ...provided,
+      backgroundColor: state.isFocused
+        ? '#1abc9c'
+        : state.isSelected
+          ? '#000000'
+          : 'transparent',
+      color: state.isFocused || state.isSelected ? '#ffffff' : darkMode ? '#E5E7EB' : '#333',
+      '&:hover': {
+        backgroundColor: '#1abc9c',
+        color: '#fff'
+      }
+    }),
+    indicatorsContainer: () => ({
+      display: 'flex',
+      paddingRight: '8px'
+    }),
+    dropdownIndicator: (provided) => ({
+      ...provided,
+      color: darkMode ? '#9ca3af' : '#6b7280',
+      '&:hover': {
+        color: '#1abc9c'
+      }
+    }),
+    clearIndicator: (provided) => ({
+      ...provided,
+      color: darkMode ? '#9ca3af' : '#6b7280',
+      '&:hover': {
+        color: '#e74c3c'
+      }
+    })
+  });
 
   // Calculate totals for cart view
   const totalQuantity = items.reduce((sum, item) => sum + (parseInt(item.stock) || 0), 0);
@@ -457,7 +457,7 @@ const CartForm = ({ supplier, item, closeModal, darkMode, refreshProducts }) => 
     const price = parseFloat(item.buyingPrice) || 0;
     return sum + qty * price;
   }, 0);
-  
+
   const availableStock = productStocks || 0;
 
   return (
@@ -489,7 +489,7 @@ const CartForm = ({ supplier, item, closeModal, darkMode, refreshProducts }) => 
           )}
           <h2 className="modal-title">{item ? '✏️ Edit Item' : '🛒 Add Items To Cart'}</h2>
         </div>
-        
+
         {loading && <p className="loading">{item ? 'Updating' : 'Adding'} items...</p>}
         {error && <p className="error-message">{error}</p>}
         <form className="edit-product-form" onSubmit={handleSubmit}>
@@ -503,102 +503,102 @@ const CartForm = ({ supplier, item, closeModal, darkMode, refreshProducts }) => 
                 value={grn}
                 onChange={handleGrnChange}
                 required
-                
+
               />
             </div>
           </div>
-          
-          {/* Scrollable container for items */}
-        <div className="scrollable-items-container">
-          {items.map((itemData, index) => (
-            <div key={index} className="form-row">
-              <div className="left-column">
-                <h3 className={`ap-h3 ${darkMode ? 'dark' : ''}`}>Item {index + 1} Details</h3>
-                <label className={`pro-edit-label ${darkMode ? 'dark' : ''}`}>Item Name</label>
-                <div style={{marginBottom: "8px"}}>
-                <CreatableSelect
-                  isClearable
-                  options={itemNameOptions}
-                  value={itemData.itemName ? { label: itemData.itemName, value: itemData.itemName } : null}
-                  onChange={(selected) => handleItemChange(index, 'itemName', selected ? selected.value : '')}
-                  styles={getSelectStyles(darkMode)} // ← Apply custom styles
-                />
-                </div>
 
-                <label className={`pro-edit-label ${darkMode ? 'dark' : ''}`}>
-                  Category</label>
-                <div style={{marginBottom: "8px"}}>
-                <CreatableSelect
-                  isClearable
-                  options={categoryOptions}
-                  value={itemData.category ? { label: itemData.category, value: itemData.category } : null}
-                  onChange={(selected) => handleItemChange(index, 'category', selected ? selected.value : '')}
-                  styles={getSelectStyles(darkMode)} // ← Apply custom styles
-                />
-                </div>
-                
-                <label className={`pro-edit-label ${darkMode ? 'dark' : ''}`}>Stock</label>
-                <input
-                  className={`pro-edit-input ${darkMode ? 'dark' : ''}`}
-                  type="text"
-                  value={itemData.stock}
-                  onChange={(e) => handleItemChange(index, 'stock', e.target.value)}
-                  required
-                />
-                {item && itemData.itemName && (
-                  <div style={{ marginBottom: "8px", color: darkMode ? "#ccc" : "#666", fontSize: "14px" }}>
-                    <strong>Available  Stock: </strong>
-                    {stockLoading ? (
-                      <span>Loading...</span>
-                    ) : (
-                      <span style={{ color: availableStock > 0 ? '#28a745' : '#e74c3c', fontWeight: 'bold' }}>
-                        {availableStock}
-                      </span>
-                    )}
+          {/* Scrollable container for items */}
+          <div className="scrollable-items-container">
+            {items.map((itemData, index) => (
+              <div key={index} className="form-row">
+                <div className="left-column">
+                  <h3 className={`ap-h3 ${darkMode ? 'dark' : ''}`}>Item {index + 1} Details</h3>
+                  <label className={`pro-edit-label ${darkMode ? 'dark' : ''}`}>Item Name</label>
+                  <div style={{ marginBottom: "8px" }}>
+                    <CreatableSelect
+                      isClearable
+                      options={itemNameOptions}
+                      value={itemData.itemName ? { label: itemData.itemName, value: itemData.itemName } : null}
+                      onChange={(selected) => handleItemChange(index, 'itemName', selected ? selected.value : '')}
+                      styles={getSelectStyles(darkMode)} // ← Apply custom styles
+                    />
                   </div>
-                )}
+
+                  <label className={`pro-edit-label ${darkMode ? 'dark' : ''}`}>
+                    Category</label>
+                  <div style={{ marginBottom: "8px" }}>
+                    <CreatableSelect
+                      isClearable
+                      options={categoryOptions}
+                      value={itemData.category ? { label: itemData.category, value: itemData.category } : null}
+                      onChange={(selected) => handleItemChange(index, 'category', selected ? selected.value : '')}
+                      styles={getSelectStyles(darkMode)} // ← Apply custom styles
+                    />
+                  </div>
+
+                  <label className={`pro-edit-label ${darkMode ? 'dark' : ''}`}>Stock</label>
+                  <input
+                    className={`pro-edit-input ${darkMode ? 'dark' : ''}`}
+                    type="text"
+                    value={itemData.stock}
+                    onChange={(e) => handleItemChange(index, 'stock', e.target.value)}
+                    required
+                  />
+                  {item && itemData.itemName && (
+                    <div style={{ marginBottom: "8px", color: darkMode ? "#ccc" : "#666", fontSize: "14px" }}>
+                      <strong>Available  Stock: </strong>
+                      {stockLoading ? (
+                        <span>Loading...</span>
+                      ) : (
+                        <span style={{ color: availableStock > 0 ? '#28a745' : '#e74c3c', fontWeight: 'bold' }}>
+                          {availableStock}
+                        </span>
+                      )}
+                    </div>
+                  )}
+                </div>
+                <div className="right-column">
+                  <h3 className={`ap-h3 ${darkMode ? 'dark' : ''}`}>Prices</h3>
+                  <label className={`pro-edit-label ${darkMode ? 'dark' : ''}`}>Buying Price</label>
+                  <input
+                    className={`pro-edit-input ${darkMode ? 'dark' : ''}`}
+                    type="text"
+                    value={itemData.buyingPrice}
+                    onChange={(e) => handleItemChange(index, 'buyingPrice', e.target.value)}
+                    required
+                  />
+                  <label className={`pro-edit-label ${darkMode ? 'dark' : ''}`}>Selling Price</label>
+                  <input
+                    className={`pro-edit-input ${darkMode ? 'dark' : ''}`}
+                    type="text"
+                    value={itemData.sellingPrice}
+                    onChange={(e) => handleItemChange(index, 'sellingPrice', e.target.value)}
+                    required
+                  />
+                  <label className={`pro-edit-label ${darkMode ? 'dark' : ''}`}>Supplier</label>
+                  <input
+                    className={`pro-edit-input ${darkMode ? 'dark' : ''}`}
+                    type="text"
+                    value={itemData.supplierName ? itemData.supplierName : supplier.supplierName}
+                    onChange={(e) => handleItemChange(index, 'supplierName', e.target.value)}
+                    required
+                    readOnly
+                  />
+                  {items.length > 1 && (
+                    <button
+                      type="button"
+                      className="remove-item-btn"
+                      onClick={() => removeItem(index)}
+                    >
+                      Remove Item
+                    </button>
+                  )}
+                </div>
               </div>
-              <div className="right-column">
-                <h3 className={`ap-h3 ${darkMode ? 'dark' : ''}`}>Prices</h3>
-                <label className={`pro-edit-label ${darkMode ? 'dark' : ''}`}>Buying Price</label>
-                <input
-                  className={`pro-edit-input ${darkMode ? 'dark' : ''}`}
-                  type="text"
-                  value={itemData.buyingPrice}
-                  onChange={(e) => handleItemChange(index, 'buyingPrice', e.target.value)}
-                  required
-                />
-                <label className={`pro-edit-label ${darkMode ? 'dark' : ''}`}>Selling Price</label>
-                <input
-                  className={`pro-edit-input ${darkMode ? 'dark' : ''}`}
-                  type="text"
-                  value={itemData.sellingPrice}
-                  onChange={(e) => handleItemChange(index, 'sellingPrice', e.target.value)}
-                  required
-                />
-                <label className={`pro-edit-label ${darkMode ? 'dark' : ''}`}>Supplier</label>
-                <input
-                  className={`pro-edit-input ${darkMode ? 'dark' : ''}`}
-                  type="text"
-                  value={itemData.supplierName ? itemData.supplierName : supplier.supplierName}
-                  onChange={(e) => handleItemChange(index, 'supplierName', e.target.value)}
-                  required
-                  readOnly
-                />
-                {items.length > 1 && (
-                  <button
-                    type="button"
-                    className="remove-item-btn"
-                    onClick={() => removeItem(index)}
-                  >
-                    Remove Item
-                  </button>
-                )}
-              </div>
-            </div>
-          ))}
-        </div>
-          
+            ))}
+          </div>
+
           <div className="button-group">
             <button type="button" className="add-item-btn" onClick={addItem}>
               ➕ Add Another Item
@@ -657,7 +657,7 @@ const CartForm = ({ supplier, item, closeModal, darkMode, refreshProducts }) => 
                         <td style={{ textAlign: 'right', padding: '8px 0' }}>Rs. {price.toFixed(2)}</td>
                         <td style={{ textAlign: 'right', padding: '8px 0', fontWeight: 'bold' }}>
                           Rs. {total.toFixed(2)}
-                        </td> 
+                        </td>
                       </tr>
                     );
                   })}
@@ -667,7 +667,7 @@ const CartForm = ({ supplier, item, closeModal, darkMode, refreshProducts }) => 
                     <td colSpan="2"></td>
                     <td style={{ textAlign: 'right', paddingTop: '12px', fontWeight: 'bold' }}>Total:</td>
                     <td style={{ textAlign: 'right', paddingTop: '12px', fontWeight: 'bold', color: '#1abc9c' }}>
-                     Rs. {totalCost.toFixed(2)}
+                      Rs. {totalCost.toFixed(2)}
                     </td>
                   </tr>
                   <tr>

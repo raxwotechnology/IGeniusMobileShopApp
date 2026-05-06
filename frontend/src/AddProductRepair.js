@@ -48,7 +48,7 @@ const AddProductRepair = ({ closeModal, darkMode, onAddSuccess }) => {
 
   const [loadingIssues, setLoadingIssues] = useState(false);
   const [loadingDeviceType, setLoadingDeviceType] = useState(false);
-  
+
 
   // Fetch device issues and device types when component mounts
   useEffect(() => {
@@ -149,7 +149,7 @@ const AddProductRepair = ({ closeModal, darkMode, onAddSuccess }) => {
 
   const handleAddNewIssue = async () => {
     if (!newIssue.trim()) return;
-    
+
     try {
       const response = await fetch("https://igeniusmobileshopapp.onrender.com/api/deviceIssues", {
         method: "POST",
@@ -368,7 +368,7 @@ const AddProductRepair = ({ closeModal, darkMode, onAddSuccess }) => {
 
       const newRepair = await response.json();
       console.log("New repair job created:", newRepair);
-      
+
       setMessage("Repair job added successfully!");
       onAddSuccess();
       closeModal();
@@ -420,7 +420,7 @@ const AddProductRepair = ({ closeModal, darkMode, onAddSuccess }) => {
                   placeholder="Search customer..."
                   isLoading={loadingCustomers}
                   isClearable
-                  
+
                 />
               ) : (
                 <input
@@ -473,7 +473,7 @@ const AddProductRepair = ({ closeModal, darkMode, onAddSuccess }) => {
                 </>
               )}
 
-              <label className="repair-label" style={{paddingBottom:"10px"}} >Device</label>
+              <label className="repair-label" style={{ paddingBottom: "10px" }} >Device</label>
               <Select
                 options={deviceTypeOptions}
                 value={selectedDeviceType}
@@ -573,7 +573,7 @@ const AddProductRepair = ({ closeModal, darkMode, onAddSuccess }) => {
                 </div>
               )}
 
-              <label className="repair-label" style={{paddingTop:"15px"}}>Serial Number</label>
+              <label className="repair-label" style={{ paddingTop: "15px" }}>Serial Number</label>
               <input
                 className="repair-input"
                 type="text"
@@ -583,107 +583,107 @@ const AddProductRepair = ({ closeModal, darkMode, onAddSuccess }) => {
                 placeholder="Enter serial number (optional)"
               />
 
-              
-              <label className="repair-label" style={{paddingBottom:"10px"}}>Device Issue</label>
-                <Select
-                  options={issueOptions}
-                  value={selectedIssue}
-                  onChange={(selected) => {
-                    if (selected?.value === "add_new") {
-                      setShowNewIssueInput(true);
-                      setSelectedIssue(null);
-                    } else {
-                      setSelectedIssue(selected);
-                      setFormData({ ...formData, issueDescription: selected?.label || "" });
-                      setLoadingIssues(false);
-                    }
-                  }}
-                  placeholder="Select or add issue"
-                  isClearable
-                  isLoading={loadingIssues}
-                />
 
-                {showNewIssueInput && (
-                  <div
-                    style={{
-                      marginTop: "10px",
-                      padding: "10px",
-                      backgroundColor: darkMode ? "#444" : "#f5f5f5",
-                      borderRadius: "4px",
-                    }}
-                  >
-                    <input
-                      className="repair-input"
-                      type="text"
-                      value={newIssue}
-                      onChange={(e) => setNewIssue(e.target.value)}
-                      placeholder="Enter new issue"
-                      style={{ marginBottom: "10px" }}
-                    />
-                    <div style={{ display: "flex", gap: "10px" }}>
-                      <button
-                        onClick={handleAddNewIssue}
-                        style={{
-                          padding: "8px 16px",
-                          backgroundColor: "#10b981",
-                          color: "white",
-                          border: "none",
-                          borderRadius: "4px",
-                          cursor: "pointer",
-                          fontSize: "14px",
-                          fontWeight: "600",
-                          transition: "all 0.2s ease",
-                          boxShadow: "0 2px 4px rgba(16, 185, 129, 0.2)",
-                        }}
-                        type="button"
-                        onMouseEnter={(e) => {
-                          e.target.style.backgroundColor = "#059669";
-                          e.target.style.transform = "translateY(-1px)";
-                          e.target.style.boxShadow = "0 4px 8px rgba(16, 185, 129, 0.3)";
-                        }}
-                        onMouseLeave={(e) => {
-                          e.target.style.backgroundColor = "#10b981";
-                          e.target.style.transform = "translateY(0)";
-                          e.target.style.boxShadow = "0 2px 4px rgba(16, 185, 129, 0.2)";
-                        }}
-                      >
-                        Add
-                      </button>
-                      <button
-                        onClick={() => {
-                          setShowNewIssueInput(false);
-                          setNewIssue("");
-                        }}
-                        style={{
-                          padding: "8px 16px",
-                          backgroundColor: "#ef4444",
-                          color: "white",
-                          border: "none",
-                          borderRadius: "4px",
-                          cursor: "pointer",
-                          fontSize: "14px",
-                          fontWeight: "600",
-                          transition: "all 0.2s ease",
-                          boxShadow: "0 2px 4px rgba(239, 68, 68, 0.2)",
-                        }}
-                        type="button"
-                        onMouseEnter={(e) => {
-                          e.target.style.backgroundColor = "#dc2626";
-                          e.target.style.transform = "translateY(-1px)";
-                          e.target.style.boxShadow = "0 4px 8px rgba(239, 68, 68, 0.3)";
-                        }}
-                        onMouseLeave={(e) => {
-                          e.target.style.backgroundColor = "#ef4444";
-                          e.target.style.transform = "translateY(0)";
-                          e.target.style.boxShadow = "0 2px 4px rgba(239, 68, 68, 0.2)";
-                        }}
-                      >
-                        Cancel
-                      </button>
-                    </div>
+              <label className="repair-label" style={{ paddingBottom: "10px" }}>Device Issue</label>
+              <Select
+                options={issueOptions}
+                value={selectedIssue}
+                onChange={(selected) => {
+                  if (selected?.value === "add_new") {
+                    setShowNewIssueInput(true);
+                    setSelectedIssue(null);
+                  } else {
+                    setSelectedIssue(selected);
+                    setFormData({ ...formData, issueDescription: selected?.label || "" });
+                    setLoadingIssues(false);
+                  }
+                }}
+                placeholder="Select or add issue"
+                isClearable
+                isLoading={loadingIssues}
+              />
+
+              {showNewIssueInput && (
+                <div
+                  style={{
+                    marginTop: "10px",
+                    padding: "10px",
+                    backgroundColor: darkMode ? "#444" : "#f5f5f5",
+                    borderRadius: "4px",
+                  }}
+                >
+                  <input
+                    className="repair-input"
+                    type="text"
+                    value={newIssue}
+                    onChange={(e) => setNewIssue(e.target.value)}
+                    placeholder="Enter new issue"
+                    style={{ marginBottom: "10px" }}
+                  />
+                  <div style={{ display: "flex", gap: "10px" }}>
+                    <button
+                      onClick={handleAddNewIssue}
+                      style={{
+                        padding: "8px 16px",
+                        backgroundColor: "#10b981",
+                        color: "white",
+                        border: "none",
+                        borderRadius: "4px",
+                        cursor: "pointer",
+                        fontSize: "14px",
+                        fontWeight: "600",
+                        transition: "all 0.2s ease",
+                        boxShadow: "0 2px 4px rgba(16, 185, 129, 0.2)",
+                      }}
+                      type="button"
+                      onMouseEnter={(e) => {
+                        e.target.style.backgroundColor = "#059669";
+                        e.target.style.transform = "translateY(-1px)";
+                        e.target.style.boxShadow = "0 4px 8px rgba(16, 185, 129, 0.3)";
+                      }}
+                      onMouseLeave={(e) => {
+                        e.target.style.backgroundColor = "#10b981";
+                        e.target.style.transform = "translateY(0)";
+                        e.target.style.boxShadow = "0 2px 4px rgba(16, 185, 129, 0.2)";
+                      }}
+                    >
+                      Add
+                    </button>
+                    <button
+                      onClick={() => {
+                        setShowNewIssueInput(false);
+                        setNewIssue("");
+                      }}
+                      style={{
+                        padding: "8px 16px",
+                        backgroundColor: "#ef4444",
+                        color: "white",
+                        border: "none",
+                        borderRadius: "4px",
+                        cursor: "pointer",
+                        fontSize: "14px",
+                        fontWeight: "600",
+                        transition: "all 0.2s ease",
+                        boxShadow: "0 2px 4px rgba(239, 68, 68, 0.2)",
+                      }}
+                      type="button"
+                      onMouseEnter={(e) => {
+                        e.target.style.backgroundColor = "#dc2626";
+                        e.target.style.transform = "translateY(-1px)";
+                        e.target.style.boxShadow = "0 4px 8px rgba(239, 68, 68, 0.3)";
+                      }}
+                      onMouseLeave={(e) => {
+                        e.target.style.backgroundColor = "#ef4444";
+                        e.target.style.transform = "translateY(0)";
+                        e.target.style.boxShadow = "0 2px 4px rgba(239, 68, 68, 0.2)";
+                      }}
+                    >
+                      Cancel
+                    </button>
                   </div>
-                )}
-              
+                </div>
+              )}
+
             </div>
 
             {/* Column 3: Repair Details */}

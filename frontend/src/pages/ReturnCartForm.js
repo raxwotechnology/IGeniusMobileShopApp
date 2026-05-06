@@ -126,7 +126,7 @@ const CartForm = ({ supplier, item, closeModal, darkMode, refreshProducts }) => 
 
     setLoading(true);
     setError('');
-    
+
     try {
       // Get the current user's name from localStorage
       const changedBy = localStorage.getItem('username') || 'system';
@@ -149,7 +149,7 @@ const CartForm = ({ supplier, item, closeModal, darkMode, refreshProducts }) => 
         refreshProducts();
       }
       closeModal();
-      
+
     } catch (err) {
       console.error('Submit error:', err);
       setError(err.response?.data?.message || 'Failed to process return. Please try again.');
@@ -193,7 +193,7 @@ const CartForm = ({ supplier, item, closeModal, darkMode, refreshProducts }) => 
             <div key={index} className="form-row">
               <div className="left-column">
                 <h3 className={`ap-h3 ${darkMode ? 'dark' : ''}`}>Item Details</h3>
-                
+
                 <label className={`pro-edit-label ${darkMode ? 'dark' : ''}`}>Item Name</label>
                 <input
                   className={`pro-edit-input ${darkMode ? 'dark' : ''}`}

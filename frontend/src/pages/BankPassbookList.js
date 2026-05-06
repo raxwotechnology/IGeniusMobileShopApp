@@ -36,7 +36,7 @@ const BankPassbookList = ({ darkMode }) => {
   const [showSummaryModal, setShowSummaryModal] = useState(false);
   const [showReportOptions, setShowReportOptions] = useState(false);
   const [showActionMenu, setShowActionMenu] = useState(null);
-  const [paymentIncomes, setPaymentIncomes] = useState([]); 
+  const [paymentIncomes, setPaymentIncomes] = useState([]);
   const [extraIncomes, setExtraIncomes] = useState([]); // ← Add this
   const [salaryAdvances, setSalaryAdvances] = useState([]);
   const [maintenanceExpenses, setMaintenanceExpenses] = useState([]);
@@ -72,121 +72,121 @@ const BankPassbookList = ({ darkMode }) => {
     }
   };
 
-// Fetch supplier payments (only Bank-Transfer from paymentHistory)
-const fetchSupplierPayments = async () => {
-  try {
-    const response = await fetch(SUPPLIERS_API_URL, {
-      headers: { "Authorization": `Bearer ${token}` },
-    });
-    if (!response.ok) throw new Error("Failed to load suppliers");
-    const suppliers = await response.json();
+  // Fetch supplier payments (only Bank-Transfer from paymentHistory)
+  const fetchSupplierPayments = async () => {
+    try {
+      const response = await fetch(SUPPLIERS_API_URL, {
+        headers: { "Authorization": `Bearer ${token}` },
+      });
+      if (!response.ok) throw new Error("Failed to load suppliers");
+      const suppliers = await response.json();
 
-    const paymentEntries = [];
+      const paymentEntries = [];
 
-    suppliers.forEach(supplier => {
-      if (!Array.isArray(supplier.paymentHistory)) return;
+      suppliers.forEach(supplier => {
+        if (!Array.isArray(supplier.paymentHistory)) return;
 
-      supplier.paymentHistory
-        .filter(payment =>
-          payment.currentPayment &&
-          !isNaN(parseFloat(payment.currentPayment)) &&
-          parseFloat(payment.currentPayment) > 0 &&
-          BANK_PAYMENT_METHODS.includes(payment.paymentMethod)
+        supplier.paymentHistory
+          .filter(payment =>
+            payment.currentPayment &&
+            !isNaN(parseFloat(payment.currentPayment)) &&
+            parseFloat(payment.currentPayment) > 0 &&
+            BANK_PAYMENT_METHODS.includes(payment.paymentMethod)
+          )
+          .forEach(payment => {
+            const createdAt = new Date(payment.date);
+            const date = createdAt.toISOString().split("T")[0];
+            const time = createdAt.toTimeString().slice(0, 5); // HH:MM
+
+            paymentEntries.push({
+              _id: `supplier-${payment._id || Date.now() + Math.random()}`, // fallback ID
+              date,
+              time,
+              description: `Supplier: ${supplier.supplierName || 'N/A'} - ${supplier.businessName || 'N/A'}`,
+              type: "Debit",
+              amount: parseFloat(payment.currentPayment), // Convert string → number
+              paymentMethod: "Bank-Transfer",
+              source: "supplier",
+            });
+          });
+      });
+
+      return paymentEntries;
+    } catch (err) {
+      console.warn("Could not fetch supplier payments:", err.message);
+      return [];
+    }
+  };
+
+  // Fetch maintenance expenses (only Bank-Transfer)
+  const fetchMaintenanceExpenses = async () => {
+    try {
+      const response = await fetch(MAINTENANCE_API_URL, {
+        headers: { "Authorization": `Bearer ${token}` },
+      });
+      if (!response.ok) throw new Error("Failed to load maintenance records");
+      const records = await response.json();
+
+      const expenseEntries = records
+        .filter(record =>  // Only bank transfers
+          record.price > 0 &&
+          BANK_PAYMENT_METHODS.includes(record.paymentMethod)
         )
-        .forEach(payment => {
-          const createdAt = new Date(payment.date);
+        .map(record => ({
+          _id: `maintenance-${record._id}`,
+          date: record.date,                           // Already in "YYYY-MM-DD"
+          time: record.time,                           // "1:31:58 PM" – use as-is
+          description: `Maintenance: ${record.serviceType || 'N/A'}`,
+          type: "Debit",
+          amount: record.price,
+          paymentMethod: "Bank-Transfer",
+          source: "maintenance", // Mark as maintenance expense
+        }));
+
+      return expenseEntries;
+    } catch (err) {
+      console.warn("Could not fetch maintenance expenses:", err.message);
+      return [];
+    }
+  };
+
+  // Fetch salary advances (only bank transfers)
+  const fetchSalaryAdvances = async () => {
+    try {
+      const response = await fetch(SALARIES_API_URL, {
+        headers: { "Authorization": `Bearer ${token}` },
+      });
+      if (!response.ok) throw new Error("Failed to load salary advances");
+      const salaries = await response.json();
+
+      const advanceEntries = salaries
+        .filter(salary =>
+          // salary.paymentMethod === "Bank-Transfer" &&  // Only bank transfers
+          salary.advance > 0                           // Only if advance given
+        )
+        .map(salary => {
+          const createdAt = new Date(salary.createdAt);
           const date = createdAt.toISOString().split("T")[0];
           const time = createdAt.toTimeString().slice(0, 5); // HH:MM
 
-          paymentEntries.push({
-            _id: `supplier-${payment._id || Date.now() + Math.random()}`, // fallback ID
+          return {
+            _id: `salary-${salary._id}`,
             date,
             time,
-            description: `Supplier: ${supplier.supplierName || 'N/A'} - ${supplier.businessName || 'N/A'}`,
+            description: `${salary.remarks} ${salary.employeeName || 'N/A'}`,
             type: "Debit",
-            amount: parseFloat(payment.currentPayment), // Convert string → number
+            amount: salary.advance,
             paymentMethod: "Bank-Transfer",
-            source: "supplier",
-          });
+            source: "salary", // Mark as salary advance
+          };
         });
-    });
 
-    return paymentEntries;
-  } catch (err) {
-    console.warn("Could not fetch supplier payments:", err.message);
-    return [];
-  }
-};
-
-// Fetch maintenance expenses (only Bank-Transfer)
-const fetchMaintenanceExpenses = async () => {
-  try {
-    const response = await fetch(MAINTENANCE_API_URL, {
-      headers: { "Authorization": `Bearer ${token}` },
-    });
-    if (!response.ok) throw new Error("Failed to load maintenance records");
-    const records = await response.json();
-
-    const expenseEntries = records
-      .filter(record =>  // Only bank transfers
-        record.price > 0 &&
-        BANK_PAYMENT_METHODS.includes(record.paymentMethod)
-      )
-      .map(record => ({
-        _id: `maintenance-${record._id}`,
-        date: record.date,                           // Already in "YYYY-MM-DD"
-        time: record.time,                           // "1:31:58 PM" – use as-is
-        description: `Maintenance: ${record.serviceType || 'N/A'}`,
-        type: "Debit",
-        amount: record.price,
-        paymentMethod: "Bank-Transfer",
-        source: "maintenance", // Mark as maintenance expense
-      }));
-
-    return expenseEntries;
-  } catch (err) {
-    console.warn("Could not fetch maintenance expenses:", err.message);
-    return [];
-  }
-};
-
-  // Fetch salary advances (only bank transfers)
-const fetchSalaryAdvances = async () => {
-  try {
-    const response = await fetch(SALARIES_API_URL, {
-      headers: { "Authorization": `Bearer ${token}` },
-    });
-    if (!response.ok) throw new Error("Failed to load salary advances");
-    const salaries = await response.json();
-
-    const advanceEntries = salaries
-      .filter(salary =>
-        // salary.paymentMethod === "Bank-Transfer" &&  // Only bank transfers
-        salary.advance > 0                           // Only if advance given
-      )
-      .map(salary => {
-        const createdAt = new Date(salary.createdAt);
-        const date = createdAt.toISOString().split("T")[0];
-        const time = createdAt.toTimeString().slice(0, 5); // HH:MM
-
-        return {
-          _id: `salary-${salary._id}`,
-          date,
-          time,
-          description: `${salary.remarks} ${salary.employeeName || 'N/A'}`,
-          type: "Debit",
-          amount: salary.advance,
-          paymentMethod: "Bank-Transfer",
-          source: "salary", // Mark as salary advance
-        };
-      });
-
-    return advanceEntries;
-  } catch (err) {
-    console.warn("Could not fetch salary advances:", err.message);
-    return [];
-  }
-};
+      return advanceEntries;
+    } catch (err) {
+      console.warn("Could not fetch salary advances:", err.message);
+      return [];
+    }
+  };
 
   // Fetch extra income (only bank-based payment methods)
   const fetchExtraIncome = async () => {
@@ -216,7 +216,7 @@ const fetchSalaryAdvances = async () => {
 
         breakdowns.forEach((pb, idx) => {
           if (
-            BANK_PAYMENT_METHODS.includes(pb.method) 
+            BANK_PAYMENT_METHODS.includes(pb.method)
             // && pb.amount > 0 && income.status !== "Cancelled"
           ) {
             const createdAt = new Date(income.date || income.createdAt);
@@ -313,7 +313,7 @@ const fetchSalaryAdvances = async () => {
       jobs.forEach(job => {
         // Skip if not completed/returned
         // if (!["Completed", "Returned"].includes(job.repairStatus)) return;
-        const breakdowns  = [];
+        const breakdowns = [];
         // Handle split payments (paymentMethods)
         if (Array.isArray(job.paymentBreakdown) && job.paymentBreakdown.length > 0) {
           job.paymentBreakdown.forEach(pm => {
@@ -366,50 +366,50 @@ const fetchSalaryAdvances = async () => {
   };
 
   useEffect(() => {
-  const loadData = async () => {
-    if (!token) {
-      setError('Authentication required. Please log in.');
+    const loadData = async () => {
+      if (!token) {
+        setError('Authentication required. Please log in.');
+        setLoading(false);
+        return;
+      }
+
+      setLoading(true);
+      setError(null);
+
+      const [
+        bankTxs,
+        repairTxs,
+        paymentTxs,
+        extraTxs,
+        salaryTxs,
+        maintenanceTxs,
+        supplierTxs
+      ] = await Promise.all([
+        fetchBankTransactions(),
+        fetchRepairIncomes(),
+        fetchPaymentIncomes(),
+        fetchExtraIncome(),
+        fetchSalaryAdvances(),
+        fetchMaintenanceExpenses(),
+        fetchSupplierPayments() // ← Add here
+      ]);
+
+      setTransactions(bankTxs);
+      setRepairIncomes(repairTxs);
+      setPaymentIncomes(paymentTxs);
+      setExtraIncomes(extraTxs);
+      setSalaryAdvances(salaryTxs);
+      setMaintenanceExpenses(maintenanceTxs);
+      setSupplierPayments(supplierTxs); // Save to state
       setLoading(false);
-      return;
-    }
+    };
 
-    setLoading(true);
-    setError(null);
-
-    const [
-      bankTxs,
-      repairTxs,
-      paymentTxs,
-      extraTxs,
-      salaryTxs,
-      maintenanceTxs,
-      supplierTxs
-    ] = await Promise.all([
-      fetchBankTransactions(),
-      fetchRepairIncomes(),
-      fetchPaymentIncomes(),
-      fetchExtraIncome(),
-      fetchSalaryAdvances(),
-      fetchMaintenanceExpenses(),
-      fetchSupplierPayments() // ← Add here
-    ]);
-
-    setTransactions(bankTxs);
-    setRepairIncomes(repairTxs);
-    setPaymentIncomes(paymentTxs);
-    setExtraIncomes(extraTxs);
-    setSalaryAdvances(salaryTxs);
-    setMaintenanceExpenses(maintenanceTxs);
-    setSupplierPayments(supplierTxs); // Save to state
-    setLoading(false);
-  };
-
-  loadData();
-}, []);
+    loadData();
+  }, []);
 
   // Combine and sort all transactions
   const allTransactions = [
-    ...transactions, 
+    ...transactions,
     ...repairIncomes,
     ...paymentIncomes,
     ...extraIncomes,
@@ -439,9 +439,11 @@ const fetchSalaryAdvances = async () => {
     if (!id.startsWith("repair-")) {
       if (window.confirm("Are you sure you want to delete this transaction?")) {
         try {
-          await fetch(`${API_URL}/${id}`, { method: "DELETE" } , {headers: {
-            'Authorization': `Bearer ${token}`
-          }} );                         
+          await fetch(`${API_URL}/${id}`, { method: "DELETE" }, {
+            headers: {
+              'Authorization': `Bearer ${token}`
+            }
+          });
           setTransactions(transactions.filter(t => t._id !== id));
           setShowActionMenu(null);
         } catch (err) {
@@ -703,7 +705,7 @@ const fetchSalaryAdvances = async () => {
                   )}
                 </td>
                 <td>
-                  <span className={`badge ${t.type === "Credit" ? "credit" : "debit"}`} style={t.type === "Debit" ? { backgroundColor: '#e74c3c', color: 'white' } : {} }>
+                  <span className={`badge ${t.type === "Credit" ? "credit" : "debit"}`} style={t.type === "Debit" ? { backgroundColor: '#e74c3c', color: 'white' } : {}}>
                     {t.type}
                     {t.source && " ★"}
                   </span>
@@ -753,7 +755,7 @@ const fetchSalaryAdvances = async () => {
       {showAddModal && (
         <div className={`modal-overlay ${darkMode ? "dark" : ""}`} onClick={() => setShowAddModal(false)}>
           <div className={`modal-container ${darkMode ? "dark" : ""}`} onClick={(e) => e.stopPropagation()}>
-            <BankPassbookAdd onClose={() => {setShowAddModal(false); fetchPaymentIncomes();} } onUpdate={fetchBankTransactions} darkMode={darkMode} />
+            <BankPassbookAdd onClose={() => { setShowAddModal(false); fetchPaymentIncomes(); }} onUpdate={fetchBankTransactions} darkMode={darkMode} />
           </div>
         </div>
       )}

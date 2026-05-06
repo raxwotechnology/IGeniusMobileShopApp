@@ -88,7 +88,7 @@ const AllSummary = ({ darkMode }) => {
         fetch(EXTRA_INCOME_API_URL),
         fetch(PAYMENTS_API_URL)
       ]);
-      
+
       if (!productsRes.ok) throw new Error('Failed to fetch products');
       if (!suppliersRes.ok) throw new Error('Failed to fetch suppliers');
       if (!repairsRes.ok) throw new Error('Failed to fetch repair jobs');
@@ -96,8 +96,8 @@ const AllSummary = ({ darkMode }) => {
       if (!maintenanceRes.ok) throw new Error('Failed to fetch maintenance');
       if (!extraIncomeRes.ok) throw new Error('Failed to fetch extra income');
       if (!paymentsRes.ok) throw new Error('Failed to fetch payments');
-      
-      
+
+
       const productsData = await productsRes.json();
       const suppliersData = await suppliersRes.json();
       const repairsData = await repairsRes.json();
@@ -120,16 +120,16 @@ const AllSummary = ({ darkMode }) => {
         }
       }
       setSupplierPayments(allSupplierPayments);
-      
-      
+
+
       // Filter products to only show those from the main product list (not deleted)
       const clickedProducts = JSON.parse(localStorage.getItem('clickedProducts') || '[]');
       const clickedProductIds = clickedProducts.map(cp => cp._id);
-      
-      const availableProducts = Array.isArray(productsData) ? productsData.filter(product => 
+
+      const availableProducts = Array.isArray(productsData) ? productsData.filter(product =>
         !product.clickedForAdd && !clickedProductIds.includes(product._id)
       ) : [];
-      
+
       setProducts(availableProducts);
       setRepairs(Array.isArray(repairsData) ? repairsData : []);
       setSalaries(Array.isArray(salariesData) ? salariesData : []);
@@ -175,7 +175,7 @@ const AllSummary = ({ darkMode }) => {
       let filtered = products;
       if (categoryFilter) filtered = filtered.filter(p => p.category === categoryFilter);
       if (itemNameFilter) filtered = filtered.filter(p => p.itemName === itemNameFilter);
-      
+
       setFilteredProducts(filtered);
       return;
     }
@@ -188,11 +188,11 @@ const AllSummary = ({ darkMode }) => {
       let filtered = products.filter(p => !!p[dateField]);
       if (categoryFilter) filtered = filtered.filter(p => p.category === categoryFilter);
       if (itemNameFilter) filtered = filtered.filter(p => p.itemName === itemNameFilter);
-      
+
       const start = new Date(startDate);
       const end = new Date(endDate);
       end.setHours(23, 59, 59, 999); // Include the entire end date
-      
+
       filtered = filtered.filter(p => {
         const d = new Date(p[dateField]);
         return d >= start && d <= end;
@@ -210,7 +210,7 @@ const AllSummary = ({ darkMode }) => {
     let filtered = products.filter(p => !!p[dateField]);
     if (categoryFilter) filtered = filtered.filter(p => p.category === categoryFilter);
     if (itemNameFilter) filtered = filtered.filter(p => p.itemName === itemNameFilter);
-    
+
     if (filterType === 'daily') {
       filtered = filtered.filter(p => {
         return getLocalDateKey(p[dateField]) === getLocalDateKey(filterDate);
@@ -231,7 +231,7 @@ const AllSummary = ({ darkMode }) => {
 
   const filterGrnExpenses = () => {
     if (!grnExpenses.raw) return setFilteredGrnExpenses([]);
-    
+
     if (filterType === 'all') {
       let filtered = [];
       for (const grn of grnExpenses.raw) {
@@ -265,11 +265,11 @@ const AllSummary = ({ darkMode }) => {
       const start = new Date(startDate);
       const end = new Date(endDate);
       end.setHours(23, 59, 59, 999); // Include the entire end date
-      
+
       for (const grn of grnExpenses.raw) {
         const grnDateObj = grn.date ? new Date(grn.date) : null;
         if (!grnDateObj || isNaN(grnDateObj.getTime())) continue;
-        
+
         if (grnDateObj >= start && grnDateObj <= end && Array.isArray(grn.items)) {
           for (const item of grn.items) {
             if (categoryFilter && item.category !== categoryFilter) continue;
@@ -391,11 +391,11 @@ const AllSummary = ({ darkMode }) => {
       filtered = filtered.filter(p => p.assignedTo === assignedToFilter);
     }
     if (categoryFilter) {
-        filtered = filtered.filter(p => p.assignedTo === categoryFilter);
-      }
+      filtered = filtered.filter(p => p.assignedTo === categoryFilter);
+    }
     if (itemNameFilter) {
-        filtered = filtered.filter(p => p.assignedTo === itemNameFilter);
-      }
+      filtered = filtered.filter(p => p.assignedTo === itemNameFilter);
+    }
     if (paymentMethodFilter) {
       filtered = filtered.filter(p => p.paymentMethod?.toLowerCase() === paymentMethodFilter.toLowerCase());
     }
@@ -435,7 +435,7 @@ const AllSummary = ({ darkMode }) => {
       setFilteredSalaries(filtered);
       return;
     }
-    
+
     if (filterType === 'range') {
       if (!startDate || !endDate) {
         setFilteredSalaries(salaries);
@@ -478,11 +478,11 @@ const AllSummary = ({ darkMode }) => {
       filtered = filtered.filter(salary => salary.assignedTo === assignedToFilter);
     }
     if (categoryFilter) {
-        filtered = filtered.filter(salary => salary.assignedTo === categoryFilter);
-      }
+      filtered = filtered.filter(salary => salary.assignedTo === categoryFilter);
+    }
     if (itemNameFilter) {
-        filtered = filtered.filter(p => p.assignedTo === itemNameFilter);
-      }
+      filtered = filtered.filter(p => p.assignedTo === itemNameFilter);
+    }
     if (paymentMethodFilter) {
       filtered = filtered.filter(salary => salary.paymentMethod?.toLowerCase() === paymentMethodFilter.toLowerCase());
     }
@@ -526,7 +526,7 @@ const AllSummary = ({ darkMode }) => {
       setFilteredMaintenance(filtered);
       return;
     }
-    
+
     if (filterType === 'range') {
       if (!startDate || !endDate) {
         setFilteredMaintenance(maintenance);
@@ -570,11 +570,11 @@ const AllSummary = ({ darkMode }) => {
       filtered = filtered.filter(m => m.assignedTo === assignedToFilter);
     }
     if (categoryFilter) {
-        filtered = filtered.filter(m => m.assignedTo === categoryFilter);
-      }
+      filtered = filtered.filter(m => m.assignedTo === categoryFilter);
+    }
     if (itemNameFilter) {
-        filtered = filtered.filter(p => p.assignedTo === itemNameFilter);
-      }
+      filtered = filtered.filter(p => p.assignedTo === itemNameFilter);
+    }
     if (paymentMethodFilter) {
       filtered = filtered.filter(m => m.paymentMethod?.toLowerCase() === paymentMethodFilter.toLowerCase());
     }
@@ -625,22 +625,22 @@ const AllSummary = ({ darkMode }) => {
       return false;
     };
 
-    
+
 
     const matchesPaymentMethod = (record) => {
       if (!paymentMethodFilter) return true;
-        // console.log("🔍 Checking record:", record._id);
-        // console.log("   paymentMethod:", record.paymentMethod);
-        // console.log("   paymentBreakdown:", record.paymentBreakdown);
-        // console.log("   Filter:", paymentMethodFilter);
+      // console.log("🔍 Checking record:", record._id);
+      // console.log("   paymentMethod:", record.paymentMethod);
+      // console.log("   paymentBreakdown:", record.paymentBreakdown);
+      // console.log("   Filter:", paymentMethodFilter);
       if (Array.isArray(record.paymentBreakdown) && record.paymentBreakdown.length > 0) {
-        const hasMatch = record.paymentBreakdown.some(pb => 
+        const hasMatch = record.paymentBreakdown.some(pb =>
           pb?.method?.toLowerCase() === paymentMethodFilter.toLowerCase()
         );
         // console.log("   → Match result (from paymentBreakdown):", hasMatch);
         return hasMatch;
       }
-      else{
+      else {
         const match = record.paymentMethod?.toLowerCase() === paymentMethodFilter.toLowerCase();
         // console.log("   → Match result (from paymentMethod):", match);
         return match;
@@ -663,7 +663,7 @@ const AllSummary = ({ darkMode }) => {
     };
 
     if (filterType === 'all') {
-      let filtered = repairs.filter(r => (r.completedAt ? !!r.completedAt : !!r[dateField] ));
+      let filtered = repairs.filter(r => (r.completedAt ? !!r.completedAt : !!r[dateField]));
       filtered = filtered.filter(matchesAssignee);
       filtered = filtered.filter(matchesPaymentMethod);
       filtered = filtered.filter(matchesCategory);
@@ -673,7 +673,7 @@ const AllSummary = ({ darkMode }) => {
 
     if (filterType === 'range') {
       if (!startDate || !endDate) {
-        let filtered = repairs.filter(r => (r.completedAt ? !!r.completedAt : !!r[dateField] ));
+        let filtered = repairs.filter(r => (r.completedAt ? !!r.completedAt : !!r[dateField]));
         filtered = filtered.filter(matchesAssignee);
         filtered = filtered.filter(matchesPaymentMethod);
         filtered = filtered.filter(matchesCategory);
@@ -684,8 +684,8 @@ const AllSummary = ({ darkMode }) => {
       const end = new Date(endDate);
       end.setHours(23, 59, 59, 999);
       let filtered = repairs.filter(r => {
-        const d = new Date((r.completedAt ? !!r.completedAt : !!r[dateField] ));
-        return (r.completedAt ? !!r.completedAt : !!r[dateField] ) && d >= start && d <= end;
+        const d = new Date((r.completedAt ? !!r.completedAt : !!r[dateField]));
+        return (r.completedAt ? !!r.completedAt : !!r[dateField]) && d >= start && d <= end;
       });
       filtered = filtered.filter(matchesAssignee);
       filtered = filtered.filter(matchesPaymentMethod);
@@ -695,7 +695,7 @@ const AllSummary = ({ darkMode }) => {
     }
 
     if (!filterDate) {
-      let filtered = repairs.filter(r => (r.completedAt ? !!r.completedAt : !!r[dateField] ));
+      let filtered = repairs.filter(r => (r.completedAt ? !!r.completedAt : !!r[dateField]));
       filtered = filtered.filter(matchesAssignee);
       filtered = filtered.filter(matchesPaymentMethod);
       filtered = filtered.filter(matchesCategory);
@@ -704,22 +704,22 @@ const AllSummary = ({ darkMode }) => {
     }
 
     const dateObj = new Date(filterDate);
-    let filtered = repairs.filter(r => (r.completedAt ? !!r.completedAt : !!r[dateField] ));
+    let filtered = repairs.filter(r => (r.completedAt ? !!r.completedAt : !!r[dateField]));
     filtered = filtered.filter(matchesAssignee);
     filtered = filtered.filter(matchesPaymentMethod);
     filtered = filtered.filter(matchesCategory);
-    
+
 
     if (filterType === 'daily') {
-      filtered = filtered.filter(r => getLocalDateKey((r.completedAt ? !!r.completedAt : !!r[dateField] )) === getLocalDateKey(filterDate));
+      filtered = filtered.filter(r => getLocalDateKey((r.completedAt ? !!r.completedAt : !!r[dateField])) === getLocalDateKey(filterDate));
     } else if (filterType === 'monthly') {
       filtered = filtered.filter(r => {
-        const d = new Date((r.completedAt ? !!r.completedAt : !!r[dateField] ));
+        const d = new Date((r.completedAt ? !!r.completedAt : !!r[dateField]));
         return d.getFullYear() === dateObj.getFullYear() && d.getMonth() === dateObj.getMonth();
       });
     } else if (filterType === 'yearly') {
       filtered = filtered.filter(r => {
-        const d = new Date((r.completedAt ? !!r.completedAt : !!r[dateField] ));
+        const d = new Date((r.completedAt ? !!r.completedAt : !!r[dateField]));
         return d.getFullYear() === dateObj.getFullYear();
       });
     }
@@ -730,14 +730,14 @@ const AllSummary = ({ darkMode }) => {
   const filterExtraIncome = () => {
     const matchesCategory = (record) => {
       if (!categoryFilter) return true;
-      
+
       if (!Array.isArray(record.items)) return false;
       return record.items.some(item => item.category === categoryFilter);
     };
 
     const matchesItemName = (record) => {
       if (!itemNameFilter) return true;
-      
+
       if (!Array.isArray(record.items)) return false;
       return record.items.some(item => item.itemName === itemNameFilter);
     };
@@ -745,7 +745,7 @@ const AllSummary = ({ darkMode }) => {
     const matchesPaymentMethod = (record) => {
       if (!paymentMethodFilter) return true;
       if (Array.isArray(record.paymentBreakdown) && record.paymentBreakdown.length > 0) {
-        return record.paymentBreakdown.some(pb => 
+        return record.paymentBreakdown.some(pb =>
           pb?.method?.toLowerCase() === paymentMethodFilter.toLowerCase()
         );
       }
@@ -763,11 +763,11 @@ const AllSummary = ({ darkMode }) => {
       filtered = filtered.filter(matchesPaymentMethod);
       filtered = filtered.filter(matchesCategory);
       filtered = filtered.filter(matchesItemName);
-      
+
       setFilteredExtraIncome(filtered);
       return;
     }
-    
+
 
     if (filterType === 'range') {
       if (!startDate || !endDate) {
@@ -836,14 +836,14 @@ const AllSummary = ({ darkMode }) => {
     };
     const matchesItemName = (record) => {
       if (!itemNameFilter) return true;
-      
+
       if (!Array.isArray(record.items)) return false;
       return record.items.some(item => item.itemName === itemNameFilter);
     };
     const matchesPaymentMethod = (record) => {
       if (!paymentMethodFilter) return true;
       if (Array.isArray(record.paymentMethods) && record.paymentMethods.length > 0) {
-        return record.paymentMethods.some(pm => 
+        return record.paymentMethods.some(pm =>
           pm?.method?.toLowerCase() === paymentMethodFilter.toLowerCase()
         );
       }
@@ -869,7 +869,7 @@ const AllSummary = ({ darkMode }) => {
       filtered = filtered.filter(matchesItemName);
       setFilteredPayments(filtered);
       return;
-    }    
+    }
 
     if (filterType === 'range') {
       if (!startDate || !endDate) {
@@ -935,10 +935,10 @@ const AllSummary = ({ darkMode }) => {
     ...products.map(p => p.category),
     ...(grnExpenses.raw ? grnExpenses.raw.flatMap(grn => grn.items.map(i => i.category)) : [])
   ].filter(Boolean)));
-  
+
   const allItemNames = Array.from(new Set(
-      products.filter(p => p.category === (categoryFilter ?  categoryFilter : p.category)).map(p => p.itemName)
-    )).sort();
+    products.filter(p => p.category === (categoryFilter ? categoryFilter : p.category)).map(p => p.itemName)
+  )).sort();
 
   // Collect all statuses from repairs
   const allStatuses = Array.from(new Set(
@@ -957,15 +957,15 @@ const AllSummary = ({ darkMode }) => {
   };
 
   const calculateAssigneeItemTotal = (items, assignee) => {
-  if (!assignee || !Array.isArray(items)) return 0;
-  return items.reduce((sum, item) => {
-    if (item.assignedTo === assignee) {
-      return sum + (item.price * item.quantity) - item.discount;
-    }
-    
-    return sum;
-  }, 0);
-};
+    if (!assignee || !Array.isArray(items)) return 0;
+    return items.reduce((sum, item) => {
+      if (item.assignedTo === assignee) {
+        return sum + (item.price * item.quantity) - item.discount;
+      }
+
+      return sum;
+    }, 0);
+  };
 
   // Calculate totals
   // const totalProductExpenses = filteredProducts
@@ -987,7 +987,7 @@ const AllSummary = ({ darkMode }) => {
     return sum + (maint.price || 0);
   }, 0);
 
-  const totalSupplierPayments = filteredSupplierPayments.reduce((sum, p) => 
+  const totalSupplierPayments = filteredSupplierPayments.reduce((sum, p) =>
     sum + (Number(p.currentPayment || 0)), 0);
 
 
@@ -997,7 +997,7 @@ const AllSummary = ({ darkMode }) => {
       const cashAmount = payment.paymentMethods
         .filter(pm => pm.method?.toLowerCase() === 'cash')
         .reduce((acc, pm) => acc + (pm.amount || 0), 0);
-      return sum + cashAmount ;
+      return sum + cashAmount;
     } else if (payment.paymentMethod?.toLowerCase() === 'cash') {
       // Legacy: full amount
       return sum + (payment.totalAmount || 0);
@@ -1010,7 +1010,7 @@ const AllSummary = ({ darkMode }) => {
       const cardAmount = payment.paymentMethods
         .filter(pm => pm.method?.toLowerCase() === 'card')
         .reduce((acc, pm) => acc + (pm.amount || 0), 0);
-      return sum + cardAmount ;
+      return sum + cardAmount;
     } else if (payment.paymentMethod?.toLowerCase() === 'card') {
       return sum + (payment.totalAmount || 0);
     }
@@ -1029,7 +1029,7 @@ const AllSummary = ({ darkMode }) => {
     return sum;
   }, 0);
 
-    // const totalRefund = filteredPayments
+  // const totalRefund = filteredPayments
   //   .filter(p => p.paymentMethod?.toLowerCase() === 'refund')
   //   .reduce((sum, p) => sum + (p.totalAmount || 0), 0);
 
@@ -1051,7 +1051,7 @@ const AllSummary = ({ darkMode }) => {
   //   return sum + (repair.totalAdditionalServicesAmount + repair.checkingCharge + repair.totalRepairCost - repair.totalDiscountAmount || 0);
   // }, 0);
 
-  const totalRepairIncomewithoutReturned =  filteredRepairs.reduce((sum, repair) => {
+  const totalRepairIncomewithoutReturned = filteredRepairs.reduce((sum, repair) => {
     let cashAmount = 0;
     if (Array.isArray(repair.paymentBreakdown) && repair.paymentBreakdown.length > 0) {
       // Sum cash amounts from paymentBreakdown
@@ -1095,7 +1095,7 @@ const AllSummary = ({ darkMode }) => {
   }, 0);
 
   const totalcheckingCharge = filteredRepairs.reduce((sum, repair) => {
-    return sum + ( repair.checkingCharge  || 0);
+    return sum + (repair.checkingCharge || 0);
   }, 0);
 
   const totalCheckingCharges = filteredRepairs.reduce((sum, repair) => {
@@ -1103,17 +1103,17 @@ const AllSummary = ({ darkMode }) => {
   }, 0);
 
   const totalRepairCost = filteredRepairs.reduce((sum, repair) => {
-    return sum + ( repair.totalRepairCost || 0);
+    return sum + (repair.totalRepairCost || 0);
   }, 0);
 
   const totalDiscountAmount = filteredRepairs.reduce((sum, repair) => {
-    return sum + ( repair.totalDiscountAmount || 0);
+    return sum + (repair.totalDiscountAmount || 0);
   }, 0);
 
   // Helper: Is a repair paid on credit?
   const isRepairOnCredit = (repair) => {
     if (Array.isArray(repair.paymentBreakdown) && repair.paymentBreakdown.length > 0) {
-      return repair.paymentBreakdown.some(pb => 
+      return repair.paymentBreakdown.some(pb =>
         pb.method?.toLowerCase() === 'credit'
       );
     }
@@ -1123,7 +1123,7 @@ const AllSummary = ({ darkMode }) => {
   // Helper: Is a payment on credit?
   const isPaymentOnCredit = (payment) => {
     if (Array.isArray(payment.paymentMethods) && payment.paymentMethods.length > 0) {
-      return payment.paymentMethods.some(pm => 
+      return payment.paymentMethods.some(pm =>
         pm.method?.toLowerCase() === 'credit'
       );
     }
@@ -1133,7 +1133,7 @@ const AllSummary = ({ darkMode }) => {
   // Helper: Is an extra income record paid on credit?
   const isExtraIncomeOnCredit = (record) => {
     if (Array.isArray(record.paymentBreakdown) && record.paymentBreakdown.length > 0) {
-      return record.paymentBreakdown.some(pb => 
+      return record.paymentBreakdown.some(pb =>
         pb.method?.toLowerCase() === 'credit'
       );
     }
@@ -1171,10 +1171,10 @@ const AllSummary = ({ darkMode }) => {
     return sum + calculateCartTotal(repair.repairCart);
   }, 0);
 
-  
+
 
   // Returned Extra Income: where returnAlert === "returned"
-  const returnedExtraIncome = filteredExtraIncome.filter(ei => 
+  const returnedExtraIncome = filteredExtraIncome.filter(ei =>
     ei.returnAlert === "returned"
   );
 
@@ -1186,7 +1186,7 @@ const AllSummary = ({ darkMode }) => {
   }, 0);
 
   // Returned Payments: where returnAlert === "returned"
-  const returnedPayments = filteredPayments.filter(p => 
+  const returnedPayments = filteredPayments.filter(p =>
     p.returnAlert === "returned"
   );
 
@@ -1254,9 +1254,9 @@ const AllSummary = ({ darkMode }) => {
 
   // Add this with your other totals
   const totalPaymentRealCost = filteredPayments.reduce((sum, payment) =>
-    sum + payment.items.reduce((itemSum, item) => 
+    sum + payment.items.reduce((itemSum, item) =>
       itemSum + (item.buyingPrice || 0) * (item.quantity || 0), 0
-  ), 0);
+    ), 0);
 
   const totalPaymentProfit = filteredPayments.reduce((sum, payment) =>
     sum + payment.items.reduce((itemSum, item) => {
@@ -1264,18 +1264,18 @@ const AllSummary = ({ darkMode }) => {
       const cost = (item.buyingPrice || 0) * (item.quantity || 0);
       return itemSum + (selling - cost - (item.discount || 0));
     }, 0)
-  , 0);
+    , 0);
 
   const totalRepairIncome = totalRepairIncomewithoutReturned + totalReturnedRepairs;
 
-  const totalIncome = totalRepairIncome + totalPayments + totalExtraIncome ;
+  const totalIncome = totalRepairIncome + totalPayments + totalExtraIncome;
 
-  const totalCreditIncome = creditRepairs + totalCredit + totalExtraCreditIncome ;
+  const totalCreditIncome = creditRepairs + totalCredit + totalExtraCreditIncome;
 
   const totalReturnRefund = totalReturnedRepairs + totalReturnedExtraIncome + totalReturnedPayments;
-  
+
   const netProfit = totalIncome - totalExpenses - totalReturnRefund - totalCreditIncome - totalActualRepairCost - totalPaymentRealCost;
-  
+
   // 🔹 Calculate Cash Inflows (only 'Cash' payments)
   // const cashInflows = [
   //   // 1. Repairs paid in cash
@@ -1300,80 +1300,80 @@ const AllSummary = ({ darkMode }) => {
   //   return sum;
   // }, 0);
 
-  const cashInflows =   
-    
-  // 1. Repairs paid in cash
-  repairs.reduce((sum, repair) => {
-    let cashAmount = 0;
-    if (Array.isArray(repair.paymentBreakdown) && repair.paymentBreakdown.length > 0) {
-      // Sum cash amounts from paymentBreakdown
-      cashAmount = repair.paymentBreakdown
-        .filter(pb => pb.method?.toLowerCase() === 'cash')
-        .reduce((acc, pb) => acc + (pb.amount || 0), 0);
-    } else if (repair.paymentMethod?.toLowerCase() === 'cash') {
-      // Fallback to full amount
-      cashAmount = repair.checkingCharge + repair.totalRepairCost + repair.totalAdditionalServicesAmount - repair.totalDiscountAmount;
-    }
-    return sum + cashAmount;
-  }, 0) -
+  const cashInflows =
 
-  repairs.reduce((sum, repair) => {
-    let cashAmount = 0;
-    cashAmount =  repair.totalReturnCost + repair.rettotalAdditionalServicesAmount
-    return sum + cashAmount;
-  }, 0) +
-  
-  // 2. Payments paid in cash
-  payments.reduce((sum, payment) => {
-    let cashAmount = 0;
-    
-    if (Array.isArray(payment.paymentMethods) && payment.paymentMethods.length > 0) {
-      // Sum cash amounts from paymentMethods
-      cashAmount = payment.paymentMethods
-        .filter(pm => pm.method?.toLowerCase() === 'cash')
-        .reduce((acc, pm) => acc + (pm.amount || 0), 0);
-    } else if (payment.paymentMethod?.toLowerCase() === 'cash') {
-      // Fallback to totalAmount (exclude refunds)
-      if (payment.paymentMethod?.toLowerCase() === 'cash') {
-        cashAmount = payment.totalAmount || 0;
+    // 1. Repairs paid in cash
+    repairs.reduce((sum, repair) => {
+      let cashAmount = 0;
+      if (Array.isArray(repair.paymentBreakdown) && repair.paymentBreakdown.length > 0) {
+        // Sum cash amounts from paymentBreakdown
+        cashAmount = repair.paymentBreakdown
+          .filter(pb => pb.method?.toLowerCase() === 'cash')
+          .reduce((acc, pb) => acc + (pb.amount || 0), 0);
+      } else if (repair.paymentMethod?.toLowerCase() === 'cash') {
+        // Fallback to full amount
+        cashAmount = repair.checkingCharge + repair.totalRepairCost + repair.totalAdditionalServicesAmount - repair.totalDiscountAmount;
       }
-    }
-    return sum + cashAmount;
-  }, 0) -
+      return sum + cashAmount;
+    }, 0) -
 
-   payments.reduce((sum, payment) => {
-    let cashAmount = 0;
-    if (payment.returnAlert === "returned") {
-      // Sum cash amounts from paymentMethods
-      cashAmount = payment.rettotalAmount;
-    } 
-    return sum + cashAmount;
-  }, 0) +
-  
-  // 3. Extra Income received in cash
-  extraIncome.reduce((sum, ei) => {
-    let cashAmount = 0;
-    if (Array.isArray(ei.paymentBreakdown) && ei.paymentBreakdown.length > 0 ) {
-      // Sum cash amounts from paymentBreakdown
-      cashAmount = ei.paymentBreakdown
-        .filter(pb => pb.method?.toLowerCase() === 'cash')
-        .reduce((acc, pb) => acc + (pb.amount || 0), 0);
-    } else if (ei.paymentMethod?.toLowerCase() === 'cash') {
-      // Fallback to amount
-      cashAmount = ei.amount || 0;
-    }
-    return sum + cashAmount;
-  }, 0) - 
+    repairs.reduce((sum, repair) => {
+      let cashAmount = 0;
+      cashAmount = repair.totalReturnCost + repair.rettotalAdditionalServicesAmount
+      return sum + cashAmount;
+    }, 0) +
 
-  extraIncome.reduce((sum, ei) => {
-    let cashAmount = 0;
-    if (ei.returnAlert === "returned") {
-      // Sum cash amounts from paymentMethods
-      cashAmount = ei.amount - ei.serviceCharge;
+    // 2. Payments paid in cash
+    payments.reduce((sum, payment) => {
+      let cashAmount = 0;
 
-    }
-    return sum + cashAmount;
-  }, 0);
+      if (Array.isArray(payment.paymentMethods) && payment.paymentMethods.length > 0) {
+        // Sum cash amounts from paymentMethods
+        cashAmount = payment.paymentMethods
+          .filter(pm => pm.method?.toLowerCase() === 'cash')
+          .reduce((acc, pm) => acc + (pm.amount || 0), 0);
+      } else if (payment.paymentMethod?.toLowerCase() === 'cash') {
+        // Fallback to totalAmount (exclude refunds)
+        if (payment.paymentMethod?.toLowerCase() === 'cash') {
+          cashAmount = payment.totalAmount || 0;
+        }
+      }
+      return sum + cashAmount;
+    }, 0) -
+
+    payments.reduce((sum, payment) => {
+      let cashAmount = 0;
+      if (payment.returnAlert === "returned") {
+        // Sum cash amounts from paymentMethods
+        cashAmount = payment.rettotalAmount;
+      }
+      return sum + cashAmount;
+    }, 0) +
+
+    // 3. Extra Income received in cash
+    extraIncome.reduce((sum, ei) => {
+      let cashAmount = 0;
+      if (Array.isArray(ei.paymentBreakdown) && ei.paymentBreakdown.length > 0) {
+        // Sum cash amounts from paymentBreakdown
+        cashAmount = ei.paymentBreakdown
+          .filter(pb => pb.method?.toLowerCase() === 'cash')
+          .reduce((acc, pb) => acc + (pb.amount || 0), 0);
+      } else if (ei.paymentMethod?.toLowerCase() === 'cash') {
+        // Fallback to amount
+        cashAmount = ei.amount || 0;
+      }
+      return sum + cashAmount;
+    }, 0) -
+
+    extraIncome.reduce((sum, ei) => {
+      let cashAmount = 0;
+      if (ei.returnAlert === "returned") {
+        // Sum cash amounts from paymentMethods
+        cashAmount = ei.amount - ei.serviceCharge;
+
+      }
+      return sum + cashAmount;
+    }, 0);
 
   // 🔹 Calculate Cash Outflows (only 'Cash' expenses)
   const cashOutflows = [
@@ -1384,9 +1384,9 @@ const AllSummary = ({ darkMode }) => {
     // 3. Supplier Payments made in cash
     ...supplierPayments.filter(sp => sp.paymentMethod?.toLowerCase() === 'cash')
   ]
-  .reduce((sum, expense) => {
-    return sum + (expense.advance || expense.price || Number(expense.currentPayment || 0));
-  }, 0);
+    .reduce((sum, expense) => {
+      return sum + (expense.advance || expense.price || Number(expense.currentPayment || 0));
+    }, 0);
 
   // ✅ Final Net Cash Flow
   const netCashFlow = cashInflows - cashOutflows;
@@ -1432,7 +1432,7 @@ const AllSummary = ({ darkMode }) => {
         baseName = `Summary_${start.toISOString().slice(0, 10)}_${end.toISOString().slice(0, 10)}`;
       }
     }
-    
+
     // Add category filter if present
     if (categoryFilter) {
       baseName += `_${categoryFilter}`;
@@ -1441,7 +1441,7 @@ const AllSummary = ({ darkMode }) => {
     if (itemNameFilter) {
       baseName += `_${itemNameFilter}`;
     }
-    
+
     // 1. Overview Summary Sheet
     const overviewData = [
       {
@@ -1527,7 +1527,7 @@ const AllSummary = ({ darkMode }) => {
         'Advance Amount': (s.advance || 0).toFixed(2),
         'Date': getLocalDateKey(s.date)
       }));
-      
+
       const salarySheet = XLSX.utils.json_to_sheet(salaryData);
       styleSheet(salarySheet, salaryData);
       XLSX.utils.book_append_sheet(workbook, salarySheet, 'Salary_Expenses');
@@ -1541,7 +1541,7 @@ const AllSummary = ({ darkMode }) => {
         'Price': (m.price || 0).toFixed(2),
         'Date': getLocalDateKey(m.date)
       }));
-      
+
       const maintenanceSheet = XLSX.utils.json_to_sheet(maintenanceData);
       styleSheet(maintenanceSheet, maintenanceData);
       XLSX.utils.book_append_sheet(workbook, maintenanceSheet, 'Bills_and_Other_Expences');
@@ -1558,7 +1558,7 @@ const AllSummary = ({ darkMode }) => {
         'Status': r.status || '-',
         'Date': getLocalDateKey(r.createdAt)
       }));
-      
+
       const repairSheet = XLSX.utils.json_to_sheet(repairData);
       styleSheet(repairSheet, repairData);
       XLSX.utils.book_append_sheet(workbook, repairSheet, 'Repair_Income');
@@ -1571,7 +1571,7 @@ const AllSummary = ({ darkMode }) => {
         'Amount': (ei.amount || 0).toFixed(2),
         'Date': getLocalDateKey(ei.date)
       }));
-      
+
       const extraIncomeSheet = XLSX.utils.json_to_sheet(extraIncomeData);
       styleSheet(extraIncomeSheet, extraIncomeData);
       XLSX.utils.book_append_sheet(workbook, extraIncomeSheet, 'Extra_Income');
@@ -1589,7 +1589,7 @@ const AllSummary = ({ darkMode }) => {
         'Category': grn.category || '-',
         'Date': getLocalDateKey(grn.grnDate)
       }));
-      
+
       const grnSheet = XLSX.utils.json_to_sheet(grnData);
       styleSheet(grnSheet, grnData);
       XLSX.utils.book_append_sheet(workbook, grnSheet, 'GRN_Expenses');
@@ -1600,307 +1600,307 @@ const AllSummary = ({ darkMode }) => {
     if (fileName.length > 31) {
       fileName = fileName.slice(0, 31);
     }
-    
+
     XLSX.writeFile(workbook, `${fileName}.xlsx`);
   };
 
   return (
-    <div className={`product-list-container ${darkMode ? 'dark' : ''}`}> 
+    <div className={`product-list-container ${darkMode ? 'dark' : ''}`}>
       <h2 className="product-list-title">All Summary</h2>
-      
+
       {!loading && !error && (
-        <div style={{ 
-          background: '#e8f5e8', 
-          padding: '10px', 
-          marginBottom: '10px', 
+        <div style={{
+          background: '#e8f5e8',
+          padding: '10px',
+          marginBottom: '10px',
           borderRadius: '5px',
           border: '1px solid #28a745',
           fontSize: '14px'
         }}>
-          <strong>Data Status:</strong> Found {products.length} products, {salaries.length} salaries, {maintenance.length} maintenance bills, {repairs.length} repair jobs | 
+          <strong>Data Status:</strong> Found {products.length} products, {salaries.length} salaries, {maintenance.length} maintenance bills, {repairs.length} repair jobs |
           Showing {filteredProducts.length} filtered products, {filteredSalaries.length} filtered salaries, {filteredMaintenance.length} filtered maintenance, {filteredRepairs.length} filtered repairs
         </div>
       )}
 
       {/* Filter Controls */}
       {/* Filter Controls */}
-    <div 
-      className="summary-filters"
-      style={{ 
-        marginBottom: '20px',
-        padding: '16px',
-        backgroundColor: darkMode ? '#2d3748' : '#f9fafb',
-        borderRadius: '8px',
-        border: darkMode ? '1px solid #4a5568' : '1px solid #e2e8f0',
-        color: darkMode ? '#e2e8f0' : '#333'
-      }}
-    >
-      <h4 style={{ margin: '0 0 12px 0', fontSize: '16px', fontWeight: '600' }}>
-        Filters
-      </h4>
+      <div
+        className="summary-filters"
+        style={{
+          marginBottom: '20px',
+          padding: '16px',
+          backgroundColor: darkMode ? '#2d3748' : '#f9fafb',
+          borderRadius: '8px',
+          border: darkMode ? '1px solid #4a5568' : '1px solid #e2e8f0',
+          color: darkMode ? '#e2e8f0' : '#333'
+        }}
+      >
+        <h4 style={{ margin: '0 0 12px 0', fontSize: '16px', fontWeight: '600' }}>
+          Filters
+        </h4>
 
-      {/* Row 1: Time Filter + Date Inputs */}
-      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '16px', marginBottom: '16px', alignItems: 'center' }}>
-        <div>
-          <label style={{ marginRight: '8px', fontWeight: '500' }}>Period:</label>
-          <select 
-            value={filterType} 
-            onChange={e => setFilterType(e.target.value)}
-            style={{
-              minWidth: '140px',
-              padding: '6px 10px',
-              borderRadius: '6px',
-              border: darkMode ? '1px solid #4a5568' : '1px solid #ccc',
-              backgroundColor: darkMode ? '#374151' : '#fff',
-              color: darkMode ? '#e2e8f0' : '#333'
-            }}
-          >
-            <option value="all">All Time</option>
-            <option value="daily">Daily</option>
-            <option value="monthly">Monthly</option>
-            <option value="yearly">Yearly</option>
-            <option value="range">Date Range</option>
-          </select>
-        </div>
-      </div>
-      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '16px', marginBottom: '16px', alignItems: 'center' }}>
-        {filterType === 'range' ? (
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <span>From </span>
-            <input
-              type="date"
-              value={startDate}
-              onChange={e => setStartDate(e.target.value)}
-              style={{ padding: '6px', borderRadius: '4px', border: darkMode ? '1px solid #4a5568' : '1px solid #ccc', backgroundColor: darkMode ? '#374151' : '#fff', color: darkMode ? '#e2e8f0' : '#333' }}
-            />
-            <span>to</span>
-            <input
-              type="date"
-              value={endDate}
-              onChange={e => setEndDate(e.target.value)}
-              style={{ padding: '6px', borderRadius: '4px', border: darkMode ? '1px solid #4a5568' : '1px solid #ccc', backgroundColor: darkMode ? '#374151' : '#fff', color: darkMode ? '#e2e8f0' : '#333' }}
-            />
-          </div>
-        ) : filterType !== 'all' && (
-          <input
-            type={filterType === 'yearly' ? 'number' : filterType === 'monthly' ? 'month' : 'date'}
-            value={filterType === 'monthly' ? filterDate.slice(0, 7) : filterDate}
-            onChange={e => {
-              if (filterType === 'monthly') {
-                setFilterDate(e.target.value ? e.target.value + '-01' : '');
-              } else {
-                setFilterDate(e.target.value);
-              }
-            }}
-            min={filterType === 'monthly' ? '2000-01' : '2000-01-01'}
-            style={{ 
-              padding: '6px', 
-              borderRadius: '4px', 
-              border: darkMode ? '1px solid #4a5568' : '1px solid #ccc',
-              backgroundColor: darkMode ? '#374151' : '#fff',
-              color: darkMode ? '#e2e8f0' : '#333',
-              minWidth: '140px'
-            }}
-          />
-        )}
-
-        {/* Date Field Toggle */}
-        <div style={{ display: 'flex', gap: '12px', marginLeft: 'auto' }}>
-          <label style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-            <input
-              type="radio"
-              name="dateField"
-              value="createdAt"
-              checked={dateField === 'createdAt'}
-              onChange={() => setDateField('createdAt')}
-            />
-            Created
-          </label>
-          <label style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-            <input
-              type="radio"
-              name="dateField"
-              value="updatedAt"
-              checked={dateField === 'updatedAt'}
-              onChange={() => setDateField('updatedAt')}
-            />
-            Updated
-          </label>
-        </div>
-      </div>
-
-      {/* Row 2: Category, Status, Assignee, Payment Method */}
-      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '16px', marginBottom: '16px' }}>
-        <div>
-          <label style={{ marginRight: '8px', fontWeight: '500' }}>Category:</label>
-          <select 
-            value={categoryFilter} 
-            onChange={e => setCategoryFilter(e.target.value)} 
-            style={{ 
-              minWidth: '150px',
-              maxWidth:'300px',
-              padding: '6px 6px',
-              borderRadius: '6px',
-              border: darkMode ? '1px solid #4a5568' : '1px solid #ccc',
-              backgroundColor: darkMode ? '#374151' : '#fff',
-              color: darkMode ? '#e2e8f0' : '#333'
-            }}
-          >
-            <option value="">All</option>
-            {allCategories.map(cat => (
-              <option key={cat} value={cat}>{cat}</option>
-            ))}
-          </select>
-        </div>
-
-        <div style={{ position: 'relative', display: 'inline-block', minWidth: '180px' }}>
-          <label style={{ marginRight: '8px', fontWeight: '500' }}>Item Name:</label>
-          <input
-            type="text"
-            value={itemNameFilter}
-            onFocus={() => setItemDropdownOpen(true)}
-            onChange={(e) => {
-              setItemNameFilter(e.target.value);
-              setItemDropdownOpen(true);
-            }}
-            placeholder="Search items..."
-            style={{
-              width: '100%',
-              padding: '6px 10px',
-              borderRadius: '6px',
-              border: darkMode ? '1px solid #4a5568' : '1px solid #ccc',
-              backgroundColor: darkMode ? '#374151' : '#fff',
-              color: darkMode ? '#e2e8f0' : '#333'
-            }}
-            onClick={(e) => e.stopPropagation()}
-          />
-          {isItemDropdownOpen && (
-            <ul
+        {/* Row 1: Time Filter + Date Inputs */}
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '16px', marginBottom: '16px', alignItems: 'center' }}>
+          <div>
+            <label style={{ marginRight: '8px', fontWeight: '500' }}>Period:</label>
+            <select
+              value={filterType}
+              onChange={e => setFilterType(e.target.value)}
               style={{
-                position: 'absolute',
-                zIndex: 10,
-                top: '100%',
-                left: 0,
-                right: 0,
-                maxHeight: '180px',
-                overflowY: 'auto',
-                backgroundColor: darkMode ? '#2d3748' : '#fff',
+                minWidth: '140px',
+                padding: '6px 10px',
+                borderRadius: '6px',
                 border: darkMode ? '1px solid #4a5568' : '1px solid #ccc',
-                borderRadius: '4px',
-                marginTop: '4px',
-                boxShadow: '0 2px 6px rgba(0,0,0,0.15)',
-                listStyle: 'none',
-                padding: 0,
-                margin: 0,
-                fontSize: '14px'
+                backgroundColor: darkMode ? '#374151' : '#fff',
+                color: darkMode ? '#e2e8f0' : '#333'
               }}
-              onMouseDown={(e) => e.preventDefault()} // Prevent input blur on scroll
             >
-              {allItemNames
-                .filter(name =>
-                  name?.toLowerCase().includes(itemNameFilter.toLowerCase())
-                )
-                .map((name) => (
-                  <li
-                    key={name}
-                    onClick={() => {
-                      setItemNameFilter(name);
-                      setItemDropdownOpen(false);
-                    }}
-                    style={{
-                      padding: '8px 12px',
-                      cursor: 'pointer',
-                      color: darkMode ? '#e2e8f0' : '#333',
-                      backgroundColor: 'transparent'
-                    }}
-                    onMouseEnter={(e) => e.target.style.backgroundColor = darkMode ? '#374151' : '#f1f1f1'}
-                    onMouseLeave={(e) => e.target.style.backgroundColor = 'transparent'}
-                  >
-                    {name}
-                  </li>
-                ))
-              }
-              {allItemNames.filter(n => n?.toLowerCase().includes(itemNameFilter.toLowerCase())).length === 0 && (
-                <li style={{ padding: '8px 12px', color: '#999', fontStyle: 'italic' }}>
-                  No items found
-                </li>
-              )}
-            </ul>
+              <option value="all">All Time</option>
+              <option value="daily">Daily</option>
+              <option value="monthly">Monthly</option>
+              <option value="yearly">Yearly</option>
+              <option value="range">Date Range</option>
+            </select>
+          </div>
+        </div>
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '16px', marginBottom: '16px', alignItems: 'center' }}>
+          {filterType === 'range' ? (
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <span>From </span>
+              <input
+                type="date"
+                value={startDate}
+                onChange={e => setStartDate(e.target.value)}
+                style={{ padding: '6px', borderRadius: '4px', border: darkMode ? '1px solid #4a5568' : '1px solid #ccc', backgroundColor: darkMode ? '#374151' : '#fff', color: darkMode ? '#e2e8f0' : '#333' }}
+              />
+              <span>to</span>
+              <input
+                type="date"
+                value={endDate}
+                onChange={e => setEndDate(e.target.value)}
+                style={{ padding: '6px', borderRadius: '4px', border: darkMode ? '1px solid #4a5568' : '1px solid #ccc', backgroundColor: darkMode ? '#374151' : '#fff', color: darkMode ? '#e2e8f0' : '#333' }}
+              />
+            </div>
+          ) : filterType !== 'all' && (
+            <input
+              type={filterType === 'yearly' ? 'number' : filterType === 'monthly' ? 'month' : 'date'}
+              value={filterType === 'monthly' ? filterDate.slice(0, 7) : filterDate}
+              onChange={e => {
+                if (filterType === 'monthly') {
+                  setFilterDate(e.target.value ? e.target.value + '-01' : '');
+                } else {
+                  setFilterDate(e.target.value);
+                }
+              }}
+              min={filterType === 'monthly' ? '2000-01' : '2000-01-01'}
+              style={{
+                padding: '6px',
+                borderRadius: '4px',
+                border: darkMode ? '1px solid #4a5568' : '1px solid #ccc',
+                backgroundColor: darkMode ? '#374151' : '#fff',
+                color: darkMode ? '#e2e8f0' : '#333',
+                minWidth: '140px'
+              }}
+            />
           )}
+
+          {/* Date Field Toggle */}
+          <div style={{ display: 'flex', gap: '12px', marginLeft: 'auto' }}>
+            <label style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+              <input
+                type="radio"
+                name="dateField"
+                value="createdAt"
+                checked={dateField === 'createdAt'}
+                onChange={() => setDateField('createdAt')}
+              />
+              Created
+            </label>
+            <label style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+              <input
+                type="radio"
+                name="dateField"
+                value="updatedAt"
+                checked={dateField === 'updatedAt'}
+                onChange={() => setDateField('updatedAt')}
+              />
+              Updated
+            </label>
+          </div>
         </div>
 
-        <div>
-          <label style={{ marginRight: '8px', fontWeight: '500' }}>Assignee:</label>
-          <select
-            value={assignedToFilter}
-            onChange={(e) => setAssignedToFilter(e.target.value)}
+        {/* Row 2: Category, Status, Assignee, Payment Method */}
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '16px', marginBottom: '16px' }}>
+          <div>
+            <label style={{ marginRight: '8px', fontWeight: '500' }}>Category:</label>
+            <select
+              value={categoryFilter}
+              onChange={e => setCategoryFilter(e.target.value)}
+              style={{
+                minWidth: '150px',
+                maxWidth: '300px',
+                padding: '6px 6px',
+                borderRadius: '6px',
+                border: darkMode ? '1px solid #4a5568' : '1px solid #ccc',
+                backgroundColor: darkMode ? '#374151' : '#fff',
+                color: darkMode ? '#e2e8f0' : '#333'
+              }}
+            >
+              <option value="">All</option>
+              {allCategories.map(cat => (
+                <option key={cat} value={cat}>{cat}</option>
+              ))}
+            </select>
+          </div>
+
+          <div style={{ position: 'relative', display: 'inline-block', minWidth: '180px' }}>
+            <label style={{ marginRight: '8px', fontWeight: '500' }}>Item Name:</label>
+            <input
+              type="text"
+              value={itemNameFilter}
+              onFocus={() => setItemDropdownOpen(true)}
+              onChange={(e) => {
+                setItemNameFilter(e.target.value);
+                setItemDropdownOpen(true);
+              }}
+              placeholder="Search items..."
+              style={{
+                width: '100%',
+                padding: '6px 10px',
+                borderRadius: '6px',
+                border: darkMode ? '1px solid #4a5568' : '1px solid #ccc',
+                backgroundColor: darkMode ? '#374151' : '#fff',
+                color: darkMode ? '#e2e8f0' : '#333'
+              }}
+              onClick={(e) => e.stopPropagation()}
+            />
+            {isItemDropdownOpen && (
+              <ul
+                style={{
+                  position: 'absolute',
+                  zIndex: 10,
+                  top: '100%',
+                  left: 0,
+                  right: 0,
+                  maxHeight: '180px',
+                  overflowY: 'auto',
+                  backgroundColor: darkMode ? '#2d3748' : '#fff',
+                  border: darkMode ? '1px solid #4a5568' : '1px solid #ccc',
+                  borderRadius: '4px',
+                  marginTop: '4px',
+                  boxShadow: '0 2px 6px rgba(0,0,0,0.15)',
+                  listStyle: 'none',
+                  padding: 0,
+                  margin: 0,
+                  fontSize: '14px'
+                }}
+                onMouseDown={(e) => e.preventDefault()} // Prevent input blur on scroll
+              >
+                {allItemNames
+                  .filter(name =>
+                    name?.toLowerCase().includes(itemNameFilter.toLowerCase())
+                  )
+                  .map((name) => (
+                    <li
+                      key={name}
+                      onClick={() => {
+                        setItemNameFilter(name);
+                        setItemDropdownOpen(false);
+                      }}
+                      style={{
+                        padding: '8px 12px',
+                        cursor: 'pointer',
+                        color: darkMode ? '#e2e8f0' : '#333',
+                        backgroundColor: 'transparent'
+                      }}
+                      onMouseEnter={(e) => e.target.style.backgroundColor = darkMode ? '#374151' : '#f1f1f1'}
+                      onMouseLeave={(e) => e.target.style.backgroundColor = 'transparent'}
+                    >
+                      {name}
+                    </li>
+                  ))
+                }
+                {allItemNames.filter(n => n?.toLowerCase().includes(itemNameFilter.toLowerCase())).length === 0 && (
+                  <li style={{ padding: '8px 12px', color: '#999', fontStyle: 'italic' }}>
+                    No items found
+                  </li>
+                )}
+              </ul>
+            )}
+          </div>
+
+          <div>
+            <label style={{ marginRight: '8px', fontWeight: '500' }}>Assignee:</label>
+            <select
+              value={assignedToFilter}
+              onChange={(e) => setAssignedToFilter(e.target.value)}
+              style={{
+                minWidth: '150px',
+                padding: '6px 10px',
+                borderRadius: '6px',
+                border: darkMode ? '1px solid #4a5568' : '1px solid #ccc',
+                backgroundColor: darkMode ? '#374151' : '#fff',
+                color: darkMode ? '#e2e8f0' : '#333'
+              }}
+            >
+              <option value="">All</option>
+              <option value="Prabath">2nd Floor</option>
+              <option value="Nadeesh">1st Floor</option>
+              <option value="Accessories">Accessories</option>
+              <option value="Genex-EX">Genex EX</option>
+              <option value="I-Device">I Device</option>
+            </select>
+          </div>
+
+          <div>
+            <label style={{ marginRight: '8px', fontWeight: '500' }}>Payment Method:</label>
+            <select
+              value={paymentMethodFilter}
+              onChange={(e) => setPaymentMethodFilter(e.target.value)}
+              style={{
+                minWidth: '150px',
+                padding: '6px 10px',
+                borderRadius: '6px',
+                border: darkMode ? '1px solid #4a5568' : '1px solid #ccc',
+                backgroundColor: darkMode ? '#374151' : '#fff',
+                color: darkMode ? '#e2e8f0' : '#333'
+              }}
+            >
+              <option value="">All</option>
+              <option value="Cash">Cash</option>
+              <option value="Card">Card</option>
+              <option value="Bank-Transfer">Bank Transfer</option>
+              <option value="Bank-Check">Bank Check</option>
+              <option value="Credit">Credit</option>
+            </select>
+          </div>
+        </div>
+
+        {/* Export Button - Right Aligned */}
+        <div style={{ textAlign: 'right' }}>
+          <button
+            className="btn-report"
+            onClick={handleExportExcel}
             style={{
-              minWidth: '150px',
-              padding: '6px 10px',
+              padding: '8px 16px',
               borderRadius: '6px',
-              border: darkMode ? '1px solid #4a5568' : '1px solid #ccc',
-              backgroundColor: darkMode ? '#374151' : '#fff',
-              color: darkMode ? '#e2e8f0' : '#333'
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '6px',
+              backgroundColor: '#28a745',
+              color: 'white',
+              border: 'none',
+              cursor: 'pointer'
             }}
           >
-            <option value="">All</option>
-            <option value="Prabath">2nd Floor</option>
-            <option value="Nadeesh">1st Floor</option>
-            <option value="Accessories">Accessories</option>
-            <option value="Genex-EX">Genex EX</option>
-            <option value="I-Device">I Device</option>
-          </select>
-        </div>
-
-        <div>
-          <label style={{ marginRight: '8px', fontWeight: '500' }}>Payment Method:</label>
-          <select
-            value={paymentMethodFilter}
-            onChange={(e) => setPaymentMethodFilter(e.target.value)}
-            style={{
-              minWidth: '150px',
-              padding: '6px 10px',
-              borderRadius: '6px',
-              border: darkMode ? '1px solid #4a5568' : '1px solid #ccc',
-              backgroundColor: darkMode ? '#374151' : '#fff',
-              color: darkMode ? '#e2e8f0' : '#333'
-            }}
-          >
-            <option value="">All</option>
-            <option value="Cash">Cash</option>
-            <option value="Card">Card</option>
-            <option value="Bank-Transfer">Bank Transfer</option>
-            <option value="Bank-Check">Bank Check</option>
-            <option value="Credit">Credit</option>
-          </select>
+            <FontAwesomeIcon icon={faFileExcel} /> Export to Excel
+          </button>
         </div>
       </div>
-
-      {/* Export Button - Right Aligned */}
-      <div style={{ textAlign: 'right' }}>
-        <button 
-          className="btn-report" 
-          onClick={handleExportExcel}
-          style={{
-            padding: '8px 16px',
-            borderRadius: '6px',
-            display: 'inline-flex',
-            alignItems: 'center',
-            gap: '6px',
-            backgroundColor: '#28a745',
-            color: 'white',
-            border: 'none',
-            cursor: 'pointer'
-          }}
-        >
-          <FontAwesomeIcon icon={faFileExcel} /> Export to Excel
-        </button>
-      </div>
-    </div>
 
       {/* Tab Navigation */}
       <div style={{ marginBottom: '20px' }}>
-        <button 
+        <button
           onClick={() => setActiveTab('overview')}
           style={{
             padding: '10px 20px',
@@ -1915,7 +1915,7 @@ const AllSummary = ({ darkMode }) => {
         >
           Overview
         </button>
-        
+
         {/* <button 
           onClick={() => setActiveTab('expenses')}
           style={{
@@ -1987,10 +1987,10 @@ const AllSummary = ({ darkMode }) => {
         <>
           {/* Summary Cards */}
           <div style={{ display: 'flex', gap: '20px', marginBottom: '20px', flexWrap: 'wrap' }}>
-            <div style={{ 
-              background: darkMode ? '#2a2a2a' : '#f0f0f0', 
-              padding: '15px', 
-              borderRadius: '8px', 
+            <div style={{
+              background: darkMode ? '#2a2a2a' : '#f0f0f0',
+              padding: '15px',
+              borderRadius: '8px',
               minWidth: '200px',
               border: darkMode ? '1px solid #444' : '1px solid #ddd'
             }}>
@@ -1999,75 +1999,75 @@ const AllSummary = ({ darkMode }) => {
                 Rs. {totalIncome.toFixed(2)}
               </p>
             </div>
-            <div 
+            <div
               onClick={() => setActiveTab('income')}
-              style={{ 
-                background: darkMode ? '#2a2a2a' : '#f0f0f0', 
-                padding: '15px', 
-                borderRadius: '8px', 
+              style={{
+                background: darkMode ? '#2a2a2a' : '#f0f0f0',
+                padding: '15px',
+                borderRadius: '8px',
                 minWidth: '200px',
                 border: darkMode ? '1px solid #444' : '1px solid #ddd'
-            }}>
+              }}>
               <h4 style={{ margin: '0 0 10px 0', color: darkMode ? '#fff' : '#333' }}>Repair Jobs Income</h4>
               <p style={{ margin: 0, fontSize: '18px', fontWeight: 'bold', color: '#000' }}>
                 Rs. {totalRepairIncome.toFixed(2)}
               </p>
             </div>
 
-            <div 
+            <div
               onClick={() => setActiveTab('purchase')}
-              style={{ 
-                background: darkMode ? '#2a2a2a' : '#f0f0f0', 
-                padding: '15px', 
-                borderRadius: '8px', 
+              style={{
+                background: darkMode ? '#2a2a2a' : '#f0f0f0',
+                padding: '15px',
+                borderRadius: '8px',
                 minWidth: '200px',
                 border: darkMode ? '1px solid #444' : '1px solid #ddd'
-            }}>
+              }}>
               <h4 style={{ margin: '0 0 10px 0', color: darkMode ? '#fff' : '#333' }}>Invoice Incomes</h4>
               <p style={{ margin: 0, fontSize: '18px', fontWeight: 'bold', color: '#000' }}>
                 Rs. {totalPayments.toFixed(2)}
               </p>
             </div>
 
-            <div 
-              onClick={() => setActiveTab('extraIncome')} 
-              style={{ 
-                background: darkMode ? '#2a2a2a' : '#f0f0f0', 
-                padding: '15px', 
-                borderRadius: '8px', 
+            <div
+              onClick={() => setActiveTab('extraIncome')}
+              style={{
+                background: darkMode ? '#2a2a2a' : '#f0f0f0',
+                padding: '15px',
+                borderRadius: '8px',
                 minWidth: '200px',
                 border: darkMode ? '1px solid #444' : '1px solid #ddd'
-            }}>
+              }}>
               <h4 style={{ margin: '0 0 10px 0', color: darkMode ? '#fff' : '#333' }}>Extra Other Income</h4>
               <p style={{ margin: 0, fontSize: '18px', fontWeight: 'bold', color: '#000' }}>
                 Rs. {totalExtraIncome.toFixed(2)}
               </p>
             </div>
 
-            <div 
-              onClick={() => setActiveTab('incomewithbuyingproce')} 
-              style={{ 
-                background: darkMode ? '#2a2a2a' : '#f0f0f0', 
-                padding: '15px', 
-                borderRadius: '8px', 
+            <div
+              onClick={() => setActiveTab('incomewithbuyingproce')}
+              style={{
+                background: darkMode ? '#2a2a2a' : '#f0f0f0',
+                padding: '15px',
+                borderRadius: '8px',
                 minWidth: '200px',
                 border: darkMode ? '1px solid #444' : '1px solid #ddd'
-            }}>
+              }}>
               <h4 style={{ margin: '0 0 10px 0', color: darkMode ? '#fff' : '#333' }}>Repair Jobs - Item Cost</h4>
               <p style={{ margin: 0, fontSize: '18px', fontWeight: 'bold', color: '#000' }}>
                 Rs. {totalActualRepairCost.toFixed(2)}
               </p>
             </div>
 
-            <div 
+            <div
               onClick={() => setActiveTab('purchasewithitemcost')}
-              style={{ 
-                background: darkMode ? '#2a2a2a' : '#f0f0f0', 
-                padding: '15px', 
-                borderRadius: '8px', 
+              style={{
+                background: darkMode ? '#2a2a2a' : '#f0f0f0',
+                padding: '15px',
+                borderRadius: '8px',
                 minWidth: '200px',
                 border: darkMode ? '1px solid #444' : '1px solid #ddd'
-            }}>
+              }}>
               <h4 style={{ margin: '0 0 10px 0', color: darkMode ? '#fff' : '#333' }}>Invoice Incomes - Item Cost</h4>
               <p style={{ margin: 0, fontSize: '18px', fontWeight: 'bold', color: '#000' }}>
                 Rs. {totalPaymentRealCost.toFixed(2)}
@@ -2076,14 +2076,14 @@ const AllSummary = ({ darkMode }) => {
           </div>
           <div style={{ display: 'flex', gap: '20px', marginBottom: '20px', flexWrap: 'wrap' }}>
             <div
-              onClick={() => setActiveTab('purchase-refunded')} 
-              style={{ 
-                background: darkMode ? '#2a2a2a' : '#f0f0f0', 
-                padding: '15px', 
-                borderRadius: '8px', 
+              onClick={() => setActiveTab('purchase-refunded')}
+              style={{
+                background: darkMode ? '#2a2a2a' : '#f0f0f0',
+                padding: '15px',
+                borderRadius: '8px',
                 minWidth: '200px',
                 border: darkMode ? '1px solid #444' : '1px solid #ddd'
-            }}>
+              }}>
               <h4 style={{ margin: '0 0 10px 0', color: darkMode ? '#fff' : '#333' }}>Total Retunrs</h4>
               <p style={{ margin: 0, fontSize: '18px', fontWeight: 'bold', color: '#000' }}>
                 Rs. {totalReturnRefund.toFixed(2)}
@@ -2091,14 +2091,14 @@ const AllSummary = ({ darkMode }) => {
             </div>
 
             <div
-              onClick={() => setActiveTab('returnedRepairs')} 
-              style={{ 
-                background: darkMode ? '#2a2a2a' : '#f0f0f0', 
-                padding: '15px', 
-                borderRadius: '8px', 
+              onClick={() => setActiveTab('returnedRepairs')}
+              style={{
+                background: darkMode ? '#2a2a2a' : '#f0f0f0',
+                padding: '15px',
+                borderRadius: '8px',
                 minWidth: '200px',
                 border: darkMode ? '1px solid #444' : '1px solid #ddd'
-            }}>
+              }}>
               <h4 style={{ margin: '0 0 10px 0', color: darkMode ? '#fff' : '#333' }}>Repair Jobs Incomes - Refunded </h4>
               <p style={{ margin: 0, fontSize: '18px', fontWeight: 'bold', color: '#000' }}>
                 Rs. {totalReturnedRepairs.toFixed(2)}
@@ -2106,14 +2106,14 @@ const AllSummary = ({ darkMode }) => {
             </div>
 
             <div
-              onClick={() => setActiveTab('returnedPayments')} 
-              style={{ 
-                background: darkMode ? '#2a2a2a' : '#f0f0f0', 
-                padding: '15px', 
-                borderRadius: '8px', 
+              onClick={() => setActiveTab('returnedPayments')}
+              style={{
+                background: darkMode ? '#2a2a2a' : '#f0f0f0',
+                padding: '15px',
+                borderRadius: '8px',
                 minWidth: '200px',
                 border: darkMode ? '1px solid #444' : '1px solid #ddd'
-            }}>
+              }}>
               <h4 style={{ margin: '0 0 10px 0', color: darkMode ? '#fff' : '#333' }}>Invoice Incomes - Refunded </h4>
               <p style={{ margin: 0, fontSize: '18px', fontWeight: 'bold', color: '#000' }}>
                 Rs. {totalReturnedPayments.toFixed(2)}
@@ -2121,14 +2121,14 @@ const AllSummary = ({ darkMode }) => {
             </div>
 
             <div
-              onClick={() => setActiveTab('returnedExtraIncome')} 
-              style={{ 
-                background: darkMode ? '#2a2a2a' : '#f0f0f0', 
-                padding: '15px', 
-                borderRadius: '8px', 
+              onClick={() => setActiveTab('returnedExtraIncome')}
+              style={{
+                background: darkMode ? '#2a2a2a' : '#f0f0f0',
+                padding: '15px',
+                borderRadius: '8px',
                 minWidth: '200px',
                 border: darkMode ? '1px solid #444' : '1px solid #ddd'
-            }}>
+              }}>
               <h4 style={{ margin: '0 0 10px 0', color: darkMode ? '#fff' : '#333' }}>Extra Other Income - Refunded </h4>
               <p style={{ margin: 0, fontSize: '18px', fontWeight: 'bold', color: '#000' }}>
                 Rs. {totalReturnedExtraIncome.toFixed(2)}
@@ -2139,29 +2139,29 @@ const AllSummary = ({ darkMode }) => {
 
           <div style={{ display: 'flex', gap: '20px', marginBottom: '20px', flexWrap: 'wrap' }}>
             <div
-              onClick={() => setActiveTab('purchase-refunded')} 
-              style={{ 
-                background: darkMode ? '#2a2a2a' : '#f0f0f0', 
-                padding: '15px', 
-                borderRadius: '8px', 
+              onClick={() => setActiveTab('purchase-refunded')}
+              style={{
+                background: darkMode ? '#2a2a2a' : '#f0f0f0',
+                padding: '15px',
+                borderRadius: '8px',
                 minWidth: '200px',
                 border: darkMode ? '1px solid #444' : '1px solid #ddd'
-            }}>
+              }}>
               <h4 style={{ margin: '0 0 10px 0', color: darkMode ? '#fff' : '#333' }}>Total Credits</h4>
               <p style={{ margin: 0, fontSize: '18px', fontWeight: 'bold', color: '#000' }}>
                 Rs. {totalCreditIncome.toFixed(2)}
               </p>
             </div>
 
-            <div 
+            <div
               onClick={() => setActiveTab('credit-income')}
-              style={{ 
-                background: darkMode ? '#2a2a2a' : '#f0f0f0', 
-                padding: '15px', 
-                borderRadius: '8px', 
+              style={{
+                background: darkMode ? '#2a2a2a' : '#f0f0f0',
+                padding: '15px',
+                borderRadius: '8px',
                 minWidth: '200px',
                 border: darkMode ? '1px solid #444' : '1px solid #ddd'
-            }}>
+              }}>
               <h4 style={{ margin: '0 0 10px 0', color: darkMode ? '#fff' : '#333' }}>Repair Jobs Income - Credit</h4>
               <p style={{ margin: 0, fontSize: '18px', fontWeight: 'bold', color: '#000' }}>
                 Rs. {creditRepairs.toFixed(2)}
@@ -2180,33 +2180,33 @@ const AllSummary = ({ darkMode }) => {
                 Rs. {totalCartCosts.toFixed(2)}
               </p>
             </div> */}
-            
+
             <div
-            onClick={() => setActiveTab('purchase-credit')} 
-            style={{ 
-              background: darkMode ? '#2a2a2a' : '#f0f0f0', 
-              padding: '15px', 
-              borderRadius: '8px', 
-              minWidth: '200px',
-              border: darkMode ? '1px solid #444' : '1px solid #ddd'
-            }}>
+              onClick={() => setActiveTab('purchase-credit')}
+              style={{
+                background: darkMode ? '#2a2a2a' : '#f0f0f0',
+                padding: '15px',
+                borderRadius: '8px',
+                minWidth: '200px',
+                border: darkMode ? '1px solid #444' : '1px solid #ddd'
+              }}>
               <h4 style={{ margin: '0 0 10px 0', color: darkMode ? '#fff' : '#333' }}>Invoice Incomes - Credit</h4>
               <p style={{ margin: 0, fontSize: '18px', fontWeight: 'bold', color: '#000' }}>
                 Rs. {totalCredit.toFixed(2)}
               </p>
             </div>
 
-            
-            
-            <div 
-            onClick={() => setActiveTab('extraCreditIncome')} 
-            style={{ 
-              background: darkMode ? '#2a2a2a' : '#f0f0f0', 
-              padding: '15px', 
-              borderRadius: '8px', 
-              minWidth: '200px',
-              border: darkMode ? '1px solid #444' : '1px solid #ddd'
-            }}>
+
+
+            <div
+              onClick={() => setActiveTab('extraCreditIncome')}
+              style={{
+                background: darkMode ? '#2a2a2a' : '#f0f0f0',
+                padding: '15px',
+                borderRadius: '8px',
+                minWidth: '200px',
+                border: darkMode ? '1px solid #444' : '1px solid #ddd'
+              }}>
               <h4 style={{ margin: '0 0 10px 0', color: darkMode ? '#fff' : '#333' }}>Extra Other Income - Credit</h4>
               <p style={{ margin: 0, fontSize: '18px', fontWeight: 'bold', color: '#000' }}>
                 Rs. {totalExtraCreditIncome.toFixed(2)}
@@ -2214,15 +2214,15 @@ const AllSummary = ({ darkMode }) => {
             </div>
           </div>
           <div style={{ display: 'flex', gap: '20px', marginBottom: '20px', flexWrap: 'wrap' }}>
-            <div 
-            onClick={() => setActiveTab('expenses')} 
-            style={{ 
-              background: darkMode ? '#2a2a2a' : '#f0f0f0', 
-              padding: '15px', 
-              borderRadius: '8px', 
-              minWidth: '200px',
-              border: darkMode ? '1px solid #444' : '1px solid #ddd'
-            }}>
+            <div
+              onClick={() => setActiveTab('expenses')}
+              style={{
+                background: darkMode ? '#2a2a2a' : '#f0f0f0',
+                padding: '15px',
+                borderRadius: '8px',
+                minWidth: '200px',
+                border: darkMode ? '1px solid #444' : '1px solid #ddd'
+              }}>
               <h4 style={{ margin: '0 0 10px 0', color: darkMode ? '#fff' : '#333' }}>Total Expenses</h4>
               <p style={{ margin: 0, fontSize: '18px', fontWeight: 'bold', color: '#000' }}>
                 Rs. {totalExpenses.toFixed(2)}
@@ -2243,40 +2243,40 @@ const AllSummary = ({ darkMode }) => {
               </p>
             </div> */}
 
-            <div 
-            onClick={() => setActiveTab('salary')} 
-            style={{ 
-              background: darkMode ? '#2a2a2a' : '#f0f0f0', 
-              padding: '15px', 
-              borderRadius: '8px', 
-              minWidth: '200px',
-              border: darkMode ? '1px solid #444' : '1px solid #ddd'
-            }}>
+            <div
+              onClick={() => setActiveTab('salary')}
+              style={{
+                background: darkMode ? '#2a2a2a' : '#f0f0f0',
+                padding: '15px',
+                borderRadius: '8px',
+                minWidth: '200px',
+                border: darkMode ? '1px solid #444' : '1px solid #ddd'
+              }}>
               <h4 style={{ margin: '0 0 10px 0', color: darkMode ? '#fff' : '#333' }}>Salary Expenses</h4>
               <p style={{ margin: 0, fontSize: '18px', fontWeight: 'bold', color: '#000' }}>
                 Rs. {totalSalaryExpenses.toFixed(2)}
               </p>
             </div>
-            <div 
-            onClick={() => setActiveTab('maintenance')} 
-            style={{ 
-              background: darkMode ? '#2a2a2a' : '#f0f0f0', 
-              padding: '15px', 
-              borderRadius: '8px', 
-              minWidth: '200px',
-              border: darkMode ? '1px solid #444' : '1px solid #ddd'
-            }}>
+            <div
+              onClick={() => setActiveTab('maintenance')}
+              style={{
+                background: darkMode ? '#2a2a2a' : '#f0f0f0',
+                padding: '15px',
+                borderRadius: '8px',
+                minWidth: '200px',
+                border: darkMode ? '1px solid #444' : '1px solid #ddd'
+              }}>
               <h4 style={{ margin: '0 0 10px 0', color: darkMode ? '#fff' : '#333' }}>Bills and Other Expences</h4>
               <p style={{ margin: 0, fontSize: '18px', fontWeight: 'bold', color: '#000' }}>
                 Rs. {totalMaintenanceExpenses.toFixed(2)}
               </p>
             </div>
-            <div 
-              onClick={() => setActiveTab('supplierPayments')} 
-              style={{ 
-                background: darkMode ? '#2a2a2a' : '#f0f0f0', 
-                padding: '15px', 
-                borderRadius: '8px', 
+            <div
+              onClick={() => setActiveTab('supplierPayments')}
+              style={{
+                background: darkMode ? '#2a2a2a' : '#f0f0f0',
+                padding: '15px',
+                borderRadius: '8px',
                 minWidth: '200px',
                 border: darkMode ? '1px solid #444' : '1px solid #ddd',
                 cursor: 'pointer'
@@ -2298,11 +2298,11 @@ const AllSummary = ({ darkMode }) => {
                 Rs. {totalCheckingCharges.toFixed(2)}
               </p>
             </div> */}
-            
-            <div style={{ 
-              background: darkMode ? '#2a2a2a' : '#f0f0f0', 
-              padding: '15px', 
-              borderRadius: '8px', 
+
+            <div style={{
+              background: darkMode ? '#2a2a2a' : '#f0f0f0',
+              padding: '15px',
+              borderRadius: '8px',
               minWidth: '200px',
               border: darkMode ? '1px solid #444' : '1px solid #ddd'
             }}>
@@ -2311,10 +2311,10 @@ const AllSummary = ({ darkMode }) => {
                 Rs. {netProfit.toFixed(2)}
               </p>
             </div>
-            <div style={{ 
-              background: darkMode ? '#2a2a2a' : '#f0f0f0', 
-              padding: '15px', 
-              borderRadius: '8px', 
+            <div style={{
+              background: darkMode ? '#2a2a2a' : '#f0f0f0',
+              padding: '15px',
+              borderRadius: '8px',
               minWidth: '200px',
               border: darkMode ? '1px solid #444' : '1px solid #ddd'
             }}>
@@ -2351,47 +2351,47 @@ const AllSummary = ({ darkMode }) => {
                   </tr>
                   <tr>
                     <td style={{ paddingLeft: '20px' }}>• Additional Service Amounts</td>
-                    <td style={{ color: '#000', fontWeight: 'bold' }}>Rs. { totalAdditionalServicesAmount.toFixed(2)}</td>
+                    <td style={{ color: '#000', fontWeight: 'bold' }}>Rs. {totalAdditionalServicesAmount.toFixed(2)}</td>
                     <td>Total Additional Service Charges</td>
                   </tr>
                   <tr>
                     <td style={{ paddingLeft: '20px' }}>• Checking Charges</td>
-                    <td style={{ color: '#000', fontWeight: 'bold' }}>Rs. { totalcheckingCharge.toFixed(2)}</td>
+                    <td style={{ color: '#000', fontWeight: 'bold' }}>Rs. {totalcheckingCharge.toFixed(2)}</td>
                     <td>Total Checking Charges</td>
                   </tr>
                   <tr>
                     <td style={{ paddingLeft: '20px' }}>• Repair Cart Items</td>
-                    <td style={{ color: '#000', fontWeight: 'bold' }}>Rs. { totalRepairCost.toFixed(2)}</td>
+                    <td style={{ color: '#000', fontWeight: 'bold' }}>Rs. {totalRepairCost.toFixed(2)}</td>
                     <td>Total Repair Cart Items Charges</td>
                   </tr>
                   <tr>
                     <td style={{ paddingLeft: '20px' }}>• Discounts</td>
-                    <td style={{ color: '#000', fontWeight: 'bold' }}>Rs. { totalDiscountAmount.toFixed(2)}</td>
+                    <td style={{ color: '#000', fontWeight: 'bold' }}>Rs. {totalDiscountAmount.toFixed(2)}</td>
                     <td>Total Discounts</td>
                   </tr>
                   <tr>
                     <td>Invoice Incomes</td>
-                    <td style={{ color: '#000', fontWeight: 'bold' }}>Rs. { totalPayments.toFixed(2)}</td>
+                    <td style={{ color: '#000', fontWeight: 'bold' }}>Rs. {totalPayments.toFixed(2)}</td>
                     <td>Income from purchased Items</td>
                   </tr>
                   <tr>
                     <td style={{ paddingLeft: '20px' }}>• Cash Payments</td>
-                    <td style={{ color: '#000', fontWeight: 'bold' }}>Rs. { totalCash.toFixed(2)}</td>
+                    <td style={{ color: '#000', fontWeight: 'bold' }}>Rs. {totalCash.toFixed(2)}</td>
                     <td>Income from Cash Payments of purchased Items</td>
                   </tr>
                   <tr>
                     <td style={{ paddingLeft: '20px' }}>• Card Payments</td>
-                    <td style={{ color: '#000', fontWeight: 'bold' }}>Rs. { totalCard.toFixed(2)}</td>
+                    <td style={{ color: '#000', fontWeight: 'bold' }}>Rs. {totalCard.toFixed(2)}</td>
                     <td>Income from Card Payments of purchased Items</td>
                   </tr>
                   <tr>
                     <td style={{ paddingLeft: '20px' }}>• Bank Transfer</td>
-                    <td style={{ color: '#000', fontWeight: 'bold' }}>Rs. { totalBankTransfer.toFixed(2)}</td>
+                    <td style={{ color: '#000', fontWeight: 'bold' }}>Rs. {totalBankTransfer.toFixed(2)}</td>
                     <td>Income from Bank Transfers of purchased Items</td>
                   </tr>
                   <tr>
                     <td style={{ paddingLeft: '20px' }}>• Bank Checks</td>
-                    <td style={{ color: '#000', fontWeight: 'bold' }}>Rs. { totalBankCheck.toFixed(2)}</td>
+                    <td style={{ color: '#000', fontWeight: 'bold' }}>Rs. {totalBankCheck.toFixed(2)}</td>
                     <td>Income from Bank Checks of purchased Items</td>
                   </tr>
                   {/* <tr>
@@ -2401,7 +2401,7 @@ const AllSummary = ({ darkMode }) => {
                   </tr> */}
                   <tr>
                     <td>Invoices - Credit</td>
-                    <td style={{ color: '#000', fontWeight: 'bold' }}>Rs. { totalCredit.toFixed(2)}</td>
+                    <td style={{ color: '#000', fontWeight: 'bold' }}>Rs. {totalCredit.toFixed(2)}</td>
                     <td>Credit from purchased Items</td>
                   </tr>
                   <tr>
@@ -2434,7 +2434,7 @@ const AllSummary = ({ darkMode }) => {
                     <td style={{ color: '#000', fontWeight: 'bold' }}>Rs. {totalSupplierPayments.toFixed(2)}</td>
                     <td>All bills payments for suppliers</td>
                   </tr>
-                  
+
                   <tr>
                     <td>Checking Charges</td>
                     <td style={{ color: '#000', fontWeight: 'bold' }}>Rs. {totalCheckingCharges.toFixed(2)}</td>
@@ -2485,7 +2485,7 @@ const AllSummary = ({ darkMode }) => {
                       <tr key={`product-${p._id || idx}`}>
                         <td>Product</td>
                         <td>{p.itemCode || '-'}</td>
-                        
+
                         <td style={{ color: '#000' }}>Rs. {p.buyingPrice && p.stock ? (p.buyingPrice * p.stock).toFixed(2) : '-'}</td>
                         <td>{p.itemName || '-'}</td>
                         <td>{p.category || '-'}</td>
@@ -2558,20 +2558,20 @@ const AllSummary = ({ darkMode }) => {
                 ) : (
                   <>
                     {/* Product Expenses */}
-                    {filteredProducts.filter(p => p.buyingPrice > 0 ).map((p, idx) => (
+                    {filteredProducts.filter(p => p.buyingPrice > 0).map((p, idx) => (
                       <>
-                      <tr key={`product-${p._id || idx}`}>
-                        <td>{p.grnNumber || '-'}</td>
-                        <td>{p.itemCode || '-'}</td>
-                        <td style={{ color: '#000' }}>Rs. {p.buyingPrice ? (p.buyingPrice).toFixed(2) : '0.00'} * {p.stock ? (p.stock) : '-'}</td>
-                        <td style={{ color: '#000' }}>Rs. {p.buyingPrice && p.stock ? (p.buyingPrice * p.stock).toFixed(2) : '0.00'}</td>
-                        <td>{p.itemName || '-'}</td>
-                        <td>{p.category || '-'}</td>
-                        <td>{getLocalDateKey(p.createdAt)}</td>
-                      </tr>
-                      <tr>
+                        <tr key={`product-${p._id || idx}`}>
+                          <td>{p.grnNumber || '-'}</td>
+                          <td>{p.itemCode || '-'}</td>
+                          <td style={{ color: '#000' }}>Rs. {p.buyingPrice ? (p.buyingPrice).toFixed(2) : '0.00'} * {p.stock ? (p.stock) : '-'}</td>
+                          <td style={{ color: '#000' }}>Rs. {p.buyingPrice && p.stock ? (p.buyingPrice * p.stock).toFixed(2) : '0.00'}</td>
+                          <td>{p.itemName || '-'}</td>
+                          <td>{p.category || '-'}</td>
+                          <td>{getLocalDateKey(p.createdAt)}</td>
+                        </tr>
+                        <tr>
 
-                      </tr>
+                        </tr>
                       </>
                     ))}
                     {/* Total Row */}
@@ -2583,7 +2583,7 @@ const AllSummary = ({ darkMode }) => {
                         Rs.{' '}
                         {filteredProducts
                           // .filter(p => p.grnNumber?.toLowerCase() !== 'grn-sys01')
-                          .filter(p => p.buyingPrice > 0 )
+                          .filter(p => p.buyingPrice > 0)
                           .reduce((sum, p) => {
                             const cost = (p.buyingPrice || 0) * (p.stock || 0);
                             return sum + cost;
@@ -2656,7 +2656,7 @@ const AllSummary = ({ darkMode }) => {
                   <tr><td colSpan={6} className="no-products">No expenses found.</td></tr>
                 ) : (
                   <>
-                    
+
                     {/* Maintenance Expenses */}
                     {filteredMaintenance.map((m, idx) => (
                       <tr key={`maintenance-${m._id || idx}`}>
@@ -2760,8 +2760,8 @@ const AllSummary = ({ darkMode }) => {
               </tbody>
             </table>
           )}
-          
-            {/* Income Tab */}
+
+          {/* Income Tab */}
           {activeTab === 'incomewithbuyingproce' && (
             <table className={`product-table ${darkMode ? 'dark' : ''}`}>
               <thead>
@@ -2770,7 +2770,7 @@ const AllSummary = ({ darkMode }) => {
                   <th>Customer</th>
                   <th>Device</th>
                   <th>Issue</th>
-                  <th>Real Cost<br/>(Repair Parts)</th>
+                  <th>Real Cost<br />(Repair Parts)</th>
                   <th>Returned Cost</th>
                   {/* <th>Net Cost</th> */}
                   <th>Final Amount</th>
@@ -2786,19 +2786,19 @@ const AllSummary = ({ darkMode }) => {
                       // Calculate real cost from repairCart
                       const realCost = Array.isArray(r.repairCart)
                         ? r.repairCart.reduce((sum, item) => {
-                            const bp = getBuyingPrice(item.itemCode);
-                            
-                            return sum + (bp * (item.quantity || 0));
-                          }, 0)
+                          const bp = getBuyingPrice(item.itemCode);
+
+                          return sum + (bp * (item.quantity || 0));
+                        }, 0)
                         : 0;
 
                       // Calculate returned cost from returnCart
                       const returnedCost = Array.isArray(r.returnCart)
                         ? r.returnCart.reduce((sum, item) => {
-                            const bp = getBuyingPrice(item.itemCode);
-                            console.log("returnCart",item.itemCode, bp, item.quantity)
-                            return sum + (bp * (item.quantity || 0));
-                          }, 0)
+                          const bp = getBuyingPrice(item.itemCode);
+                          console.log("returnCart", item.itemCode, bp, item.quantity)
+                          return sum + (bp * (item.quantity || 0));
+                        }, 0)
                         : 0;
 
                       const netCost = realCost - returnedCost;
@@ -2830,7 +2830,7 @@ const AllSummary = ({ darkMode }) => {
             </table>
           )}
 
-            {/* Purchase Tab */}
+          {/* Purchase Tab */}
           {activeTab === 'purchasewithitemcost' && (
             <table className={`product-table ${darkMode ? 'dark' : ''}`}>
               <thead>
@@ -2901,8 +2901,8 @@ const AllSummary = ({ darkMode }) => {
               </tbody>
             </table>
           )}
-          
-          
+
+
 
           {/* Income Credit Tab */}
           {activeTab === 'credit-income' && (
@@ -2961,9 +2961,9 @@ const AllSummary = ({ darkMode }) => {
                   <th>Items </th>
                   {/* Show Assignee Amount column only when filtering by assignee */}
                   {assignedToFilter && (
-                  <th style={{ color: '#007bff', fontWeight: 'bold' }}>
-                    {assignedToFilter ? `${assignedToFilter}'s Amount` : 'Assignee Amount'}
-                  </th>
+                    <th style={{ color: '#007bff', fontWeight: 'bold' }}>
+                      {assignedToFilter ? `${assignedToFilter}'s Amount` : 'Assignee Amount'}
+                    </th>
                   )}
                   <th>Discount</th>
                   <th>Total Amount</th>
@@ -2984,32 +2984,32 @@ const AllSummary = ({ darkMode }) => {
                         : 0;
 
                       return (
-                      <tr key={payment._id || idx}>
-                        <td>{new Date(payment.date).toLocaleDateString()}</td>
-                        <td>{new Date(payment.date).toLocaleTimeString()}</td>
-                        <td>{payment.invoiceNumber}</td>
-                        <td>{/* Combine all item names */}
-                          {payment.items.map(item => item.itemName).join(', ')}
-                        </td>
-                        {/* <td> */}
+                        <tr key={payment._id || idx}>
+                          <td>{new Date(payment.date).toLocaleDateString()}</td>
+                          <td>{new Date(payment.date).toLocaleTimeString()}</td>
+                          <td>{payment.invoiceNumber}</td>
+                          <td>{/* Combine all item names */}
+                            {payment.items.map(item => item.itemName).join(', ')}
+                          </td>
+                          {/* <td> */}
                           {/* Combine quantities */}
                           {/* {payment.items.map(item => item.quantity).join(', ')} */}
-                        {/* </td> */}
-                        {/* <td>{payment.cashierName}</td> */}
-                        {/* Show Assignee Amount only when filtering */}
-                        {assignedToFilter && (
-                          <td style={{ color: '#007bff', fontWeight: 'bold' }}>
-                            Rs. {assigneeAmount.toFixed(2)}
-                          </td>
-                        )}
-                        <td>Rs. {(payment.discountApplied || 0).toFixed(2)}</td>
-                        <td>Rs. {payment.totalAmount.toFixed(2)}</td>
-                        <td>{payment.paymentMethod}</td>
-                        {/* <td>{getLocalDateKey(r.createdAt)}</td>
+                          {/* </td> */}
+                          {/* <td>{payment.cashierName}</td> */}
+                          {/* Show Assignee Amount only when filtering */}
+                          {assignedToFilter && (
+                            <td style={{ color: '#007bff', fontWeight: 'bold' }}>
+                              Rs. {assigneeAmount.toFixed(2)}
+                            </td>
+                          )}
+                          <td>Rs. {(payment.discountApplied || 0).toFixed(2)}</td>
+                          <td>Rs. {payment.totalAmount.toFixed(2)}</td>
+                          <td>{payment.paymentMethod}</td>
+                          {/* <td>{getLocalDateKey(r.createdAt)}</td>
                         <td>{r.updatedAt ? new Date(r.updatedAt).toLocaleString() : '-'}</td> */}
-                      </tr>
-                    );
-                  })
+                        </tr>
+                      );
+                    })
                 )}
               </tbody>
             </table>
@@ -3025,9 +3025,9 @@ const AllSummary = ({ darkMode }) => {
                   <th>INV No </th>
                   <th>Items </th>
                   {assignedToFilter && (
-                  <th style={{ color: '#007bff', fontWeight: 'bold' }}>
-                    {assignedToFilter ? `${assignedToFilter}'s Amount` : 'Assignee Amount'}
-                  </th>
+                    <th style={{ color: '#007bff', fontWeight: 'bold' }}>
+                      {assignedToFilter ? `${assignedToFilter}'s Amount` : 'Assignee Amount'}
+                    </th>
                   )}
                   <th>Discount</th>
                   <th>Total Amount</th>
@@ -3041,12 +3041,12 @@ const AllSummary = ({ darkMode }) => {
                   <tr><td colSpan={11} className="no-products">No income found.</td></tr>
                 ) : (
                   filteredPayments.filter(isPaymentOnCredit).map((payment, idx) => {
-                      // Calculate only items assigned to current assignee
-                      const assigneeAmount = assignedToFilter
-                        ? calculateAssigneeItemTotal(payment.items, assignedToFilter)
-                        : 0;
+                    // Calculate only items assigned to current assignee
+                    const assigneeAmount = assignedToFilter
+                      ? calculateAssigneeItemTotal(payment.items, assignedToFilter)
+                      : 0;
 
-                      return (
+                    return (
                       <tr key={payment._id || idx}>
                         <td>{new Date(payment.date).toLocaleDateString()}</td>
                         <td>{new Date(payment.date).toLocaleTimeString()}</td>
@@ -3055,8 +3055,8 @@ const AllSummary = ({ darkMode }) => {
                           {payment.items.map(item => item.itemName).join(', ')}
                         </td>
                         {/* <td> */}
-                          {/* Combine quantities */}
-                          {/* {payment.items.map(item => item.quantity).join(', ')} */}
+                        {/* Combine quantities */}
+                        {/* {payment.items.map(item => item.quantity).join(', ')} */}
                         {/* </td> */}
                         {/* <td>{payment.cashierName}</td> */}
                         {assignedToFilter && (
@@ -3106,8 +3106,8 @@ const AllSummary = ({ darkMode }) => {
                         {payment.items.map(item => item.itemName).join(', ')}
                       </td>
                       {/* <td> */}
-                        {/* Combine quantities */}
-                        {/* {payment.items.map(item => item.quantity).join(', ')} */}
+                      {/* Combine quantities */}
+                      {/* {payment.items.map(item => item.quantity).join(', ')} */}
                       {/* </td> */}
                       {/* <td>{payment.cashierName}</td> */}
                       <td>Rs. {(payment.discountApplied || 0).toFixed(2)}</td>
@@ -3120,7 +3120,7 @@ const AllSummary = ({ darkMode }) => {
                 )}
               </tbody>
             </table>
-          )}        
+          )}
 
           {/* Returned Extra Income Tab */}
           {activeTab === 'returnedExtraIncome' && (
@@ -3157,7 +3157,7 @@ const AllSummary = ({ darkMode }) => {
                 )}
               </tbody>
             </table>
-          )}    
+          )}
 
           {/* Returned Payments Tab */}
           {activeTab === 'returnedPayments' && (
@@ -3187,15 +3187,15 @@ const AllSummary = ({ darkMode }) => {
                         <td style={{ color: '#000' }}>Rs. {originalAmount.toFixed(2)}</td>
                         <td style={{ color: '#d32f2f' }}>Rs. {serviceCharge.toFixed(2)}</td>
                         <td style={{ color: '#1976d2', fontWeight: 'bold' }}>Rs. {p.rettotalAmount.toFixed(2)}</td>
-                        <td style={{ 
-                            whiteSpace: 'normal', 
-                            wordWrap: 'break-word', 
-                            maxWidth: '200px' // optional: limit width to force wrap
-                          }}>
-                            {p.items
-                          .filter(item => item.retquantity > 0 && !(item.givenQty > 0))
-                          .map(item => `${item.itemName} (${item.category || 'No Category'})`)
-                          .join(', ')}
+                        <td style={{
+                          whiteSpace: 'normal',
+                          wordWrap: 'break-word',
+                          maxWidth: '200px' // optional: limit width to force wrap
+                        }}>
+                          {p.items
+                            .filter(item => item.retquantity > 0 && !(item.givenQty > 0))
+                            .map(item => `${item.itemName} (${item.category || 'No Category'})`)
+                            .join(', ')}
                         </td>
                       </tr>
                     );
@@ -3226,8 +3226,8 @@ const AllSummary = ({ darkMode }) => {
                     // Calculate returned parts amount
                     const returnCartAmount = Array.isArray(repair.returnCart)
                       ? repair.returnCart.reduce((sum, item) => {
-                          return sum + ((item.sellingPrice || 0) * (item.quantity || 0) - (item.discount || 0));
-                        }, 0)
+                        return sum + ((item.sellingPrice || 0) * (item.quantity || 0) - (item.discount || 0));
+                      }, 0)
                       : 0;
 
                     // Calculate returned services amount
@@ -3241,25 +3241,25 @@ const AllSummary = ({ darkMode }) => {
                       <tr key={repair._id || idx}>
                         <td>{repair.repairInvoice || repair.repairCode || '-'}</td>
                         <td>{repair.customerName || '-'}</td>
-                        <td style={{ 
-                            whiteSpace: 'normal', 
-                            wordWrap: 'break-word', 
-                            maxWidth: '200px' // optional: limit width to force wrap
-                          }}>
+                        <td style={{
+                          whiteSpace: 'normal',
+                          wordWrap: 'break-word',
+                          maxWidth: '200px' // optional: limit width to force wrap
+                        }}>
                           {Array.isArray(repair.returnCart) && repair.returnCart.length > 0 ? (
                             repair.returnCart.map((item, i) => (
                               <div key={i}>
-                                {item.itemName} ({item.quantity} × Rs. {item.sellingPrice}) 
+                                {item.itemName} ({item.quantity} × Rs. {item.sellingPrice})
                                 {item.discount > 0 && ` - Disc: Rs. ${item.discount}`}
                               </div>
                             ))
                           ) : '—'}
                         </td>
-                        <td style={{ 
-                            whiteSpace: 'normal', 
-                            wordWrap: 'break-word', 
-                            maxWidth: '200px' // optional: limit width to force wrap
-                          }}>
+                        <td style={{
+                          whiteSpace: 'normal',
+                          wordWrap: 'break-word',
+                          maxWidth: '200px' // optional: limit width to force wrap
+                        }}>
                           {Array.isArray(repair.returnedadditionalServices) && repair.returnedadditionalServices.length > 0 ? (
                             repair.returnedadditionalServices.map((svc, i) => (
                               <div key={i}>{svc.serviceName}: Rs. {svc.serviceAmount}</div>

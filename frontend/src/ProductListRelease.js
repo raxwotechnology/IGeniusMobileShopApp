@@ -21,7 +21,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { useMemo } from "react";
 
 //const API_URL = 'https://igeniusmobileshopapp.onrender.com/api/products';
- const API_URL = 'https://igeniusmobileshopapp.onrender.com/api/products';
+const API_URL = 'https://igeniusmobileshopapp.onrender.com/api/products';
 const CLICKED_PRODUCTS_API_URL = 'https://igeniusmobileshopapp.onrender.com/api/clicked-products';
 
 const REPAIRS_API_URL = 'https://igeniusmobileshopapp.onrender.com/api/productsRepair';
@@ -75,7 +75,7 @@ const ProductList = ({ darkMode }) => {
   const [showTrackModal, setShowTrackModal] = useState(false);
 
   const [selectedCategories, setSelectedCategories] = useState(new Set());
-  const [showCategoryFilter, setShowCategoryFilter] = useState(false);  
+  const [showCategoryFilter, setShowCategoryFilter] = useState(false);
 
   const [usedQuantities, setUsedQuantities] = useState({});
   const [usedpQuantities, setUsedpQuantities] = useState({});
@@ -97,10 +97,10 @@ const ProductList = ({ darkMode }) => {
   const [returnQuantity, setReturnQuantity] = useState('');
 
   const userRole = localStorage.getItem('role');
-  
+
   const filteredCategoriesForSearch = categorySearch.trim() === ''
-  ? allCategories
-  : allCategories.filter(cat =>
+    ? allCategories
+    : allCategories.filter(cat =>
       cat.toLowerCase().includes(categorySearch.toLowerCase().trim())
     );
 
@@ -135,14 +135,14 @@ const ProductList = ({ darkMode }) => {
           const dataObj = product.data || {};
           return {
             _id: product._id,
-            grnNumber:product.grnNumber,
+            grnNumber: product.grnNumber,
             itemCode: product.itemCode,
             itemName: product.itemName,
             category: product.category,
             stock: product.stock,
             buyingPrice: product.buyingPrice,
             sellingPrice: product.sellingPrice,
-            Supplier:product.Supplier,
+            Supplier: product.Supplier,
             createdAt: product.createdAt,
             addedBackAt: product.addedBackAt,
             returnstock: product.returnstock,
@@ -370,7 +370,7 @@ const ProductList = ({ darkMode }) => {
           };
         });
 
-        const payments = paymentList
+      const payments = paymentList
         .filter((repair) =>
           repair.items?.some((cartItem) => cartItem.itemCode === itemCode)
         )
@@ -515,12 +515,12 @@ const ProductList = ({ darkMode }) => {
       setProducts(prev =>
         prev.map(p =>
           p.itemCode === selectedProductForAction.itemCode
-            ? { 
-                ...p, 
-                stock: p.stock + qty, 
-                returnRelease: (p.returnRelease || 0) + qty ,
-                returnstock: Math.max(0, (p.returnstock || 0) - qty)
-              }
+            ? {
+              ...p,
+              stock: p.stock + qty,
+              returnRelease: (p.returnRelease || 0) + qty,
+              returnstock: Math.max(0, (p.returnstock || 0) - qty)
+            }
             : p
         )
       );
@@ -545,14 +545,14 @@ const ProductList = ({ darkMode }) => {
   // const handleAddProductClick = async (product) => {
   //   // Show confirmation dialog
   //   const isConfirmed = window.confirm(`Are you sure you want to delete "${product.itemName}"? This action cannot be undone.`);
-    
+
   //   if (!isConfirmed) {
   //     return; // User cancelled the deletion
   //   }
-    
+
   //   try {
   //     console.log('Delete clicked for:', product.itemName);
-      
+
   //     // Store clicked product in localStorage for now
   //     const clickedProducts = JSON.parse(localStorage.getItem('clickedProducts') || '[]');
   //     const username = localStorage.getItem('username') || localStorage.getItem('cashierName') || 'system';
@@ -562,7 +562,7 @@ const ProductList = ({ darkMode }) => {
   //       clickedFrom: 'product-list',
   //       clickedBy: username
   //     };
-      
+
   //     // Check if product is already clicked
   //     const isAlreadyClicked = clickedProducts.some(cp => cp._id === product._id);
   //     if (!isAlreadyClicked) {
@@ -570,15 +570,15 @@ const ProductList = ({ darkMode }) => {
   //       localStorage.setItem('clickedProducts', JSON.stringify(clickedProducts));
   //       console.log('Product added to localStorage:', newClickedProduct);
   //     }
-      
+
   //     console.log('Stored clicked products:', clickedProducts);
-      
+
   //     // Immediately remove the clicked product from the current list
   //     setProducts(prevProducts => prevProducts.filter(p => p._id !== product._id));
-      
+
   //     // Show success message
   //     alert(`${product.itemName} has been deleted and moved to the deleted products page.`);
-      
+
   //     // Navigate to the add product page with the product data
   //     console.log('ProductList - Navigating to DeleteProduct with product:', product);
   //     navigate('/AddProduct', {
@@ -597,72 +597,72 @@ const ProductList = ({ darkMode }) => {
   // };
 
   const handleAddProductClick = async (product) => {
-  // Confirm deletion
-  const isConfirmed = window.confirm(`Are you sure you want to delete "${product.itemName}"? This will hide it from the product list.`);
-  if (!isConfirmed) return;
+    // Confirm deletion
+    const isConfirmed = window.confirm(`Are you sure you want to delete "${product.itemName}"? This will hide it from the product list.`);
+    if (!isConfirmed) return;
 
-  try {
-    console.log('Deleting product:', product.itemName);
+    try {
+      console.log('Deleting product:', product.itemName);
 
-    const username = localStorage.getItem('username') || 
-                     localStorage.getItem('cashierName') || 
-                     'system';
+      const username = localStorage.getItem('username') ||
+        localStorage.getItem('cashierName') ||
+        'system';
 
-    // 🚀 Send request to backend to soft-delete
-    const response = await fetch(`${API_URL}/${product._id}/deleteProduct`, {
-      method: 'PATCH',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`
-      },
-      body: JSON.stringify({ deletedBy: username })
-    });
+      // 🚀 Send request to backend to soft-delete
+      const response = await fetch(`${API_URL}/${product._id}/deleteProduct`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({ deletedBy: username })
+      });
 
-    const result = await response.json();
+      const result = await response.json();
 
-    if (!response.ok) {
-      throw new Error(result.message || 'Failed to delete product');
-    }
+      if (!response.ok) {
+        throw new Error(result.message || 'Failed to delete product');
+      }
 
-    console.log('Product soft-deleted:', result.product);
+      console.log('Product soft-deleted:', result.product);
 
-    // ✅ Remove from UI
-    setProducts(prev => prev.filter(p => p._id !== product._id));
+      // ✅ Remove from UI
+      setProducts(prev => prev.filter(p => p._id !== product._id));
 
-    // ✅ Optional: Save to localStorage for history (used in AddProduct page)
-    // const clickedProducts = JSON.parse(localStorage.getItem('clickedProducts') || '[]');
-    // const alreadyExists = clickedProducts.some(cp => cp._id === product._id);
+      // ✅ Optional: Save to localStorage for history (used in AddProduct page)
+      // const clickedProducts = JSON.parse(localStorage.getItem('clickedProducts') || '[]');
+      // const alreadyExists = clickedProducts.some(cp => cp._id === product._id);
 
-    // if (!alreadyExists) {
-    //   const newClickedProduct = {
-    //     ...product,
-    //     clickedAt: new Date().toISOString(),
-    //     clickedFrom: 'product-list',
-    //     clickedBy: username,
-    //     deletedAt: new Date().toISOString() // sync with backend
-    //   };
-    //   clickedProducts.push(newClickedProduct);
-    //   localStorage.setItem('clickedProducts', JSON.stringify(clickedProducts));
-    // }
-
-    // ✅ Show success message
-    alert(`${product.itemName} has been deleted and hidden from the product list.`);
-
-    // ✅ Navigate to deleted products page
-    navigate('/AddProduct', {
-      // state: {
-      //   product: product,
-      //   clickedAt: new Date().toISOString(),
-      //   clickedFrom: 'product-list',
-      //   darkMode: darkMode
+      // if (!alreadyExists) {
+      //   const newClickedProduct = {
+      //     ...product,
+      //     clickedAt: new Date().toISOString(),
+      //     clickedFrom: 'product-list',
+      //     clickedBy: username,
+      //     deletedAt: new Date().toISOString() // sync with backend
+      //   };
+      //   clickedProducts.push(newClickedProduct);
+      //   localStorage.setItem('clickedProducts', JSON.stringify(clickedProducts));
       // }
-    });
 
-  } catch (err) {
-    console.error('Error deleting product:', err);
-    alert(`Error: ${err.message}`);
-  }
-};
+      // ✅ Show success message
+      alert(`${product.itemName} has been deleted and hidden from the product list.`);
+
+      // ✅ Navigate to deleted products page
+      navigate('/AddProduct', {
+        // state: {
+        //   product: product,
+        //   clickedAt: new Date().toISOString(),
+        //   clickedFrom: 'product-list',
+        //   darkMode: darkMode
+        // }
+      });
+
+    } catch (err) {
+      console.error('Error deleting product:', err);
+      alert(`Error: ${err.message}`);
+    }
+  };
 
   const normalize = (str) => str.toLowerCase().replace(/\s+/g, ' ');
 
@@ -682,7 +682,7 @@ const ProductList = ({ darkMode }) => {
   //     });
   function fuzzyIncludes(haystack, needle) {
 
-  
+
     // Remove non-alphanumeric and split needle into chars
     const cleanHaystack = Array.from(haystack);
     const cleanNeedle = Array.from(needle);
@@ -732,15 +732,15 @@ const ProductList = ({ darkMode }) => {
       // });
       let subresult1 = products.filter(product => {
         const name = (product.itemName + product.grnNumber + product.category + product.Supplier).toLowerCase()
-        .trim()
-        .replace(/\s+/g, '');
-        
+          .trim()
+          .replace(/\s+/g, '');
+
 
         // Split query into meaningful words, remove empty
         const queryWords = searchQuery
-        .toLowerCase()
-        .trim()
-        .replace(/\s+/g, '');
+          .toLowerCase()
+          .trim()
+          .replace(/\s+/g, '');
         // .replace(/[^a-z0-9\s]/g, '') // Remove punctuation
         // .split(/\s+/)
         // .filter(Boolean);
@@ -755,15 +755,15 @@ const ProductList = ({ darkMode }) => {
 
       let subresult2 = products.filter(product => {
         const name = (product.itemName + product.grnNumber + product.category + product.Supplier).toLowerCase()
-        .trim()
-        .replace(/\s+/g, '');
-        
+          .trim()
+          .replace(/\s+/g, '');
+
 
         // Split query into meaningful words, remove empty
         const queryWords = searchQuery
-        .toLowerCase()
-        .trim()
-        .replace(/\s+/g, '');
+          .toLowerCase()
+          .trim()
+          .replace(/\s+/g, '');
         // .replace(/[^a-z0-9\s]/g, '') // Remove punctuation
         // .split(/\s+/)
         // .filter(Boolean);
@@ -772,14 +772,14 @@ const ProductList = ({ darkMode }) => {
         if (queryWords.length === 0) return true;
 
         // console.log("Search query", queryWords);
-        
+
         return fuzzyIncludes(name, queryWords);
       }).sort((a, b) => a.itemName.localeCompare(b.itemName));
 
       if (subresult1.length === 0) {
         result = subresult2;
       }
-      else{
+      else {
         result = subresult1;
       }
 
@@ -793,11 +793,11 @@ const ProductList = ({ darkMode }) => {
 
     // Apply low stock filter if checkbox is checked
     if (showLowStockOnly) {
-      result = result.filter(product => (product.stock || 0) <= 2 );
+      result = result.filter(product => (product.stock || 0) <= 2);
     }
 
     if (hideLowStockOnly) {
-      result = result.filter(product => (product.stock || 0) > 2 );
+      result = result.filter(product => (product.stock || 0) > 2);
     }
 
     if (show0StockOnly) {
@@ -808,10 +808,10 @@ const ProductList = ({ darkMode }) => {
       result = result.filter(product => (product.stock || 0) !== 0);
     }
 
-    else{
+    else {
       result = result.filter(product => (product.returnstock || 0) > 0);
       result = result;
-      
+
     }
 
     // Apply sorting if a column is selected
@@ -884,10 +884,10 @@ const ProductList = ({ darkMode }) => {
     }
 
     // Calculate Real Balance
-    const realBalance = (supplierQuantities[product.itemCode] || 0) 
-                      - (usedQuantities[product.itemCode] || 0) 
-                      - (product.returnstock || 0) 
-                      - (product.damagedstock || 0);
+    const realBalance = (supplierQuantities[product.itemCode] || 0)
+      - (usedQuantities[product.itemCode] || 0)
+      - (product.returnstock || 0)
+      - (product.damagedstock || 0);
 
     // Only include if Real Balance ≠ Stock
     return realBalance !== (product.stock || 0);
@@ -1111,7 +1111,7 @@ const ProductList = ({ darkMode }) => {
       // Send to backend (as JSON array)
       const response = await fetch(`${API_URL}/bulk-upload`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json',"Authorization": `Bearer ${token}` },
+        headers: { 'Content-Type': 'application/json', "Authorization": `Bearer ${token}` },
         body: JSON.stringify({ products: recordsWithId, uploadId, uploadedBy: localStorage.getItem('username') || 'system' })
       });
       if (!response.ok) {
@@ -1147,13 +1147,13 @@ const ProductList = ({ darkMode }) => {
       formData.append('uploadedBy', localStorage.getItem('username') || 'system');
       // Optionally, add a unique uploadId if needed
       // formData.append('uploadId', uuidv4());
-    
+
       const response = await fetch('https://igeniusmobileshopapp.onrender.com/api/product-uploads/bulk-upload',
-      {
-        method: 'POST',
-        headers: {  "Authorization": `Bearer ${token}` },
-        body: formData
-      });
+        {
+          method: 'POST',
+          headers: { "Authorization": `Bearer ${token}` },
+          body: formData
+        });
       const result = await response.json();
       if (!response.ok) {
         setUploadStatus('Upload failed: ' + (result.message || 'Unknown error'));
@@ -1211,13 +1211,13 @@ const ProductList = ({ darkMode }) => {
   };
 
   const handleSort = (key) => {
-  setSortConfig((prevConfig) => {
-    // If clicking the same column, toggle direction
-    const direction =
-      prevConfig.key === key && prevConfig.direction === 'asc' ? 'desc' : 'asc';
-    return { key, direction };
-  });
-};
+    setSortConfig((prevConfig) => {
+      // If clicking the same column, toggle direction
+      const direction =
+        prevConfig.key === key && prevConfig.direction === 'asc' ? 'desc' : 'asc';
+      return { key, direction };
+    });
+  };
 
   return (
     <div className={`product-repair-list-container ${darkMode ? "dark" : ""}`}>
@@ -1226,7 +1226,7 @@ const ProductList = ({ darkMode }) => {
       </div>
       <div className="search-action-container">
         <div className={`search-bar-container ${darkMode ? 'dark' : ''}`}>
-          {(!searchQuery) ? <FontAwesomeIcon icon={faSearch} className="search-icon" /> : <></> }
+          {(!searchQuery) ? <FontAwesomeIcon icon={faSearch} className="search-icon" /> : <></>}
           <input
             type="text"
             placeholder="       Search..."
@@ -1248,12 +1248,12 @@ const ProductList = ({ darkMode }) => {
           {/* Low Stock Filter Checkbox */}
           <span style={{ display: 'flex', alignItems: 'center', fontSize: 14, color: '#666', marginRight: 4 }}>
             Show Low Stock
-          
+
             <span style={{ fontSize: 14, color: '#666', marginLeft: 8, marginTop: 8, marginRight: 8 }}>
               <input
                 type="checkbox"
                 checked={showLowStockOnly}
-                onChange={(e) => {setShowLowStockOnly(e.target.checked); setHideLowStockOnly(false);}}
+                onChange={(e) => { setShowLowStockOnly(e.target.checked); setHideLowStockOnly(false); }}
               />
             </span>
 
@@ -1263,34 +1263,34 @@ const ProductList = ({ darkMode }) => {
               <input
                 type="checkbox"
                 checked={hideLowStockOnly}
-                onChange={(e) => {setHideLowStockOnly(e.target.checked); setShowLowStockOnly(false);}}
+                onChange={(e) => { setHideLowStockOnly(e.target.checked); setShowLowStockOnly(false); }}
               />
             </span>
-          
+
           </span>
           <span>/</span>
           {/* Low Stock Filter Checkbox */}
           <span style={{ display: 'flex', alignItems: 'center', fontSize: 14, color: '#666', marginRight: 8 }}>
-            Show 0 Stock 
-          
+            Show 0 Stock
+
             <span style={{ fontSize: 14, color: '#666', marginLeft: 8, marginTop: 8, marginRight: 8 }}>
               <input
                 type="checkbox"
                 checked={show0StockOnly}
-                onChange={(e) => {setShow0StockOnly(e.target.checked); setHide0StockOnly(false);}}
+                onChange={(e) => { setShow0StockOnly(e.target.checked); setHide0StockOnly(false); }}
               />
             </span>
 
-            Hide 0 Stock 
-          
+            Hide 0 Stock
+
             <span style={{ fontSize: 14, color: '#666', marginLeft: 8, marginTop: 8 }}>
               <input
                 type="checkbox"
                 checked={hide0StockOnly}
-                onChange={(e) => {setHide0StockOnly(e.target.checked); setShow0StockOnly(false);}}
+                onChange={(e) => { setHide0StockOnly(e.target.checked); setShow0StockOnly(false); }}
               />
             </span>
-          
+
           </span>
 
           {/* <button onClick={handleClearAll} className="btn-primary" style={{ background: '#dc3545', color: '#fff' }}>Clear All</button> */}
@@ -1318,7 +1318,7 @@ const ProductList = ({ darkMode }) => {
           </button> */}
         </div>
       </div>
-      <div className="search-action-container">  
+      <div className="search-action-container">
         {/* Category Filter */}
         <div className="category-filter-container" style={{ marginTop: '12px' }} ref={categoryFilterRef} >
           {/* Filter Button to Expand/Collapse */}
@@ -1480,9 +1480,9 @@ const ProductList = ({ darkMode }) => {
             </div>
           )}
         </div>
-          <span style={{ fontSize: 14, color: '#666', marginRight: 8 }}>
-            Products: {totalProducts}
-          </span>
+        <span style={{ fontSize: 14, color: '#666', marginRight: 8 }}>
+          Products: {totalProducts}
+        </span>
         {/* <div style={{ 
           fontSize: '12px', 
           color: '#666', 
@@ -1522,15 +1522,15 @@ const ProductList = ({ darkMode }) => {
             </div>
             <div className="report-modal-buttons">
               <button onClick={generateExcel} className="report-btn black">
-                <FontAwesomeIcon icon={faFileExcel} style={{marginRight: 8}} /> Excel
+                <FontAwesomeIcon icon={faFileExcel} style={{ marginRight: 8 }} /> Excel
               </button>
               <button onClick={generatePDF} className="report-btn black">
-                <FontAwesomeIcon icon={faFilePdf} style={{marginRight: 8}} /> PDF
+                <FontAwesomeIcon icon={faFilePdf} style={{ marginRight: 8 }} /> PDF
               </button>
             </div>
           </div>
         </div>
-              )}
+      )}
       {/* {uploadSuccess && (
           <div style={{
             backgroundColor: '#d4edda',
@@ -1562,7 +1562,7 @@ const ProductList = ({ darkMode }) => {
               <col style={{ width: '12%' }} />   {/* Time */}
               <col style={{ width: '8%' }} />   {/* Time */}
               <col style={{ width: '15%' }} />  {/* Invoice No. */}
-              
+
               <col style={{ width: '8%' }} />  {/* Payment Method ← treated as "category" */}
               <col style={{ width: '10%' }} />  {/* Cashier Name */}
               <col style={{ width: '4%' }} />   {/* Discount */}
@@ -1645,24 +1645,24 @@ const ProductList = ({ darkMode }) => {
             </thead>
             <tbody>
               {paginatedProductsForModal.map((product, idx) => (
-                  <tr key={product._id || product.itemCode || idx} style={product.source === 'uploaded' ? { background: '#f7f7f7' } : {}}>
-                    {/* <td>{product.itemCode || 'N/A'}</td> */}
-                    <td>
-                      <span style={{ color: product.stock <= 2 ? product.stock == 0 ? 'red' : '#2957F0' : 'black', fontWeight:  'bold'  }}>
-                        {product.grnNumber} 
-                      </span>
-                    </td>
-                    <td>
-                      <span style={{ color: product.stock <= 2 ? product.stock == 0 ? 'red' : '#2957F0' : 'black', fontWeight:  'bold' , whiteSpace: 'normal', wordBreak: 'break-word' }}>
-                        {product.itemName} 
-                      </span>
-                    </td>
-                    <td>
-                      <span style={{ color: product.stock <= 2 ? product.stock == 0 ? 'red' : '#2957F0' : 'black', fontWeight: 'bold' , whiteSpace: 'normal', wordBreak: 'break-word' }}>
-                        {product.category} 
-                      </span>
-                    </td>
-                    {/* <td>
+                <tr key={product._id || product.itemCode || idx} style={product.source === 'uploaded' ? { background: '#f7f7f7' } : {}}>
+                  {/* <td>{product.itemCode || 'N/A'}</td> */}
+                  <td>
+                    <span style={{ color: product.stock <= 2 ? product.stock == 0 ? 'red' : '#2957F0' : 'black', fontWeight: 'bold' }}>
+                      {product.grnNumber}
+                    </span>
+                  </td>
+                  <td>
+                    <span style={{ color: product.stock <= 2 ? product.stock == 0 ? 'red' : '#2957F0' : 'black', fontWeight: 'bold', whiteSpace: 'normal', wordBreak: 'break-word' }}>
+                      {product.itemName}
+                    </span>
+                  </td>
+                  <td>
+                    <span style={{ color: product.stock <= 2 ? product.stock == 0 ? 'red' : '#2957F0' : 'black', fontWeight: 'bold', whiteSpace: 'normal', wordBreak: 'break-word' }}>
+                      {product.category}
+                    </span>
+                  </td>
+                  {/* <td>
                       <span style={{ color: product.stock <= 2 ? product.stock == 0 ? 'red' : '#2957F0' : 'black', fontWeight:  'bold'  }}>
                         {(product.returnstock)} 
                       </span>
@@ -1672,36 +1672,36 @@ const ProductList = ({ darkMode }) => {
                         {(product.damagedstock)} 
                       </span>
                     </td> */}
-                    <td>
-                      {(usageLoading && supplierLoading) ? (
-                        <span>⋯</span>
-                      ) : (
-                        <span style={{ color: product.stock <= 2 ? product.stock == 0 ? 'red' : '#2957F0' : 'black', fontWeight: 'bold'  }}>
-                          {product.stock} / {product.Supplier === 'Unknown' ? '-' : ((supplierQuantities[product.itemCode]||0) - (usedQuantities[product.itemCode]||0) - (product.returnstock||0) - (product.damagedstock||0) + (product.returnRelease|| 0))}
-                        </span>
-                      )}
-                    </td>
-                    <td>
-                      {(usageLoading && supplierLoading) ? (
-                        <span>⋯</span>
-                      ) : (
-                        <span style={{ color: product.stock <= 2 ? product.stock == 0 ? 'red' : '#2957F0' : 'black', fontWeight: 'bold'  }}>
-                          {(product.returnstock) || 0}  / {(product.damagedstock)|| 0} / {(product.returnRelease)|| 0} 
-                        </span>
-                      )}
-                    </td>
-                    <td>
-                      {(usageLoading && supplierLoading) ? (
-                        <span>⋯</span>
-                      ) : (usedQuantities[product.itemCode] !== undefined || supplierQuantities[product.itemCode] !== undefined) ? (
-                        <span style={{ color: product.stock <= 2 ? (product.stock === 0 ? 'red' : '#2957F0') : 'black', fontWeight: 'bold' }}>
-                          {usedQuantities[product.itemCode] || 0} ( {usedrQuantities[product.itemCode] || 0} / {usedpQuantities[product.itemCode] || 0} ) - {supplierQuantities[product.itemCode] || 0}
-                        </span>
-                      ) : (
-                        '—'
-                      )}
-                    </td>
-                    {/* <td>
+                  <td>
+                    {(usageLoading && supplierLoading) ? (
+                      <span>⋯</span>
+                    ) : (
+                      <span style={{ color: product.stock <= 2 ? product.stock == 0 ? 'red' : '#2957F0' : 'black', fontWeight: 'bold' }}>
+                        {product.stock} / {product.Supplier === 'Unknown' ? '-' : ((supplierQuantities[product.itemCode] || 0) - (usedQuantities[product.itemCode] || 0) - (product.returnstock || 0) - (product.damagedstock || 0) + (product.returnRelease || 0))}
+                      </span>
+                    )}
+                  </td>
+                  <td>
+                    {(usageLoading && supplierLoading) ? (
+                      <span>⋯</span>
+                    ) : (
+                      <span style={{ color: product.stock <= 2 ? product.stock == 0 ? 'red' : '#2957F0' : 'black', fontWeight: 'bold' }}>
+                        {(product.returnstock) || 0}  / {(product.damagedstock) || 0} / {(product.returnRelease) || 0}
+                      </span>
+                    )}
+                  </td>
+                  <td>
+                    {(usageLoading && supplierLoading) ? (
+                      <span>⋯</span>
+                    ) : (usedQuantities[product.itemCode] !== undefined || supplierQuantities[product.itemCode] !== undefined) ? (
+                      <span style={{ color: product.stock <= 2 ? (product.stock === 0 ? 'red' : '#2957F0') : 'black', fontWeight: 'bold' }}>
+                        {usedQuantities[product.itemCode] || 0} ( {usedrQuantities[product.itemCode] || 0} / {usedpQuantities[product.itemCode] || 0} ) - {supplierQuantities[product.itemCode] || 0}
+                      </span>
+                    ) : (
+                      '—'
+                    )}
+                  </td>
+                  {/* <td>
                       {usageLoading ? (
                         <span>⋯</span>
                       ) : usedrQuantities[product.itemCode] !== undefined ? (
@@ -1723,7 +1723,7 @@ const ProductList = ({ darkMode }) => {
                         '—'
                       )}
                     </td> */}
-                    {/* <td>
+                  {/* <td>
                       {supplierLoading ? (
                         <span>⋯</span>
                       ) : supplierQuantities[product.itemCode] !== undefined ? (
@@ -1734,19 +1734,19 @@ const ProductList = ({ darkMode }) => {
                         '—'
                       )}
                     </td> */}
-                    {/* <td>{product.supplierName || 'N/A'}</td> */}
-                    {/* <td>
+                  {/* <td>{product.supplierName || 'N/A'}</td> */}
+                  {/* <td>
                       <span style={{ color: product.stock <= 2 ? product.stock == 0 ? 'red' : '#2957F0' : 'black', fontWeight: 'bold' }}>
                         {product.stock > 0 ? 'In Stock' : 'Out of Stock'}
                       </span>
                     </td> */}
-                    <td>
-                      <span style={{ color: product.stock <= 2 ? product.stock == 0 ? 'red' : '#2957F0' : 'black', fontWeight: 'bold' }}>
-                        {product.Supplier === 'Unknown' ? 'SYSTEM' : product.Supplier }
-                      </span>
-                    </td>
-                    <td>{product.createdAt ? new Date(product.createdAt).toLocaleString() : 'N/A'}</td>
-                    {/* <td>{product.addedBackAt ? (
+                  <td>
+                    <span style={{ color: product.stock <= 2 ? product.stock == 0 ? 'red' : '#2957F0' : 'black', fontWeight: 'bold' }}>
+                      {product.Supplier === 'Unknown' ? 'SYSTEM' : product.Supplier}
+                    </span>
+                  </td>
+                  <td>{product.createdAt ? new Date(product.createdAt).toLocaleString() : 'N/A'}</td>
+                  {/* <td>{product.addedBackAt ? (
                       <div>
                         <div>{new Date(product.addedBackAt).toLocaleString()}</div>
                         <div style={{ fontSize: '0.8em', color: '#666' }}>
@@ -1756,22 +1756,22 @@ const ProductList = ({ darkMode }) => {
                     ) : (
                       'N/A'
                     )}</td> */}
-                    <td>
-                      <div className="action-container">
-                        <button
-                          onClick={(e) => {
-                            e.preventDefault();
-                            setShowActionMenu(showActionMenu === (product._id || product.itemCode || idx) ? null : (product._id || product.itemCode || idx));
-                          }}
-                          className="action-dot-btn"
-                        >
-                          ⋮
-                        </button>
-                        {showActionMenu === (product._id || product.itemCode || idx) && (
-                          <>
-                            <div className="action-menu-overlay" onClick={() => setShowActionMenu(null)} />
-                            <div className="action-menu">
-                              {/* <button
+                  <td>
+                    <div className="action-container">
+                      <button
+                        onClick={(e) => {
+                          e.preventDefault();
+                          setShowActionMenu(showActionMenu === (product._id || product.itemCode || idx) ? null : (product._id || product.itemCode || idx));
+                        }}
+                        className="action-dot-btn"
+                      >
+                        ⋮
+                      </button>
+                      {showActionMenu === (product._id || product.itemCode || idx) && (
+                        <>
+                          <div className="action-menu-overlay" onClick={() => setShowActionMenu(null)} />
+                          <div className="action-menu">
+                            {/* <button
                                 onClick={() => {
                                   setShowActionMenu(null);
                                   handleTrackItem(product);
@@ -1783,8 +1783,8 @@ const ProductList = ({ darkMode }) => {
                                   <span>Track Usage</span>
                                 </div>
                               </button> */}
-                              
-                              {/* <button
+
+                            {/* <button
                                 onClick={() => {
                                   setShowActionMenu(null);
                                   handleReturnStock(product);
@@ -1796,32 +1796,32 @@ const ProductList = ({ darkMode }) => {
                                 </div>
                               </button> */}
 
-                              <button
-                                onClick={() => {
-                                  setShowActionMenu(null);
-                                  handleReturnRelease(product);
-                                }}
-                                className="p-return-btn"
-                              >
-                                <div className="action-btn-content">
-                                  <span>🔓 Release Return</span>
-                                </div>
-                              </button>
-                              {/* <button onClick={() => handleReturn(product)} className="p-return-btn">
+                            <button
+                              onClick={() => {
+                                setShowActionMenu(null);
+                                handleReturnRelease(product);
+                              }}
+                              className="p-return-btn"
+                            >
+                              <div className="action-btn-content">
+                                <span>🔓 Release Return</span>
+                              </div>
+                            </button>
+                            {/* <button onClick={() => handleReturn(product)} className="p-return-btn">
                                 <div className="action-btn-content">
                                   <img src={returnicon} alt="return" width="30" height="30" className="p-return-btn-icon" />
                                   <span>Return</span>
                                 </div>
                               </button> */}
-                              {/* <button onClick={() => handleBarcode(product)} className="p-barcode-btn">
+                            {/* <button onClick={() => handleBarcode(product)} className="p-barcode-btn">
                                 <div className="action-btn-content">
                                   <img src={barcodeicon} alt="barcode" width="30" height="30" className="p-barcode-btn-icon" />
                                   <span>Barcode</span>
                                 </div>
                               </button> */}
-                              {userRole === 'admin' && (
-                                <>
-                                  {/* <button onClick={() => handleEdit(product)} className="p-edit-btn">
+                            {userRole === 'admin' && (
+                              <>
+                                {/* <button onClick={() => handleEdit(product)} className="p-edit-btn">
                                     <div className="action-btn-content">
                                       <img src={editicon} alt="edit" width="30" height="30" className="p-edit-btn-icon" />
                                       <span>Edit</span>
@@ -1837,15 +1837,15 @@ const ProductList = ({ darkMode }) => {
                                       <span>Delete</span>
                                     </div>
                                   </button> */}
-                                </>
-                              )}
-                            </div>
-                          </>
-                        )}
-                      </div>
-                    </td>
-                  </tr>
-                ))}
+                              </>
+                            )}
+                          </div>
+                        </>
+                      )}
+                    </div>
+                  </td>
+                </tr>
+              ))}
             </tbody>
           </table>
         </>
@@ -1864,7 +1864,7 @@ const ProductList = ({ darkMode }) => {
         <div className="modal-overlay" onClick={() => setShowReturnStockModal(false)}>
           <div className={`modal-content ${darkMode ? 'dark' : ''}`} onClick={e => e.stopPropagation()}>
             <h3>↩️ Return Stock</h3>
-            <div style={{ background: darkMode ? '#1e293b' : '#f1f5f9', padding: '12px', borderRadius: '6px', marginBottom: '12px', color:"black" }}>
+            <div style={{ background: darkMode ? '#1e293b' : '#f1f5f9', padding: '12px', borderRadius: '6px', marginBottom: '12px', color: "black" }}>
               <p><strong>GRN:</strong> {selectedProductForAction.grnNumber || 'N/A'}</p>
               <p><strong>Item:</strong> {selectedProductForAction.itemName}</p>
               <p><strong>Code:</strong> {selectedProductForAction.itemCode}</p>
@@ -1884,7 +1884,7 @@ const ProductList = ({ darkMode }) => {
             />
             <div style={{ display: 'flex', gap: '10px', justifyContent: 'flex-end', marginTop: '16px' }}>
               <button onClick={() => setShowReturnStockModal(false)}>Cancel</button>
-              <button 
+              <button
                 className="btn-primary"
                 onClick={handleConfirmReturnStock}
                 disabled={
@@ -1894,20 +1894,20 @@ const ProductList = ({ darkMode }) => {
                 }
                 style={{
                   opacity: (
-                  !returnQuantity ||
-                  parseInt(returnQuantity) <= 0 ||
-                  parseInt(returnQuantity) > selectedProductForAction.stock
-                ) ? 0.5 : 1,
+                    !returnQuantity ||
+                    parseInt(returnQuantity) <= 0 ||
+                    parseInt(returnQuantity) > selectedProductForAction.stock
+                  ) ? 0.5 : 1,
                   filter: (
-                  !returnQuantity ||
-                  parseInt(returnQuantity) <= 0 ||
-                  parseInt(returnQuantity) > selectedProductForAction.stock
-                ) ? 'grayscale(40%)' : 'none',
+                    !returnQuantity ||
+                    parseInt(returnQuantity) <= 0 ||
+                    parseInt(returnQuantity) > selectedProductForAction.stock
+                  ) ? 'grayscale(40%)' : 'none',
                   cursor: (
-                  !returnQuantity ||
-                  parseInt(returnQuantity) <= 0 ||
-                  parseInt(returnQuantity) > selectedProductForAction.stock
-                ) ? 'not-allowed' : 'pointer'
+                    !returnQuantity ||
+                    parseInt(returnQuantity) <= 0 ||
+                    parseInt(returnQuantity) > selectedProductForAction.stock
+                  ) ? 'not-allowed' : 'pointer'
                 }}
               >
                 Confirm Return
@@ -1922,7 +1922,7 @@ const ProductList = ({ darkMode }) => {
         <div className="modal-overlay" onClick={() => setShowReturnReleaseModal(false)}>
           <div className={`modal-content ${darkMode ? 'dark' : ''}`} onClick={e => e.stopPropagation()}>
             <h3>🔓 Release Return to Stock</h3>
-            <div style={{ background: darkMode ? '#1e293b' : '#f1f5f9', padding: '12px', borderRadius: '6px', marginBottom: '12px', color:"black" }}>
+            <div style={{ background: darkMode ? '#1e293b' : '#f1f5f9', padding: '12px', borderRadius: '6px', marginBottom: '12px', color: "black" }}>
               <p><strong>GRN:</strong> {selectedProductForAction.grnNumber || 'N/A'}</p>
               <p><strong>Item:</strong> {selectedProductForAction.itemName}</p>
               <p><strong>Code:</strong> {selectedProductForAction.itemCode}</p>
@@ -1942,32 +1942,32 @@ const ProductList = ({ darkMode }) => {
             />
             <div style={{ display: 'flex', gap: '10px', justifyContent: 'flex-end', marginTop: '16px' }}>
               <button onClick={() => setShowReturnReleaseModal(false)}>Cancel</button>
-              <button 
+              <button
                 className="btn-primary"
                 onClick={handleConfirmReturnRelease}
                 disabled={
-                (
-                  !returnQuantity ||
-                  parseInt(returnQuantity) <= 0 ||
-                  parseInt(returnQuantity) > (selectedProductForAction.returnstock || 0)
-                )
+                  (
+                    !returnQuantity ||
+                    parseInt(returnQuantity) <= 0 ||
+                    parseInt(returnQuantity) > (selectedProductForAction.returnstock || 0)
+                  )
                 }
                 style={{
                   opacity: (
-                  !returnQuantity ||
-                  parseInt(returnQuantity) <= 0 ||
-                  parseInt(returnQuantity) > (selectedProductForAction.returnstock || 0)
-                ) ? 0.5 : 1,
+                    !returnQuantity ||
+                    parseInt(returnQuantity) <= 0 ||
+                    parseInt(returnQuantity) > (selectedProductForAction.returnstock || 0)
+                  ) ? 0.5 : 1,
                   filter: (
-                  !returnQuantity ||
-                  parseInt(returnQuantity) <= 0 ||
-                  parseInt(returnQuantity) > (selectedProductForAction.returnstock || 0)
-                ) ? 'grayscale(40%)' : 'none',
+                    !returnQuantity ||
+                    parseInt(returnQuantity) <= 0 ||
+                    parseInt(returnQuantity) > (selectedProductForAction.returnstock || 0)
+                  ) ? 'grayscale(40%)' : 'none',
                   cursor: (
-                  !returnQuantity ||
-                  parseInt(returnQuantity) <= 0 ||
-                  parseInt(returnQuantity) > (selectedProductForAction.returnstock || 0)
-                ) ? 'not-allowed' : 'pointer'
+                    !returnQuantity ||
+                    parseInt(returnQuantity) <= 0 ||
+                    parseInt(returnQuantity) > (selectedProductForAction.returnstock || 0)
+                  ) ? 'not-allowed' : 'pointer'
                 }}
               >
                 Confirm Release
@@ -2004,13 +2004,13 @@ const ProductList = ({ darkMode }) => {
                       <td>{record.type}</td>
                       <td>{record.invoiceNo}</td>
                       <td>{record.customerName}</td>
-                      <td>{record.retquantity > 0 ? 
-                            record.givenQty > 0 ? 
-                              `${record.quantity} (Given ${record.givenQty} / Returned: ${record.retquantity})` 
-                              : `${record.quantity} (Returned: ${record.retquantity})` 
-                            : record.type === "Repair Return" ? 
-                              `${record.quantity} (Returned: ${record.quantity})` 
-                              :`${record.quantity}`}
+                      <td>{record.retquantity > 0 ?
+                        record.givenQty > 0 ?
+                          `${record.quantity} (Given ${record.givenQty} / Returned: ${record.retquantity})`
+                          : `${record.quantity} (Returned: ${record.retquantity})`
+                        : record.type === "Repair Return" ?
+                          `${record.quantity} (Returned: ${record.quantity})`
+                          : `${record.quantity}`}
                       </td>
                       <td>{record.date}</td>
                     </tr>

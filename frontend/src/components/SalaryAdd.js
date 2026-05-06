@@ -13,7 +13,7 @@ const SalaryAdd = ({ isOpen, onClose, refreshSalaries, darkMode }) => {
     advance: "",
     remarks: "",
     paymentMethod: "",     // ← New
-    assignedTo: "", 
+    assignedTo: "",
     date: today,
   });
   const [error, setError] = useState(null);

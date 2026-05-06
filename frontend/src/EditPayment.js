@@ -158,7 +158,7 @@ const EditPayment = ({ payment, closeModal, darkMode }) => {
     };
 
     // Top-level changes
-    const topLevelFields = ['customerName', 'contactNumber', 'address', 'description', 'assignedTo','date'];
+    const topLevelFields = ['customerName', 'contactNumber', 'address', 'description', 'assignedTo', 'date'];
     topLevelFields.forEach(field => {
       if (field === 'date') {
         if (formData.date) {

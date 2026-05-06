@@ -22,7 +22,7 @@ const ExtraIncome = ({ darkMode }) => {
     time: "",
     incomeType: "",
     description: "",
-    assignedTo:"",
+    assignedTo: "",
   });
   // State for table data
   const [extraIncomes, setExtraIncomes] = useState([]);
@@ -258,10 +258,10 @@ const ExtraIncome = ({ darkMode }) => {
         extraIncomes.map((income) =>
           income._id === _id
             ? {
-                ...updatedRecord,
-                date: new Date(updatedRecord.date).toISOString().split("T")[0],
-                time: new Date(updatedRecord.date).toTimeString().slice(0, 5),
-              }
+              ...updatedRecord,
+              date: new Date(updatedRecord.date).toISOString().split("T")[0],
+              time: new Date(updatedRecord.date).toTimeString().slice(0, 5),
+            }
             : income
         )
       );
@@ -280,8 +280,8 @@ const ExtraIncome = ({ darkMode }) => {
     setShowActionMenu(null);
 
     const existingBreakdown = record.paymentBreakdown && Array.isArray(record.paymentBreakdown) && record.paymentBreakdown.length > 0
-    ? record.paymentBreakdown.map(p => ({ method: p.method, amount: p.amount.toString() }))
-    : [{ method: record.paymentMethod, amount: (record.totalPaid || record.amount || 0).toString() }];
+      ? record.paymentBreakdown.map(p => ({ method: p.method, amount: p.amount.toString() }))
+      : [{ method: record.paymentMethod, amount: (record.totalPaid || record.amount || 0).toString() }];
 
     setPaymentBreakdown(existingBreakdown);
   };
@@ -327,10 +327,10 @@ const ExtraIncome = ({ darkMode }) => {
         extraIncomes.map((income) =>
           income._id === editingRecord._id
             ? {
-                ...updatedIncome,
-                date: new Date(updatedIncome.date).toISOString().split("T")[0],
-                time: new Date(updatedIncome.date).toTimeString().slice(0, 5),
-              }
+              ...updatedIncome,
+              date: new Date(updatedIncome.date).toISOString().split("T")[0],
+              time: new Date(updatedIncome.date).toTimeString().slice(0, 5),
+            }
             : income
         )
       );
@@ -684,11 +684,11 @@ const ExtraIncome = ({ darkMode }) => {
                                 <span>Delete</span>
                               </div>
                             </button>
-                          
+
                           )}
                           <button onClick={() => handleReturn(record)} className="p-return-btn">
                             <div className="action-btn-content">
-                              <span className="p-edit-btn-icon" style={{width:"30", height:"30"}}>↩️ </span>
+                              <span className="p-edit-btn-icon" style={{ width: "30", height: "30" }}>↩️ </span>
                               <span>Return</span>
                             </div>
                           </button>
@@ -705,14 +705,14 @@ const ExtraIncome = ({ darkMode }) => {
 
       {showAddModal && (
         <div className={`m-a-modal-overlay ${darkMode ? "dark" : ""}`} onClick={() => setShowAddModal(false)}>
-          <div className={`m-a-modal-container ${darkMode ? "dark" : ""}`} onClick={(e) => e.stopPropagation()} 
+          <div className={`m-a-modal-container ${darkMode ? "dark" : ""}`} onClick={(e) => e.stopPropagation()}
             style={{
               maxHeight: "1000px",
               display: "flex",
               flexDirection: "column",
               width: "100%",
               maxWidth: "600px",
-          }}>
+            }}>
             <h3 className={`m-a-modal-title ${darkMode ? "dark" : ""}`}>Add Extra Income Record</h3>
             {error && <p className="error-message">{error}</p>}
             {formLoading && (
@@ -803,186 +803,186 @@ const ExtraIncome = ({ darkMode }) => {
                 onChange={handleInputChange}
               />
               {/* === NEW: Assigned To Dropdown === */}
-                <label className={`madd-label ${darkMode ? "dark" : ""}`}>Assign To:</label>
-                <select
-                  name="assignedTo"
-                  className={`madd-input ${darkMode ? "dark" : ""}`}
-                  value={formData.assignedTo || ""}
-                  onChange={(e) => setFormData({ ...formData, assignedTo: e.target.value })}
-                  required
-                  style={{
-                    padding: "8px",
-                    borderRadius: "4px",
-                    border: "1px solid #ccc",
-                    backgroundColor: darkMode ? "#444" : "#fff",
-                    color: darkMode ? "#fff" : "#333",
-                    width: "100%",
-                  }}
-                >
-                  <option value="" disabled selected>Select Technician/Team</option>
-                  <option value="Prabath">2nd Floor</option>
-                  <option value="Nadeesh">1st Floor</option>
-                  <option value="Accessories">Accessories</option>
-                  <option value="Genex-EX">Genex EX</option>
-                  <option value="I-Device">I Device</option>
-                </select>
+              <label className={`madd-label ${darkMode ? "dark" : ""}`}>Assign To:</label>
+              <select
+                name="assignedTo"
+                className={`madd-input ${darkMode ? "dark" : ""}`}
+                value={formData.assignedTo || ""}
+                onChange={(e) => setFormData({ ...formData, assignedTo: e.target.value })}
+                required
+                style={{
+                  padding: "8px",
+                  borderRadius: "4px",
+                  border: "1px solid #ccc",
+                  backgroundColor: darkMode ? "#444" : "#fff",
+                  color: darkMode ? "#fff" : "#333",
+                  width: "100%",
+                }}
+              >
+                <option value="" disabled selected>Select Technician/Team</option>
+                <option value="Prabath">2nd Floor</option>
+                <option value="Nadeesh">1st Floor</option>
+                <option value="Accessories">Accessories</option>
+                <option value="Genex-EX">Genex EX</option>
+                <option value="I-Device">I Device</option>
+              </select>
               {/* === END NEW FIELD === */}
               {/* === NEW: Payment Method Dropdown === */}
-                {/* === PAYMENT BREAKDOWN SECTION === */}
-                <div style={{ marginTop: "15px", padding: "12px", backgroundColor: darkMode ? "#2d3748" : "#f0f9ff", borderRadius: "5px", border: `1px solid ${darkMode ? "#4a5568" : "#bee3f8"}` }}>
-                  <h4 style={{ margin: "0 0 12px 0", color: darkMode ? "#63b3ed" : "#2b6cb0", fontSize: "16px", fontWeight: "bold" }}>
-                    Payment Breakdown
-                  </h4>
-                  {paymentBreakdown.map((entry, index) => (
-                    <div key={index} style={{ display: "flex", gap: "10px", marginBottom: "10px", alignItems: "center" }}>
-                      <select
-                        value={entry.method}
-                        onChange={(e) => {
-                          const newMethod = e.target.value;
-                          const newBreakdown = [...paymentBreakdown];
+              {/* === PAYMENT BREAKDOWN SECTION === */}
+              <div style={{ marginTop: "15px", padding: "12px", backgroundColor: darkMode ? "#2d3748" : "#f0f9ff", borderRadius: "5px", border: `1px solid ${darkMode ? "#4a5568" : "#bee3f8"}` }}>
+                <h4 style={{ margin: "0 0 12px 0", color: darkMode ? "#63b3ed" : "#2b6cb0", fontSize: "16px", fontWeight: "bold" }}>
+                  Payment Breakdown
+                </h4>
+                {paymentBreakdown.map((entry, index) => (
+                  <div key={index} style={{ display: "flex", gap: "10px", marginBottom: "10px", alignItems: "center" }}>
+                    <select
+                      value={entry.method}
+                      onChange={(e) => {
+                        const newMethod = e.target.value;
+                        const newBreakdown = [...paymentBreakdown];
 
-                          // ✅ SPECIAL HANDLING FOR "Credit"
-                          if (newMethod === "Credit") {
-                            // Reset to only Credit
-                            setPaymentBreakdown([{ method: "Credit", amount: "" }]);
-                            return;
-                          }
+                        // ✅ SPECIAL HANDLING FOR "Credit"
+                        if (newMethod === "Credit") {
+                          // Reset to only Credit
+                          setPaymentBreakdown([{ method: "Credit", amount: "" }]);
+                          return;
+                        }
 
-                          // If currently in Credit-only mode and switching away
-                          if (
-                            paymentBreakdown.length === 1 &&
-                            paymentBreakdown[0].method === "Credit"
-                          ) {
-                            setPaymentBreakdown([{ method: newMethod, amount: "" }]);
-                            return;
-                          }
+                        // If currently in Credit-only mode and switching away
+                        if (
+                          paymentBreakdown.length === 1 &&
+                          paymentBreakdown[0].method === "Credit"
+                        ) {
+                          setPaymentBreakdown([{ method: newMethod, amount: "" }]);
+                          return;
+                        }
 
-                          // ✅ If changing TO a method that already exists elsewhere, MERGE
-                          if (newMethod && newMethod !== entry.method) {
-                            const existingIndex = newBreakdown.findIndex(
-                              (p, idx) => p.method === newMethod && idx !== index
-                            );
+                        // ✅ If changing TO a method that already exists elsewhere, MERGE
+                        if (newMethod && newMethod !== entry.method) {
+                          const existingIndex = newBreakdown.findIndex(
+                            (p, idx) => p.method === newMethod && idx !== index
+                          );
 
-                            if (existingIndex >= 0) {
-                              // Merge amount into existing row
-                              const currentAmount = parseFloat(entry.amount) || 0;
-                              const existingAmount = parseFloat(newBreakdown[existingIndex].amount) || 0;
-                              newBreakdown[existingIndex] = {
-                                ...newBreakdown[existingIndex],
-                                amount: (existingAmount + currentAmount).toFixed(2)
-                              };
-                              // Remove the current row
-                              newBreakdown.splice(index, 1);
-                            } else {
-                              // Just update the method
-                              newBreakdown[index].method = newMethod;
-                            }
+                          if (existingIndex >= 0) {
+                            // Merge amount into existing row
+                            const currentAmount = parseFloat(entry.amount) || 0;
+                            const existingAmount = parseFloat(newBreakdown[existingIndex].amount) || 0;
+                            newBreakdown[existingIndex] = {
+                              ...newBreakdown[existingIndex],
+                              amount: (existingAmount + currentAmount).toFixed(2)
+                            };
+                            // Remove the current row
+                            newBreakdown.splice(index, 1);
                           } else {
-                            // Clear method
+                            // Just update the method
                             newBreakdown[index].method = newMethod;
                           }
+                        } else {
+                          // Clear method
+                          newBreakdown[index].method = newMethod;
+                        }
 
-                          setPaymentBreakdown(newBreakdown);
-                        }}
-                        style={{
-                          flex: 1,
-                          padding: "8px",
-                          borderRadius: "4px",
-                          border: "1px solid #ccc",
-                          backgroundColor: darkMode ? "#444" : "#fff",
-                          color: darkMode ? "#fff" : "#333"
-                        }}
-                      >
-                        <option value="">Select Method</option>
-                        <option value="Cash">Cash</option>
-                        <option value="Card">Card</option>
-                        <option value="Bank-Transfer">Bank Transfer</option>
-                        <option value="Bank-Check">Bank Check</option>
-                        <option value="Credit">Credit</option>
-                      </select>
-                      <input
-                        type="number"
-                        step="0.01"
-                        placeholder="Amount"
-                        onWheel={(e) => e.target.blur()}
-                        onFocus={(e) => e.target.select()}
-                        value={entry.amount}
-                        onChange={(e) => {
-                          const newBreakdown = [...paymentBreakdown];
-                          newBreakdown[index].amount = e.target.value;
-                          setPaymentBreakdown(newBreakdown);
-                        }}
-                        style={{
-                          width: "120px",
-                          padding: "8px",
-                          borderRadius: "4px",
-                          border: "1px solid #ccc",
-                          backgroundColor: darkMode ? "#444" : "#fff",
-                          color: darkMode ? "#fff" : "#333",
-                          textAlign: "right"
-                        }}
-                      />
-                      {paymentBreakdown.length > 1 && (
-                        <button
-                          type="button"
-                          onClick={() => {
-                            const newBreakdown = [...paymentBreakdown];
-                            newBreakdown.splice(index, 1);
-                            setPaymentBreakdown(newBreakdown);
-                          }}
-                          style={{
-                            background: "#e53e3e",
-                            color: "white",
-                            border: "none",
-                            borderRadius: "4px",
-                            width: "30px",
-                            height: "30px",
-                            cursor: "pointer"
-                          }}
-                        >
-                          ×
-                        </button>
-                      )}
-                    </div>
-                  ))}
-                  {!paymentBreakdown.some(p => p.method === "Credit") && (
-                    <button
-                      type="button"
-                      onClick={() => setPaymentBreakdown([...paymentBreakdown, { method: "", amount: "" }])}
+                        setPaymentBreakdown(newBreakdown);
+                      }}
                       style={{
-                        marginTop: "8px",
-                        background: "#38a169",
-                        color: "white",
-                        border: "none",
+                        flex: 1,
+                        padding: "8px",
                         borderRadius: "4px",
-                        padding: "6px 12px",
-                        fontSize: "14px",
-                        cursor: "pointer"
+                        border: "1px solid #ccc",
+                        backgroundColor: darkMode ? "#444" : "#fff",
+                        color: darkMode ? "#fff" : "#333"
                       }}
                     >
-                      + Add Payment
-                    </button>
-                  )}
+                      <option value="">Select Method</option>
+                      <option value="Cash">Cash</option>
+                      <option value="Card">Card</option>
+                      <option value="Bank-Transfer">Bank Transfer</option>
+                      <option value="Bank-Check">Bank Check</option>
+                      <option value="Credit">Credit</option>
+                    </select>
+                    <input
+                      type="number"
+                      step="0.01"
+                      placeholder="Amount"
+                      onWheel={(e) => e.target.blur()}
+                      onFocus={(e) => e.target.select()}
+                      value={entry.amount}
+                      onChange={(e) => {
+                        const newBreakdown = [...paymentBreakdown];
+                        newBreakdown[index].amount = e.target.value;
+                        setPaymentBreakdown(newBreakdown);
+                      }}
+                      style={{
+                        width: "120px",
+                        padding: "8px",
+                        borderRadius: "4px",
+                        border: "1px solid #ccc",
+                        backgroundColor: darkMode ? "#444" : "#fff",
+                        color: darkMode ? "#fff" : "#333",
+                        textAlign: "right"
+                      }}
+                    />
+                    {paymentBreakdown.length > 1 && (
+                      <button
+                        type="button"
+                        onClick={() => {
+                          const newBreakdown = [...paymentBreakdown];
+                          newBreakdown.splice(index, 1);
+                          setPaymentBreakdown(newBreakdown);
+                        }}
+                        style={{
+                          background: "#e53e3e",
+                          color: "white",
+                          border: "none",
+                          borderRadius: "4px",
+                          width: "30px",
+                          height: "30px",
+                          cursor: "pointer"
+                        }}
+                      >
+                        ×
+                      </button>
+                    )}
+                  </div>
+                ))}
+                {!paymentBreakdown.some(p => p.method === "Credit") && (
+                  <button
+                    type="button"
+                    onClick={() => setPaymentBreakdown([...paymentBreakdown, { method: "", amount: "" }])}
+                    style={{
+                      marginTop: "8px",
+                      background: "#38a169",
+                      color: "white",
+                      border: "none",
+                      borderRadius: "4px",
+                      padding: "6px 12px",
+                      fontSize: "14px",
+                      cursor: "pointer"
+                    }}
+                  >
+                    + Add Payment
+                  </button>
+                )}
 
-                  {/* REAL-TIME TOTAL */}
-                  {paymentBreakdown.some(p => p.amount) && (
-                    <div style={{ marginTop: "12px", paddingTop: "10px", borderTop: `1px solid ${darkMode ? "#4a5568" : "#cbd5e0"}` }}>
-                      <div style={{ display: "flex", justifyContent: "space-between", fontWeight: "bold", color: darkMode ? "#e2e8f0" : "#2d3748" }}>
-                        <span>Total Amount:</span>
-                        <span>
-                          Rs. {paymentBreakdown
-                            .filter(p => p.amount)
-                            .reduce((sum, p) => sum + parseFloat(p.amount), 0)
-                            .toFixed(2)}
-                        </span>
-                      </div>
+                {/* REAL-TIME TOTAL */}
+                {paymentBreakdown.some(p => p.amount) && (
+                  <div style={{ marginTop: "12px", paddingTop: "10px", borderTop: `1px solid ${darkMode ? "#4a5568" : "#cbd5e0"}` }}>
+                    <div style={{ display: "flex", justifyContent: "space-between", fontWeight: "bold", color: darkMode ? "#e2e8f0" : "#2d3748" }}>
+                      <span>Total Amount:</span>
+                      <span>
+                        Rs. {paymentBreakdown
+                          .filter(p => p.amount)
+                          .reduce((sum, p) => sum + parseFloat(p.amount), 0)
+                          .toFixed(2)}
+                      </span>
                     </div>
-                  )}
-                </div>
+                  </div>
+                )}
+              </div>
               {/* === END NEW FIELD === */}
               <div className="button-group">
-                <button 
-                  type="submit" 
+                <button
+                  type="submit"
                   className="me-submit-btn"
                   disabled={formLoading}
                 >
@@ -1090,32 +1090,32 @@ const ExtraIncome = ({ darkMode }) => {
                 onChange={(e) => setEditingRecord({ ...editingRecord, description: e.target.value })}
               />
               {/* === NEW: Assigned To Dropdown === */}
-                <label className={`madd-label ${darkMode ? "dark" : ""}`}>Assign To:</label>
-                <select
-                  name="assignedTo"
-                  className={`madd-input ${darkMode ? "dark" : ""}`}
-                  value={editingRecord.assignedTo || ""}
-                  onChange={(e) => setEditingRecord({ ...editingRecord, assignedTo: e.target.value })}
-                  required
-                  style={{
-                    padding: "8px",
-                    borderRadius: "4px",
-                    border: "1px solid #ccc",
-                    backgroundColor: darkMode ? "#444" : "#fff",
-                    color: darkMode ? "#fff" : "#333",
-                    width: "100%",
-                  }}
-                >
-                  <option value="" disabled selected>Select Technician/Team</option>
-                  <option value="Prabath">2nd Floor</option>
-                  <option value="Nadeesh">1st Floor</option>
-                  <option value="Accessories">Accessories</option>
-                  <option value="Genex-EX">Genex EX</option>
-                  <option value="I-Device">I Device</option>
-                </select>
-                {/* === END NEW FIELD === */}
-                {/* === NEW: Payment Method Dropdown === */}
-                {/* <label className={`madd-label ${darkMode ? "dark" : ""}`}>Payment Method:</label>
+              <label className={`madd-label ${darkMode ? "dark" : ""}`}>Assign To:</label>
+              <select
+                name="assignedTo"
+                className={`madd-input ${darkMode ? "dark" : ""}`}
+                value={editingRecord.assignedTo || ""}
+                onChange={(e) => setEditingRecord({ ...editingRecord, assignedTo: e.target.value })}
+                required
+                style={{
+                  padding: "8px",
+                  borderRadius: "4px",
+                  border: "1px solid #ccc",
+                  backgroundColor: darkMode ? "#444" : "#fff",
+                  color: darkMode ? "#fff" : "#333",
+                  width: "100%",
+                }}
+              >
+                <option value="" disabled selected>Select Technician/Team</option>
+                <option value="Prabath">2nd Floor</option>
+                <option value="Nadeesh">1st Floor</option>
+                <option value="Accessories">Accessories</option>
+                <option value="Genex-EX">Genex EX</option>
+                <option value="I-Device">I Device</option>
+              </select>
+              {/* === END NEW FIELD === */}
+              {/* === NEW: Payment Method Dropdown === */}
+              {/* <label className={`madd-label ${darkMode ? "dark" : ""}`}>Payment Method:</label>
                 <select
                   name="paymentMethod"
                   className={`madd-input ${darkMode ? "dark" : ""}`}
@@ -1130,161 +1130,161 @@ const ExtraIncome = ({ darkMode }) => {
                   <option value="Bank-Check">Bank Check</option>
                   <option value="Credit">Credit</option>
                 </select> */}
-                {/* === PAYMENT BREAKDOWN SECTION === */}
-                <div style={{ marginTop: "15px", padding: "12px", backgroundColor: darkMode ? "#2d3748" : "#f0f9ff", borderRadius: "5px", border: `1px solid ${darkMode ? "#4a5568" : "#bee3f8"}` }}>
-                  <h4 style={{ margin: "0 0 12px 0", color: darkMode ? "#63b3ed" : "#2b6cb0", fontSize: "16px", fontWeight: "bold" }}>
-                    Payment Breakdown
-                  </h4>
-                  {paymentBreakdown.map((entry, index) => (
-                    <div key={index} style={{ display: "flex", gap: "10px", marginBottom: "10px", alignItems: "center" }}>
-                      <select
-                        value={entry.method}
-                        onChange={(e) => {
-                          const newMethod = e.target.value;
-                          const newBreakdown = [...paymentBreakdown];
+              {/* === PAYMENT BREAKDOWN SECTION === */}
+              <div style={{ marginTop: "15px", padding: "12px", backgroundColor: darkMode ? "#2d3748" : "#f0f9ff", borderRadius: "5px", border: `1px solid ${darkMode ? "#4a5568" : "#bee3f8"}` }}>
+                <h4 style={{ margin: "0 0 12px 0", color: darkMode ? "#63b3ed" : "#2b6cb0", fontSize: "16px", fontWeight: "bold" }}>
+                  Payment Breakdown
+                </h4>
+                {paymentBreakdown.map((entry, index) => (
+                  <div key={index} style={{ display: "flex", gap: "10px", marginBottom: "10px", alignItems: "center" }}>
+                    <select
+                      value={entry.method}
+                      onChange={(e) => {
+                        const newMethod = e.target.value;
+                        const newBreakdown = [...paymentBreakdown];
 
-                          // ✅ SPECIAL HANDLING FOR "Credit"
-                          if (newMethod === "Credit") {
-                            // Reset to only Credit
-                            setPaymentBreakdown([{ method: "Credit", amount: "" }]);
-                            return;
-                          }
+                        // ✅ SPECIAL HANDLING FOR "Credit"
+                        if (newMethod === "Credit") {
+                          // Reset to only Credit
+                          setPaymentBreakdown([{ method: "Credit", amount: "" }]);
+                          return;
+                        }
 
-                          // If currently in Credit-only mode and switching away
-                          if (
-                            paymentBreakdown.length === 1 &&
-                            paymentBreakdown[0].method === "Credit"
-                          ) {
-                            setPaymentBreakdown([{ method: newMethod, amount: "" }]);
-                            return;
-                          }
+                        // If currently in Credit-only mode and switching away
+                        if (
+                          paymentBreakdown.length === 1 &&
+                          paymentBreakdown[0].method === "Credit"
+                        ) {
+                          setPaymentBreakdown([{ method: newMethod, amount: "" }]);
+                          return;
+                        }
 
-                          // ✅ If changing TO a method that already exists elsewhere, MERGE
-                          if (newMethod && newMethod !== entry.method) {
-                            const existingIndex = newBreakdown.findIndex(
-                              (p, idx) => p.method === newMethod && idx !== index
-                            );
+                        // ✅ If changing TO a method that already exists elsewhere, MERGE
+                        if (newMethod && newMethod !== entry.method) {
+                          const existingIndex = newBreakdown.findIndex(
+                            (p, idx) => p.method === newMethod && idx !== index
+                          );
 
-                            if (existingIndex >= 0) {
-                              // Merge amount into existing row
-                              const currentAmount = parseFloat(entry.amount) || 0;
-                              const existingAmount = parseFloat(newBreakdown[existingIndex].amount) || 0;
-                              newBreakdown[existingIndex] = {
-                                ...newBreakdown[existingIndex],
-                                amount: (existingAmount + currentAmount).toFixed(2)
-                              };
-                              // Remove the current row
-                              newBreakdown.splice(index, 1);
-                            } else {
-                              // Just update the method
-                              newBreakdown[index].method = newMethod;
-                            }
+                          if (existingIndex >= 0) {
+                            // Merge amount into existing row
+                            const currentAmount = parseFloat(entry.amount) || 0;
+                            const existingAmount = parseFloat(newBreakdown[existingIndex].amount) || 0;
+                            newBreakdown[existingIndex] = {
+                              ...newBreakdown[existingIndex],
+                              amount: (existingAmount + currentAmount).toFixed(2)
+                            };
+                            // Remove the current row
+                            newBreakdown.splice(index, 1);
                           } else {
-                            // Clear method
+                            // Just update the method
                             newBreakdown[index].method = newMethod;
                           }
+                        } else {
+                          // Clear method
+                          newBreakdown[index].method = newMethod;
+                        }
 
-                          setPaymentBreakdown(newBreakdown);
-                        }}
-                        style={{
-                          flex: 1,
-                          padding: "8px",
-                          borderRadius: "4px",
-                          border: "1px solid #ccc",
-                          backgroundColor: darkMode ? "#444" : "#fff",
-                          color: darkMode ? "#fff" : "#333"
-                        }}
-                      >
-                        <option value="">Select Method</option>
-                        <option value="Cash">Cash</option>
-                        <option value="Card">Card</option>
-                        <option value="Bank-Transfer">Bank Transfer</option>
-                        <option value="Bank-Check">Bank Check</option>
-                        <option value="Credit">Credit</option>
-                      </select>
-                      <input
-                        type="number"
-                        step="0.01"
-                        placeholder="Amount"
-                        onFocus={(e) => e.target.select()}
-                        onWheel={(e) => e.target.blur()}
-                        value={entry.amount}
-                        onChange={(e) => {
-                          const newBreakdown = [...paymentBreakdown];
-                          newBreakdown[index].amount = e.target.value;
-                          setPaymentBreakdown(newBreakdown);
-                        }}
-                        style={{
-                          width: "120px",
-                          padding: "8px",
-                          borderRadius: "4px",
-                          border: "1px solid #ccc",
-                          backgroundColor: darkMode ? "#444" : "#fff",
-                          color: darkMode ? "#fff" : "#333",
-                          textAlign: "right"
-                        }}
-                      />
-                      {paymentBreakdown.length > 1 && (
-                        <button
-                          type="button"
-                          onClick={() => {
-                            const newBreakdown = [...paymentBreakdown];
-                            newBreakdown.splice(index, 1);
-                            setPaymentBreakdown(newBreakdown);
-                          }}
-                          style={{
-                            background: "#e53e3e",
-                            color: "white",
-                            border: "none",
-                            borderRadius: "4px",
-                            width: "30px",
-                            height: "30px",
-                            cursor: "pointer"
-                          }}
-                        >
-                          ×
-                        </button>
-                      )}
-                    </div>
-                  ))}
-                  {!paymentBreakdown.some(p => p.method === "Credit") && (
-                    <button
-                      type="button"
-                      onClick={() => setPaymentBreakdown([...paymentBreakdown, { method: "", amount: "" }])}
+                        setPaymentBreakdown(newBreakdown);
+                      }}
                       style={{
-                        marginTop: "8px",
-                        background: "#38a169",
-                        color: "white",
-                        border: "none",
+                        flex: 1,
+                        padding: "8px",
                         borderRadius: "4px",
-                        padding: "6px 12px",
-                        fontSize: "14px",
-                        cursor: "pointer"
+                        border: "1px solid #ccc",
+                        backgroundColor: darkMode ? "#444" : "#fff",
+                        color: darkMode ? "#fff" : "#333"
                       }}
                     >
-                      + Add Payment
-                    </button>
-                  )}
+                      <option value="">Select Method</option>
+                      <option value="Cash">Cash</option>
+                      <option value="Card">Card</option>
+                      <option value="Bank-Transfer">Bank Transfer</option>
+                      <option value="Bank-Check">Bank Check</option>
+                      <option value="Credit">Credit</option>
+                    </select>
+                    <input
+                      type="number"
+                      step="0.01"
+                      placeholder="Amount"
+                      onFocus={(e) => e.target.select()}
+                      onWheel={(e) => e.target.blur()}
+                      value={entry.amount}
+                      onChange={(e) => {
+                        const newBreakdown = [...paymentBreakdown];
+                        newBreakdown[index].amount = e.target.value;
+                        setPaymentBreakdown(newBreakdown);
+                      }}
+                      style={{
+                        width: "120px",
+                        padding: "8px",
+                        borderRadius: "4px",
+                        border: "1px solid #ccc",
+                        backgroundColor: darkMode ? "#444" : "#fff",
+                        color: darkMode ? "#fff" : "#333",
+                        textAlign: "right"
+                      }}
+                    />
+                    {paymentBreakdown.length > 1 && (
+                      <button
+                        type="button"
+                        onClick={() => {
+                          const newBreakdown = [...paymentBreakdown];
+                          newBreakdown.splice(index, 1);
+                          setPaymentBreakdown(newBreakdown);
+                        }}
+                        style={{
+                          background: "#e53e3e",
+                          color: "white",
+                          border: "none",
+                          borderRadius: "4px",
+                          width: "30px",
+                          height: "30px",
+                          cursor: "pointer"
+                        }}
+                      >
+                        ×
+                      </button>
+                    )}
+                  </div>
+                ))}
+                {!paymentBreakdown.some(p => p.method === "Credit") && (
+                  <button
+                    type="button"
+                    onClick={() => setPaymentBreakdown([...paymentBreakdown, { method: "", amount: "" }])}
+                    style={{
+                      marginTop: "8px",
+                      background: "#38a169",
+                      color: "white",
+                      border: "none",
+                      borderRadius: "4px",
+                      padding: "6px 12px",
+                      fontSize: "14px",
+                      cursor: "pointer"
+                    }}
+                  >
+                    + Add Payment
+                  </button>
+                )}
 
-                  {/* REAL-TIME TOTAL */}
-                  {paymentBreakdown.some(p => p.amount) && (
-                    <div style={{ marginTop: "12px", paddingTop: "10px", borderTop: `1px solid ${darkMode ? "#4a5568" : "#cbd5e0"}` }}>
-                      <div style={{ display: "flex", justifyContent: "space-between", fontWeight: "bold", color: darkMode ? "#e2e8f0" : "#2d3748" }}>
-                        <span>Total Amount:</span>
-                        <span>
-                          Rs. {paymentBreakdown
-                            .filter(p => p.amount)
-                            .reduce((sum, p) => sum + parseFloat(p.amount), 0)
-                            .toFixed(2)}
-                        </span>
-                      </div>
+                {/* REAL-TIME TOTAL */}
+                {paymentBreakdown.some(p => p.amount) && (
+                  <div style={{ marginTop: "12px", paddingTop: "10px", borderTop: `1px solid ${darkMode ? "#4a5568" : "#cbd5e0"}` }}>
+                    <div style={{ display: "flex", justifyContent: "space-between", fontWeight: "bold", color: darkMode ? "#e2e8f0" : "#2d3748" }}>
+                      <span>Total Amount:</span>
+                      <span>
+                        Rs. {paymentBreakdown
+                          .filter(p => p.amount)
+                          .reduce((sum, p) => sum + parseFloat(p.amount), 0)
+                          .toFixed(2)}
+                      </span>
                     </div>
-                  )}
-                </div>
+                  </div>
+                )}
+              </div>
               {/* === END NEW FIELD === */}
               <div className="button-group">
-                <button 
-                  type="submit" 
+                <button
+                  type="submit"
                   className="me-submit-btn"
                   disabled={formLoading}
                 >
@@ -1299,7 +1299,7 @@ const ExtraIncome = ({ darkMode }) => {
         </div>
       )}
 
-      
+
       {returningRecord && (
         <div className={`m-a-modal-overlay ${darkMode ? "dark" : ""}`} onClick={() => setReturningRecord(null)}>
           <div className={`m-a-modal-container ${darkMode ? "dark" : ""}`} onClick={(e) => e.stopPropagation()}>

@@ -27,7 +27,7 @@ const StockUpdate = ({ darkMode }) => {
   const location = useLocation();
   const isEditing = location.state?.isEditing;
   const editProduct = location.state?.editProduct;
-  
+
   const [itemCode, setItemCode] = useState("");
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -66,15 +66,15 @@ const StockUpdate = ({ darkMode }) => {
       if (!response.ok) throw new Error("Product not found");
 
       const data = await response.json();
-      
+
       // Check if this product is in the main product list (not deleted)
       const clickedProducts = JSON.parse(localStorage.getItem('clickedProducts') || '[]');
       const clickedProductIds = clickedProducts.map(cp => cp._id);
-      
+
       if (clickedProductIds.includes(data._id)) {
         throw new Error("This product has been deleted and is not available for stock updates");
       }
-      
+
       setProduct(data);
       setNewStock(0);
       setNewBuyingPrice(data.buyingPrice);
@@ -140,7 +140,7 @@ const StockUpdate = ({ darkMode }) => {
 
     try {
       let response;
-      
+
       if (isEditing && editProduct) {
         // Update existing product
         const computedStock = computeStockFromHistory(product);
@@ -163,7 +163,7 @@ const StockUpdate = ({ darkMode }) => {
         // Create new stock update
         response = await fetch(`${API_URL}/update-stock/${itemCode}`, {
           method: "PATCH",
-          headers: { "Content-Type": "application/json" , "Authorization": `Bearer ${token}` },
+          headers: { "Content-Type": "application/json", "Authorization": `Bearer ${token}` },
           body: JSON.stringify({
             newStock: Number(newStock),
             newBuyingPrice: Number(newBuyingPrice),
@@ -223,9 +223,9 @@ const StockUpdate = ({ darkMode }) => {
             readOnly={isEditing}
             disabled={isEditing}
           />
-          <button 
-            onClick={fetchProduct} 
-            disabled={loading || isEditing} 
+          <button
+            onClick={fetchProduct}
+            disabled={loading || isEditing}
             className={`search-btn ${darkMode ? 'dark' : ''}`}
           >
             {loading ? "Searching..." : isEditing ? "Editing Mode" : "Find Product"}
@@ -236,11 +236,11 @@ const StockUpdate = ({ darkMode }) => {
           <form className="update-form" onSubmit={handleUpdate}>
             <p className={`up-p ${darkMode ? 'dark' : ''}`}><strong>ITEM NAME:</strong> {product?.itemName || itemName}</p>
             <p className={`up-p ${darkMode ? 'dark' : ''}`}><strong>CATEGORY:</strong> {product?.category || category}</p>
-            
+
             {/* Stock Information Section */}
             <div className={`stock-info-section ${darkMode ? 'dark' : ''}`}>
               <h3 className={`stock-info-title ${darkMode ? 'dark' : ''}`}>Stock Information</h3>
-              
+
               <div className={`stock-display-row ${darkMode ? 'dark' : ''}`}>
                 <div className={`stock-display-item ${darkMode ? 'dark' : ''}`}>
                   <label className={`stock-label ${darkMode ? 'dark' : ''}`}>CURRENT STOCK:</label>
@@ -248,7 +248,7 @@ const StockUpdate = ({ darkMode }) => {
                     {computeStockFromHistory(product)}
                   </span>
                 </div>
-                
+
                 <div className={`stock-display-item ${darkMode ? 'dark' : ''}`}>
                   <label className={`stock-label ${darkMode ? 'dark' : ''}`}>ADDITIONAL STOCK TO ADD:</label>
                   <span className={`stock-value additional-stock ${darkMode ? 'dark' : ''}`}>
@@ -256,7 +256,7 @@ const StockUpdate = ({ darkMode }) => {
                   </span>
                 </div>
               </div>
-              
+
               <div className={`stock-display-row ${darkMode ? 'dark' : ''}`}>
                 <div className={`stock-display-item ${darkMode ? 'dark' : ''}`}>
                   <label className={`stock-label ${darkMode ? 'dark' : ''}`}>NEW STOCK AFTER UPDATE:</label>
@@ -265,7 +265,7 @@ const StockUpdate = ({ darkMode }) => {
                   </span>
                 </div>
               </div>
-              
+
               <div className={`stock-input-row ${darkMode ? 'dark' : ''}`}>
                 <label className={`update-form-label ${darkMode ? 'dark' : ''}`}>ENTER ADDITIONAL STOCK:</label>
                 <input

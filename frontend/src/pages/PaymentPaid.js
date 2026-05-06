@@ -89,7 +89,7 @@ const PaymentPaid = ({ totalAmount, items, onClose, darkMode, cashierId, cashier
     if (paymentEntries.some(entry => entry.method === 'Credit')) {
       return; // silently ignore or show message
     }
-    
+
     setPaymentEntries([...paymentEntries, { method: '', amount: '' }]);
   };
 
@@ -123,7 +123,7 @@ const PaymentPaid = ({ totalAmount, items, onClose, darkMode, cashierId, cashier
       setPaymentError('');
       return;
     }
-    
+
     const newEntries = [...paymentEntries];
     newEntries[index][field] = value;
     setPaymentEntries(newEntries);
@@ -328,7 +328,7 @@ const PaymentPaid = ({ totalAmount, items, onClose, darkMode, cashierId, cashier
     // const totalAmount = paymentData.totalAmount || 0;
     // const paidAmount = paymentData.totalAmount || 0;
     const balance = totalPaid - totalAmount;
-    
+
     const subtotal = items.reduce((sum, item) => sum + (item.sellingPrice * item.quantity), 0);
     const totalDiscount = items.reduce((sum, item) => sum + (item.discount || 0), 0);
 
@@ -492,8 +492,8 @@ const PaymentPaid = ({ totalAmount, items, onClose, darkMode, cashierId, cashier
             </thead>
             <tbody>
               ${items.map(item => {
-                const total = (item.sellingPrice * item.quantity - (item.discount || 0)).toFixed(2);
-                return `
+      const total = (item.sellingPrice * item.quantity - (item.discount || 0)).toFixed(2);
+      return `
                   <tr>
                     <td>${item.itemName}</td>
                     <td>${item.quantity}</td>
@@ -502,7 +502,7 @@ const PaymentPaid = ({ totalAmount, items, onClose, darkMode, cashierId, cashier
                     <td>Rs. ${total}</td>
                   </tr>
                 `;
-              }).join('')}
+    }).join('')}
             </tbody>
           </table>
 
@@ -632,7 +632,7 @@ const PaymentPaid = ({ totalAmount, items, onClose, darkMode, cashierId, cashier
       // const popup = window.open('', '_blank');
 
       if (response.ok) {
-        
+
         // const popup = window.open('', '_blank');
         // const receiptHTML = generateReceiptHTML(data.payment, {
         //   customerName,
@@ -743,9 +743,9 @@ const PaymentPaid = ({ totalAmount, items, onClose, darkMode, cashierId, cashier
               );
             })}
             {!paymentEntries.some(entry => entry.method === "Credit") && (
-              <button 
-                type="button" 
-                onClick={addPaymentMethod} 
+              <button
+                type="button"
+                onClick={addPaymentMethod}
                 style={{ marginTop: '8px', fontSize: '14px' }}
                 disabled={loading} // 🔒 Disable during loading
               >
@@ -793,14 +793,14 @@ const PaymentPaid = ({ totalAmount, items, onClose, darkMode, cashierId, cashier
 
         <div className="right-section">
           {/* 🔒 Disable Cancel during loading */}
-          <button 
-            onClick={() => !loading && onClose(null)} 
+          <button
+            onClick={() => !loading && onClose(null)}
             className="p-cancel-btn"
             disabled={loading}
           >
             Cancel
           </button>
-          
+
           {/* 🔒 Disable dialpad during loading */}
           <div className="p-dialpad" style={{ opacity: loading ? 0.5 : 1, pointerEvents: loading ? 'none' : 'auto' }}>
             {[1, 2, 3, 4, 5, 6, 7, 8, 9, ".", 0].map((num) => (

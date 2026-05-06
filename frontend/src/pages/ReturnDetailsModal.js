@@ -13,7 +13,7 @@ const ReturnDetailsModal = ({ closeModal }) => {
       try {
         const response = await fetch(API_URL);
         const data = await response.json();
-        
+
         // Check if data is valid
         if (Array.isArray(data) && data.length > 0) {
           setReturnRecords(data);

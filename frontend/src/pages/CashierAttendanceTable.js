@@ -47,15 +47,15 @@ const CashierAttendanceTable = ({ darkMode }) => {
     setShowActionMenu(null);
   };
   const token = localStorage.getItem('token');
-  
+
   const handleUpdate = async () => {
-    
+
     try {
       await axios.put(`${API_URL}/${editingRecord._id}`, {
         headers: {
           "Authorization": `Bearer ${token}`
         }
-      } ,updatedAttendance);
+      }, updatedAttendance);
       fetchAttendance();
       setEditingRecord(null);
     } catch (error) {
@@ -66,7 +66,7 @@ const CashierAttendanceTable = ({ darkMode }) => {
   const handleDelete = async (id) => {
     if (window.confirm("Are you sure you want to delete this attendance record?")) {
       try {
-        await axios.delete(`${API_URL}/${id}`,{
+        await axios.delete(`${API_URL}/${id}`, {
           headers: {
             "Authorization": `Bearer ${token}`
           }
@@ -305,12 +305,12 @@ const CashierAttendanceTable = ({ darkMode }) => {
 
   return (
     <div className={`product-repair-list-container ${darkMode ? "dark" : ""}`}>
-      
+
       <div className="header-section">
-        
+
 
         <h2 className={`product-repair-list-title ${darkMode ? "dark" : ""}`}>
-        Cashier Attendance Records
+          Cashier Attendance Records
         </h2>
       </div>
 
@@ -332,12 +332,12 @@ const CashierAttendanceTable = ({ darkMode }) => {
         </div>
         <div className='filter-action-row'>
 
-        <button onClick={() => setSummaryModalOpen(true)} className="btn-summary">
-          <FontAwesomeIcon icon={faChartSimple} /> Summary
-        </button>
-        <button onClick={() => setShowReportOptions(true)} className="btn-report">
-          <FontAwesomeIcon icon={faFile} /> Reports
-        </button>
+          <button onClick={() => setSummaryModalOpen(true)} className="btn-summary">
+            <FontAwesomeIcon icon={faChartSimple} /> Summary
+          </button>
+          <button onClick={() => setShowReportOptions(true)} className="btn-report">
+            <FontAwesomeIcon icon={faFile} /> Reports
+          </button>
         </div>
       </div>
       {showReportOptions && (

@@ -29,16 +29,16 @@ const ReturnPayment = ({ onClose, darkMode, cashierId, cashierName }) => {
     })
       .then(res => {
         console.log('Products fetched:', res.data); // Debug log
-        
+
         // Filter products to only show those from the main product list (not deleted)
         const clickedProducts = JSON.parse(localStorage.getItem('clickedProducts') || '[]');
         const clickedProductIds = clickedProducts.map(cp => cp._id);
-        
+
         const allProducts = Array.isArray(res.data) ? res.data : [];
-        const availableProducts = allProducts.filter(product => 
+        const availableProducts = allProducts.filter(product =>
           !product.clickedForAdd && !clickedProductIds.includes(product._id)
         );
-        
+
         console.log('Available products for return:', availableProducts.length, 'out of', allProducts.length);
         setProducts(availableProducts);
       })
@@ -65,22 +65,22 @@ const ReturnPayment = ({ onClose, darkMode, cashierId, cashierName }) => {
   const filteredProducts = searchQuery.trim() === ""
     ? products
     : products.filter(product => {
-        const searchableText = normalize(product.itemName + ' ' + product.category + ' ' + product.itemCode);
-        const words = normalize(searchQuery).trim().split(/\s+/);
+      const searchableText = normalize(product.itemName + ' ' + product.category + ' ' + product.itemCode);
+      const words = normalize(searchQuery).trim().split(/\s+/);
 
-        return words.every(word => {
-          const escapedWord = word.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-          if (/^\d+$/.test(word)) {
-            // Numeric: require word boundaries (exact number match)
-            const regex = new RegExp(`\\b${escapedWord}\\b`, 'i');
-            return regex.test(searchableText);
-          } else {
-            // Text: allow partial substring match
-            const regex = new RegExp(escapedWord, 'i');
-            return regex.test(searchableText);
-          }
-        });
+      return words.every(word => {
+        const escapedWord = word.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        if (/^\d+$/.test(word)) {
+          // Numeric: require word boundaries (exact number match)
+          const regex = new RegExp(`\\b${escapedWord}\\b`, 'i');
+          return regex.test(searchableText);
+        } else {
+          // Text: allow partial substring match
+          const regex = new RegExp(escapedWord, 'i');
+          return regex.test(searchableText);
+        }
       });
+    });
 
   const addToReturn = (product) => {
     const existingItem = returnItems.find(item => item.productId === product._id);
@@ -253,15 +253,15 @@ const ReturnPayment = ({ onClose, darkMode, cashierId, cashierName }) => {
           </div>
           <div class="divider"></div>
           ${returnItems.map(item => {
-            const total = (item.returnPrice * item.quantity).toFixed(2);
-            return `
+      const total = (item.returnPrice * item.quantity).toFixed(2);
+      return `
               <div class="item-row">
                 <span class="item-qty">${item.quantity}</span>
                 <span class="item-name">${item.itemName.length > 12 ? item.itemName : item.itemName}</span>
                 <span class="item-amt">Rs. ${total}</span>
               </div>
             `;
-          }).join('')}
+    }).join('')}
         </div>
 
         <div class="divider"></div>
@@ -367,7 +367,7 @@ const ReturnPayment = ({ onClose, darkMode, cashierId, cashierName }) => {
         popup.document.write(html);
         popup.document.close();
 
-        if(popup.document.close()){
+        if (popup.document.close()) {
           alert(`Return successful!\nTotal Refund: Rs. ${calculateReturnTotal().toFixed(2)}\nReturn Invoice: ${data.returnInvoiceNumber}`);
         }
         onClose(data.returnInvoiceNumber);
@@ -396,7 +396,7 @@ const ReturnPayment = ({ onClose, darkMode, cashierId, cashierName }) => {
       <div className={`return-popup-content ${darkMode ? "dark-mode" : ""}`}>
         <h2 className={`return-title ${darkMode ? "dark-mode" : ""}`}>Return Payment</h2>
         {error && <p className={`error-message ${darkMode ? "dark-mode" : ""}`}>{error}</p>}
-        
+
         <div className="search-section">
           <input
             type="text"

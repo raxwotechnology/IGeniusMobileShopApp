@@ -31,12 +31,12 @@ const HiddenProducts = () => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username })
       });
-      
+
       if (!response.ok) {
         const errorData = await response.json();
         throw new Error(errorData.message || 'Failed to make product visible');
       }
-      
+
       // Remove the product from the hidden list
       setHiddenProducts(hiddenProducts.filter(product => product._id !== productId));
       alert('Product made visible successfully!');
@@ -55,10 +55,10 @@ const HiddenProducts = () => {
       ) : (
         <ul style={{ paddingLeft: 0 }}>
           {hiddenProducts.map(product => (
-            <li key={product._id} style={{ 
-              marginBottom: 16, 
-              listStyle: 'none', 
-              borderBottom: '1px solid #e2e8f0', 
+            <li key={product._id} style={{
+              marginBottom: 16,
+              listStyle: 'none',
+              borderBottom: '1px solid #e2e8f0',
               paddingBottom: 8,
               padding: 16,
               backgroundColor: '#f8f9fa',
@@ -67,10 +67,10 @@ const HiddenProducts = () => {
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
                 <div style={{ flex: 1 }}>
                   <span style={{ color: '#dc2626', fontWeight: 700, marginRight: 8 }}>[HIDDEN]</span>
-                  Category: {product.category} | Supplier: {product.supplierName}<br/>
-                  <strong>{product.itemName}</strong> (Code: {product.itemCode})<br/>
+                  Category: {product.category} | Supplier: {product.supplierName}<br />
+                  <strong>{product.itemName}</strong> (Code: {product.itemCode})<br />
                   <div style={{ color: '#666', fontSize: 13, marginTop: 4 }}>
-                    Hidden At: {product.hiddenAt ? new Date(product.hiddenAt).toLocaleString() : 'N/A'} | 
+                    Hidden At: {product.hiddenAt ? new Date(product.hiddenAt).toLocaleString() : 'N/A'} |
                     Hidden By: {product.hiddenBy || 'N/A'}
                   </div>
                   <div style={{ color: '#888', fontSize: 13, marginTop: 4 }}>
@@ -88,7 +88,7 @@ const HiddenProducts = () => {
                     )}
                   </div>
                 </div>
-                <button 
+                <button
                   onClick={() => handleMakeVisible(product._id)}
                   style={{
                     backgroundColor: '#22c55e',

@@ -6,7 +6,7 @@ import DamagedCartForm from './DamagedCartForm';
 
 import '../Products.css';
 import editicon from '../icon/edit.png';
-import viewicon from '../icon/clipboard.png'; 
+import viewicon from '../icon/clipboard.png';
 import deleteicon from '../icon/delete.png';
 import saveicon from '../icon/sucess.png';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -150,7 +150,7 @@ const CartDetailsTable = ({ supplierId, darkMode, refreshSuppliers }) => {
         setProductStocks(prev => ({ ...prev, [itemCode]: productStock }));
         setDamagedStocks(prev => ({ ...prev, [itemCode]: damagedStock }));
         setReleaseStocks(prev => ({ ...prev, [itemCode]: releaseStocks }));
-        
+
       } catch (err) {
         console.error(`Error loading stocks for ${itemCode}:`, err);
         // Optionally set defaults on error
@@ -184,20 +184,20 @@ const CartDetailsTable = ({ supplierId, darkMode, refreshSuppliers }) => {
   }, [items]);
 
   const formatTrackDate = (dateString) => {
-  if (!dateString) return 'N/A';
+    if (!dateString) return 'N/A';
 
-  try {
-    // Use 'en-GB' for day-first and consistent formatting
-    return new Intl.DateTimeFormat('en-GB', {
-      day: '2-digit',
-      month: 'short',
-      year: 'numeric'
-    }).format(new Date(dateString));
-  } catch (err) {
-    console.error('Invalid date:', dateString);
-    return 'Invalid Date';
-  }
-};
+    try {
+      // Use 'en-GB' for day-first and consistent formatting
+      return new Intl.DateTimeFormat('en-GB', {
+        day: '2-digit',
+        month: 'short',
+        year: 'numeric'
+      }).format(new Date(dateString));
+    } catch (err) {
+      console.error('Invalid date:', dateString);
+      return 'Invalid Date';
+    }
+  };
 
   const handleTrackItem = async (item) => {
     setTrackingLoading(true);
@@ -209,7 +209,7 @@ const CartDetailsTable = ({ supplierId, darkMode, refreshSuppliers }) => {
       const repairsRes = await fetch(`${REPAIRS_API_URL}`);
       if (!repairsRes.ok) throw new Error("Failed to fetch repair data");
       const repairsList = await repairsRes.json();
-      
+
       const repairsUsed = repairsList
         .filter((repair) =>
           repair.repairCart?.some((cartItem) => cartItem.itemCode === itemCode)
@@ -323,7 +323,7 @@ const CartDetailsTable = ({ supplierId, darkMode, refreshSuppliers }) => {
     try {
       const response = await fetch(`${PRODUCT_API_URL}/update-stock/${item.itemCode}`, {
         method: 'PATCH',
-        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}`},
+        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
         body: JSON.stringify({
           newStock: item.quantity,
           newBuyingPrice: item.buyingPrice,
@@ -347,33 +347,33 @@ const CartDetailsTable = ({ supplierId, darkMode, refreshSuppliers }) => {
   const normalize = (str) => str.toLowerCase().replace(/\s+/g, ' ');
 
   const sortedAndFilteredProducts = useMemo(() => {
-      // Start with filtered products
-      // Start with all products or filtered list
-      let result = items;
-  
-      // Apply search filter only if query exists
-      if (searchQuery.trim() !== '') {
-        result = items.filter(product => {
-          const searchableText = normalize(product.grnNumber + ' ' + product.itemName + ' ' + product.category + ' ' + product.category);
-          const words = normalize(searchQuery).trim().split(/\s+/);
-  
-          return words.every(word => {
-            const escapedWord = word.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-            if (/^\d+$/.test(word)) {
-              // Numeric: require word boundaries (exact number match)
-              const regex = new RegExp(`\\b${escapedWord}\\b`, 'i');
-              return regex.test(searchableText);
-            } else {
-              // Text: allow partial substring match
-              const regex = new RegExp(escapedWord, 'i');
-              return regex.test(searchableText);
-            }
-          });
+    // Start with filtered products
+    // Start with all products or filtered list
+    let result = items;
+
+    // Apply search filter only if query exists
+    if (searchQuery.trim() !== '') {
+      result = items.filter(product => {
+        const searchableText = normalize(product.grnNumber + ' ' + product.itemName + ' ' + product.category + ' ' + product.category);
+        const words = normalize(searchQuery).trim().split(/\s+/);
+
+        return words.every(word => {
+          const escapedWord = word.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+          if (/^\d+$/.test(word)) {
+            // Numeric: require word boundaries (exact number match)
+            const regex = new RegExp(`\\b${escapedWord}\\b`, 'i');
+            return regex.test(searchableText);
+          } else {
+            // Text: allow partial substring match
+            const regex = new RegExp(escapedWord, 'i');
+            return regex.test(searchableText);
+          }
         });
-      }
-  
-      return result;
-    }, [items, searchQuery]);
+      });
+    }
+
+    return result;
+  }, [items, searchQuery]);
 
   const handleClearSearch = () => {
     setSearchQuery('');
@@ -396,7 +396,7 @@ const CartDetailsTable = ({ supplierId, darkMode, refreshSuppliers }) => {
         </>
       )}
       <div className={`search-bar-container ${darkMode ? 'dark' : ''}`}>
-        {(!searchQuery) ? <FontAwesomeIcon icon={faSearch} className="search-icon" /> : <></> }
+        {(!searchQuery) ? <FontAwesomeIcon icon={faSearch} className="search-icon" /> : <></>}
         <input
           type="text"
           placeholder="       Search..."
@@ -447,21 +447,21 @@ const CartDetailsTable = ({ supplierId, darkMode, refreshSuppliers }) => {
                     <>
                       <span style={{
                         color: (returnStocks[item.itemCode] || 0) > 0 ? '#e74c3c' : 'inherit',
-                        fontWeight: 'bold' 
+                        fontWeight: 'bold'
                       }}>
                         {returnStocks[item.itemCode] || 0}
                       </span>
                       <span> / </span>
                       <span style={{
                         color: (damagedStocks[item.itemCode] || 0) > 0 ? '#e74c3c' : 'inherit',
-                        fontWeight: 'bold' 
+                        fontWeight: 'bold'
                       }}>
                         {damagedStocks[item.itemCode] || 0}
                       </span>
                       <span> / </span>
                       <span style={{
                         color: (releaseStocks[item.itemCode] || 0) > 0 ? "#28a745" : "#e74c3c",
-                        fontWeight: 'bold' 
+                        fontWeight: 'bold'
                       }}>
                         {releaseStocks[item.itemCode] || 0}
                       </span>
@@ -493,13 +493,13 @@ const CartDetailsTable = ({ supplierId, darkMode, refreshSuppliers }) => {
                           </button>
                           <button onClick={() => handleReturn(item, index)} className="p-edit-btn">
                             <div className="action-btn-content">
-                              <span className="p-edit-btn-icon" style={{width:"30", height:"30"}}>↩️ </span>
+                              <span className="p-edit-btn-icon" style={{ width: "30", height: "30" }}>↩️ </span>
                               <span> Return</span>
                             </div>
                           </button>
                           <button onClick={() => handleDamaged(item, index)} className="p-edit-btn">
                             <div className="action-btn-content">
-                              <span className="p-edit-btn-icon" style={{width:"30", height:"30"}}>⚠️ </span>
+                              <span className="p-edit-btn-icon" style={{ width: "30", height: "30" }}>⚠️ </span>
                               <span> Damaged Items</span>
                             </div>
                           </button>
@@ -578,7 +578,7 @@ const CartDetailsTable = ({ supplierId, darkMode, refreshSuppliers }) => {
       )}
       {showEditModal && editItem && (
         <CartForm
-          supplier={{ _id: supplierId, supplierName:supplierName }}
+          supplier={{ _id: supplierId, supplierName: supplierName }}
           item={editItem}
           closeModal={() => {
             setShowEditModal(false);
@@ -590,7 +590,7 @@ const CartDetailsTable = ({ supplierId, darkMode, refreshSuppliers }) => {
       )}
       {showReturnModal && returnItem && (
         <ReturnCartForm
-          supplier={{ _id: supplierId, supplierName:supplierName }}
+          supplier={{ _id: supplierId, supplierName: supplierName }}
           item={returnItem}
           closeModal={() => {
             setShowReturnModal(false);
@@ -603,7 +603,7 @@ const CartDetailsTable = ({ supplierId, darkMode, refreshSuppliers }) => {
 
       {showDamagedModal && damagedItem && (
         <DamagedCartForm
-          supplier={{ _id: supplierId, supplierName:supplierName }}
+          supplier={{ _id: supplierId, supplierName: supplierName }}
           item={damagedItem}
           closeModal={() => {
             setShowDamagedModal(false);
@@ -613,7 +613,7 @@ const CartDetailsTable = ({ supplierId, darkMode, refreshSuppliers }) => {
           darkMode={darkMode}
         />
       )}
-      
+
     </div>
   );
 };

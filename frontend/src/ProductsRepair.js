@@ -105,7 +105,7 @@ const ProductRepairList = ({ darkMode }) => {
 
   function fuzzyIncludes(haystack, needle) {
 
-  
+
     // Remove non-alphanumeric and split needle into chars
     const cleanHaystack = Array.from(haystack);
     const cleanNeedle = Array.from(needle);
@@ -150,59 +150,59 @@ const ProductRepairList = ({ darkMode }) => {
   //     });
 
   const filteredProductsForModal = useMemo(() => {
-      let result = products;
-  
-      // Apply search filter only if query exists
-      if (productSearchQuery.trim() !== '') {
-        let subresult1 = products.filter(product => {
-          const name = (product.itemName + product.category).toLowerCase()
+    let result = products;
+
+    // Apply search filter only if query exists
+    if (productSearchQuery.trim() !== '') {
+      let subresult1 = products.filter(product => {
+        const name = (product.itemName + product.category).toLowerCase()
           .trim()
           .replace(/\s+/g, '');
-          
-  
-          // Split query into meaningful words, remove empty
-          const queryWords = productSearchQuery
+
+
+        // Split query into meaningful words, remove empty
+        const queryWords = productSearchQuery
           .toLowerCase()
           .trim()
           .replace(/\s+/g, '');
 
-          // If no valid words, show all
-          if (queryWords.length === 0) return true;
-  
-          return name.includes(queryWords);
-        }).sort((a, b) => a.itemName.localeCompare(b.itemName));
-  
-        let subresult2 = products.filter(product => {
-          const name = (product.itemName + product.category).toLowerCase()
+        // If no valid words, show all
+        if (queryWords.length === 0) return true;
+
+        return name.includes(queryWords);
+      }).sort((a, b) => a.itemName.localeCompare(b.itemName));
+
+      let subresult2 = products.filter(product => {
+        const name = (product.itemName + product.category).toLowerCase()
           .trim()
           .replace(/\s+/g, '');
-          
-  
-          // Split query into meaningful words, remove empty
-          const queryWords = productSearchQuery
+
+
+        // Split query into meaningful words, remove empty
+        const queryWords = productSearchQuery
           .toLowerCase()
           .trim()
           .replace(/\s+/g, '');
-  
-          // If no valid words, show all
-          if (queryWords.length === 0) return true;
-  
-          // console.log("Search query", queryWords);
-          
-          return fuzzyIncludes(name, queryWords);
-        }).sort((a, b) => a.itemName.localeCompare(b.itemName));
-  
-        if (subresult1.length === 0) {
-          result = subresult2;
-        }
-        else{
-          result = subresult1;
-        }
-  
+
+        // If no valid words, show all
+        if (queryWords.length === 0) return true;
+
+        // console.log("Search query", queryWords);
+
+        return fuzzyIncludes(name, queryWords);
+      }).sort((a, b) => a.itemName.localeCompare(b.itemName));
+
+      if (subresult1.length === 0) {
+        result = subresult2;
       }
-  
-      return result;
-    }, [products, productSearchQuery]);
+      else {
+        result = subresult1;
+      }
+
+    }
+
+    return result;
+  }, [products, productSearchQuery]);
 
   // console.log("Current product search query:", productSearchQuery);
   // console.log("Current products in state:", products);  
@@ -251,7 +251,7 @@ const ProductRepairList = ({ darkMode }) => {
       return queryWords.every(word => searchableText.includes(word));
     });
   }, [repairs, searchTerm, currentStatusFilter]);
-    
+
   const sortedAndFilteredRepairs = useMemo(() => {
     // Start with filtered repairs (your existing filtering logic)
     let result = filteredRepairs;
@@ -312,7 +312,7 @@ const ProductRepairList = ({ darkMode }) => {
 
     return result;
   }, [filteredRepairs, sortConfig]);
-    // Pagination calculations
+  // Pagination calculations
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentItems = sortedAndFilteredRepairs;
@@ -325,7 +325,7 @@ const ProductRepairList = ({ darkMode }) => {
     setCurrentPage(pageNumber);
     window.scrollTo(0, 0); // Scroll to top when changing pages
   };
-  
+
 
   const fetchRepairs = () => {
     setLoading(true);
@@ -343,27 +343,27 @@ const ProductRepairList = ({ darkMode }) => {
         const processedRepairData = repairData.map(repair => {
           // console.log("Processing repair:", repair.repairInvoice || repair.repairCode);
           // console.log("Change history before processing:", repair.changeHistory);
-        
+
           const processedChangeHistory = Array.isArray(repair.changeHistory)
             ? repair.changeHistory.map(change => ({
-                ...change,
-                changedAt: change.changedAt || new Date().toISOString(),
-                changedBy: change.changedBy || 'System',
-                field: change.field || 'Unknown Field',
-                oldValue: change.oldValue !== undefined ? change.oldValue : 'N/A',
-                newValue: change.newValue !== undefined ? change.newValue : 'N/A',
-                changeType: change.changeType || 'UPDATE'
-              }))
+              ...change,
+              changedAt: change.changedAt || new Date().toISOString(),
+              changedBy: change.changedBy || 'System',
+              field: change.field || 'Unknown Field',
+              oldValue: change.oldValue !== undefined ? change.oldValue : 'N/A',
+              newValue: change.newValue !== undefined ? change.newValue : 'N/A',
+              changeType: change.changeType || 'UPDATE'
+            }))
             : [];
-        
+
           return {
             ...repair,
             repairCart: repair.repairCart || [],
             totalRepairCost: repair.totalRepairCost || 0,
             technicianReview: repair.technicianReview || "",
             changeHistory: processedChangeHistory,
-            repairStatus: repair.repairStatus && statusFilters.includes(repair.repairStatus) 
-              ? repair.repairStatus 
+            repairStatus: repair.repairStatus && statusFilters.includes(repair.repairStatus)
+              ? repair.repairStatus
               : "Pending" // Default to "Pending" if status is invalid
           };
         });
@@ -407,7 +407,7 @@ const ProductRepairList = ({ darkMode }) => {
             itemCode: product.itemCode,
             itemName: product.itemName,
             category: product.category,
-            stock:product.stock,
+            stock: product.stock,
             // Add other fields as needed
           };
         });
@@ -494,12 +494,12 @@ const ProductRepairList = ({ darkMode }) => {
       setError("Cannot delete this repair: it contains items in the cart.");
       return;
     }
-    
+
     if (window.confirm("Are you sure you want to delete this repair record?")) {
       try {
-        const response = await fetch(`${API_URL}/${id}`, { 
-          method: "DELETE", 
-          headers: {'Authorization': `Bearer ${token}`}
+        const response = await fetch(`${API_URL}/${id}`, {
+          method: "DELETE",
+          headers: { 'Authorization': `Bearer ${token}` }
         });
         if (!response.ok) throw new Error("Failed to delete repair record");
         fetchRepairs();
@@ -610,11 +610,11 @@ const ProductRepairList = ({ darkMode }) => {
     const buyingPrice = product.buyingPrice || 0;
 
     updatedProducts[index] = {
-    ...product,
-    quantity: newQuantity,
-    cost: sellingPrice * newQuantity,
-    buyingPrice: buyingPrice * newQuantity,
-  };
+      ...product,
+      quantity: newQuantity,
+      cost: sellingPrice * newQuantity,
+      buyingPrice: buyingPrice * newQuantity,
+    };
 
     setSelectedProducts(updatedProducts);
   };
@@ -646,7 +646,7 @@ const ProductRepairList = ({ darkMode }) => {
   const token = localStorage.getItem('token');
 
   const handleReturnSubmit = async () => {
-    
+
     try {
       // Get the products that have a quantity greater than 0
       const returnProducts = returnFormData
@@ -725,7 +725,7 @@ const ProductRepairList = ({ darkMode }) => {
 
       if (invalidProducts.length > 0) {
         setError("Please enter a valid selling price (greater than 0) for all selected products.");
-        
+
         // Optional: Focus or highlight first invalid product
         const firstInvalidIndex = selectedProducts.indexOf(invalidProducts[0]);
         const input = document.querySelectorAll(`.selling-price-input`)[firstInvalidIndex];
@@ -842,7 +842,7 @@ const ProductRepairList = ({ darkMode }) => {
 
       // Decrease quantity or remove item if quantity becomes zero
       if (item.quantity > 1) {
-        updatedCart[index] = { ...item, quantity: item.quantity - 1, cost:(item.sellingPrice * (item.quantity - 1)) };
+        updatedCart[index] = { ...item, quantity: item.quantity - 1, cost: (item.sellingPrice * (item.quantity - 1)) };
       } else {
         updatedCart.splice(index, 1);
       }
@@ -1192,7 +1192,7 @@ const ProductRepairList = ({ darkMode }) => {
       return;
     }
 
-    
+
     const finalAmountDue = (selectedRepair.totalRepairCost || 0) - (selectedRepair.totalDiscountAmount || 0) + (selectedRepair.totalAdditionalServicesAmount || 0);
 
     // ✅ VALIDATION: payment breakdown must be valid
@@ -1282,13 +1282,13 @@ const ProductRepairList = ({ darkMode }) => {
       setRepairs(repairs.map((r) => (r._id === updatedRepair._id ? updatedRepair : r)));
       setShowViewModal(false);
       fetchRepairs();
-      setMessage(changeGiven > 0 
+      setMessage(changeGiven > 0
         ? `Payment completed! Change returned: Rs. ${changeGiven.toFixed(2)}`
         : "Payment completed successfully!"
       );
       // ✅ CLEAR PAYMENT BREAKDOWN (STATE + LOCAL STORAGE)
-    setPaymentBreakdown([{ method: "", amount: "" }]);
-    localStorage.removeItem(`paymentBreakdown_${selectedRepair._id}`);
+      setPaymentBreakdown([{ method: "", amount: "" }]);
+      localStorage.removeItem(`paymentBreakdown_${selectedRepair._id}`);
 
     } catch (err) {
       console.error("Error completing payment:", err);
@@ -1306,30 +1306,30 @@ const ProductRepairList = ({ darkMode }) => {
       [name]: name === "discountAmount" ? parseFloat(value) || 0 : value
     });
   };
-      
-  
+
+
   // Add a new service to the list
   const handleAddService = async () => {
     if (!newService.serviceName.trim()) {
       setError("Service name is required");
       return;
     }
-  
+
     if (isNaN(newService.discountAmount) || newService.discountAmount < 0) {
       setError("Discount amount must be a positive number");
       return;
     }
-  
+
     try {
       const updatedServices = [...services, { ...newService }];
       setServices(updatedServices);
       setNewService({ serviceName: "", discountAmount: 0, description: "" });
-  
+
       const cartTotal = selectedRepair.repairCart.reduce((total, item) => total + (Math.max(0, parseFloat(item.sellingPrice || 0)) * parseInt(item.quantity || 0)), 0);
       const baseTotal = cartTotal + Math.max(0, parseFloat(selectedRepair.repairCost || 0));
       const totalDiscountAmount = updatedServices.reduce((total, service) => total + Math.max(0, parseFloat(service.discountAmount || 0)), 0);
-      const totalAdditionalServicesAmount = parseFloat(selectedRepair.totalAdditionalServicesAmount || 0); 
-      const updatedTotalRepairCost = Math.max(0, baseTotal - totalDiscountAmount); 
+      const totalAdditionalServicesAmount = parseFloat(selectedRepair.totalAdditionalServicesAmount || 0);
+      const updatedTotalRepairCost = Math.max(0, baseTotal - totalDiscountAmount);
       const finalAmount = updatedTotalRepairCost + totalAdditionalServicesAmount;
       // console.log("Calculation details:", { cartTotal, repairCost: selectedRepair.repairCost, totalDiscountAmount, totalAdditionalServicesAmount, updatedTotalRepairCost, finalAmount });
       const response = await fetch(`${API_URL}/${selectedRepair._id}`, {
@@ -1341,12 +1341,12 @@ const ProductRepairList = ({ darkMode }) => {
           finalAmount
         }),
       });
-  
+
       if (!response.ok) {
         const errorData = await response.json();
         throw new Error(errorData.message || "Failed to apply service");
       }
-  
+
       const updatedRepair = await response.json();
       setSelectedRepair(updatedRepair);
       setRepairs(repairs.map(r => (r._id === updatedRepair._id ? updatedRepair : r)));
@@ -1356,19 +1356,19 @@ const ProductRepairList = ({ darkMode }) => {
       setError(err.message);
     }
   };
-    const handleRemoveService = async (index) => {
+  const handleRemoveService = async (index) => {
     try {
       const updatedServices = [...services];
       updatedServices.splice(index, 1);
       setServices(updatedServices);
-  
+
       const totalDiscountAmount = updatedServices.reduce((total, service) => total + service.discountAmount, 0);
       const cartTotal = selectedRepair.repairCart.reduce((total, item) => total + ((item.sellingPrice || 0) * (item.quantity || 0)), 0);
       const baseTotal = cartTotal + (selectedRepair.repairCost || 0);
       const updatedTotalRepairCost = baseTotal - totalDiscountAmount;
       const totalAdditionalServicesAmount = selectedRepair.totalAdditionalServicesAmount || 0;
       const finalAmount = updatedTotalRepairCost + totalAdditionalServicesAmount;
-  
+
       const response = await fetch(`${API_URL}/${selectedRepair._id}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json", "Authorization": `Bearer ${token}` },
@@ -1378,9 +1378,9 @@ const ProductRepairList = ({ darkMode }) => {
           finalAmount,
         }),
       });
-  
+
       if (!response.ok) throw new Error("Failed to update after removing service");
-  
+
       const updatedRepair = await response.json();
       setSelectedRepair(updatedRepair);
       setRepairs(repairs.map(r => (r._id === updatedRepair._id ? updatedRepair : r)));
@@ -1389,7 +1389,7 @@ const ProductRepairList = ({ darkMode }) => {
       setError(err.message);
     }
   };
-  
+
   // Handle changes to the new additional service form
   const handleNewAdditionalServiceChange = (e) => {
     const { name, value } = e.target;
@@ -1637,7 +1637,7 @@ const ProductRepairList = ({ darkMode }) => {
       ];
 
       const newrettotalAdditionalServicesAmount = updatedReturnedServices.reduce(
-        (total, s) => total + ( Math.max(0, parseFloat(s.serviceAmount || 0))), 0
+        (total, s) => total + (Math.max(0, parseFloat(s.serviceAmount || 0))), 0
       );
 
       // Send update to backend
@@ -1713,7 +1713,7 @@ const ProductRepairList = ({ darkMode }) => {
     };
   };
 
-    
+
   const calculateCartTotal = (cart) => {
     if (!cart || !Array.isArray(cart)) return "0.00";
     return cart
@@ -1909,8 +1909,8 @@ const ProductRepairList = ({ darkMode }) => {
               </thead>
               <tbody>
                 ${repair.repairCart
-                  .map(
-                    (item) => `
+        .map(
+          (item) => `
                       <tr>
                         <td>${item.itemName}</td>
                         <td>${item.category}</td>
@@ -1918,11 +1918,11 @@ const ProductRepairList = ({ darkMode }) => {
                         <td>Rs. ${item.cost}</td>
                       </tr>
                     `
-                  )
-                  .join("")}
+        )
+        .join("")}
               </tbody>
             </table>
-            ${ (repair.returnCart).length > 0 ? `
+            ${(repair.returnCart).length > 0 ? `
               <div class="header">
               Return Items
               </div>
@@ -1937,8 +1937,8 @@ const ProductRepairList = ({ darkMode }) => {
               </thead>
               <tbody>
                 ${repair.returnCart
-                  .map(
-                    (item) => `
+          .map(
+            (item) => `
                       <tr>
                         <td>${item.itemName}</td>
                         <td>${item.category}</td>
@@ -1946,8 +1946,8 @@ const ProductRepairList = ({ darkMode }) => {
                         <td>Rs. ${item.cost}</td>
                       </tr>
                     `
-                  )
-                  .join("")}
+          )
+          .join("")}
               </tbody>
             </table>
             `: ''}
@@ -1969,8 +1969,8 @@ const ProductRepairList = ({ darkMode }) => {
               </div>
               ` : ''}
               <p><strong>Total Repair Cost</strong>: Rs. ${calculateCartTotal(repair.repairCart) - repair.totalDiscountAmount || 0}</p>
-              ${ (repair.totalReturnCost) > 0 ? `
-                <p><strong>Total Return Items Amount</strong>: Rs. ${repair.totalReturnCost || 0}</p>`:''}
+              ${(repair.totalReturnCost) > 0 ? `
+                <p><strong>Total Return Items Amount</strong>: Rs. ${repair.totalReturnCost || 0}</p>` : ''}
 
               ${repair.additionalServices && repair.additionalServices.length > 0 ? `
               <div class="additional-services">
@@ -1995,8 +1995,8 @@ const ProductRepairList = ({ darkMode }) => {
               </div>
               ` : ''}
 
-              ${ (repair.rettotalAdditionalServicesAmount) > 0 ? `
-                <p><strong>Total Return Additional Services</strong>: Rs. ${repair.rettotalAdditionalServicesAmount || 0}</p>`:''}
+              ${(repair.rettotalAdditionalServicesAmount) > 0 ? `
+                <p><strong>Total Return Additional Services</strong>: Rs. ${repair.rettotalAdditionalServicesAmount || 0}</p>` : ''}
               <p style="font-size: 16px; font-weight: bold; color: ${isPaid ? 'green' : 'red'}; border-top: 1px solid #ccc; padding-top: 10px;">
                 ${isPaid ? '✅ PAID TOTAL' : '❌ UNPAID TOTAL'}: Rs. ${calculateCartTotal(repair.repairCart) - repair.totalDiscountAmount + repair.totalAdditionalServicesAmount || repair.totalRepairCost || 0}
               </p>
@@ -2288,15 +2288,15 @@ const ProductRepairList = ({ darkMode }) => {
             <div class="terms-title">TERMS & CONDITIONS FOR THE REPAIR OF DEVICES</div>
             <div>
               ${[
-                "1. The customer should receive a job sheet when an unit is handed over for repairs to EXXPLAN Repair Services Pvt Ltd and the contents filled in should be verified by the customer.",
-                "2. The customer should produce the original job sheet at the time of collecting the unit. EXXPLAN Repair Services Pvt Ltd reserves the right to refuse to return upon non-availability of the original job sheet.",
-                "3. Units repaired by EXXPLAN Repair Services Pvt Ltd are warranted for a period of 1(one) month from the date of collection of the unit by the customer.",
-                "4. EXXPLAN Repair Services Pvt Ltd ensures that all units are repaired within 7(seven) from the date of the damaged unit has been handed over.",
-                "5. The customer should collect the repaired unit within 14(Fourteen) days and if the unit is beyond repair our team will keep you informed and make necessary arrangements to collect the same.",
-                "6. EXXPLAN Repair Services Pvt Ltd will not be responsible or liable for any units not collected within days from the date of the job sheet issued.",
-                "7. EXXPLAN Repair Services Pvt Ltd will not be responsible for any damage or breakdown incurred during the process of repairing the unit.",
-                "8. The customer is deemed to accept all Terms & Conditions mentioned in the job sheet."
-              ].map(term => `<p style="margin: 3px 0;">${term}</p>`).join('')}
+        "1. The customer should receive a job sheet when an unit is handed over for repairs to EXXPLAN Repair Services Pvt Ltd and the contents filled in should be verified by the customer.",
+        "2. The customer should produce the original job sheet at the time of collecting the unit. EXXPLAN Repair Services Pvt Ltd reserves the right to refuse to return upon non-availability of the original job sheet.",
+        "3. Units repaired by EXXPLAN Repair Services Pvt Ltd are warranted for a period of 1(one) month from the date of collection of the unit by the customer.",
+        "4. EXXPLAN Repair Services Pvt Ltd ensures that all units are repaired within 7(seven) from the date of the damaged unit has been handed over.",
+        "5. The customer should collect the repaired unit within 14(Fourteen) days and if the unit is beyond repair our team will keep you informed and make necessary arrangements to collect the same.",
+        "6. EXXPLAN Repair Services Pvt Ltd will not be responsible or liable for any units not collected within days from the date of the job sheet issued.",
+        "7. EXXPLAN Repair Services Pvt Ltd will not be responsible for any damage or breakdown incurred during the process of repairing the unit.",
+        "8. The customer is deemed to accept all Terms & Conditions mentioned in the job sheet."
+      ].map(term => `<p style="margin: 3px 0;">${term}</p>`).join('')}
             </div>
           </div>
 
@@ -2304,13 +2304,12 @@ const ProductRepairList = ({ darkMode }) => {
             <div class="notes-title">Additional Notes</div>
             <div style="height: 60px; border: 1px dashed #000; padding: 5px; font-size: 9px; color: #777;">
               <!-- Empty space for user notes -->
-              ${
-                repair.additionalNotes &&
-                repair.additionalNotes.trim() !== "" &&
-                repair.additionalNotes.trim().toUpperCase() !== "N/A"
-                  ? repair.additionalNotes.trim()
-                  : "—"
-              }
+              ${repair.additionalNotes &&
+        repair.additionalNotes.trim() !== "" &&
+        repair.additionalNotes.trim().toUpperCase() !== "N/A"
+        ? repair.additionalNotes.trim()
+        : "—"
+      }
             </div>
           </div>
 
@@ -2617,10 +2616,10 @@ const ProductRepairList = ({ darkMode }) => {
     const updatedCart = selectedRepair.repairCart.map(item =>
       item.itemCode === itemCode
         ? {
-            ...item,
-            sellingPrice: newPrice,
-            cost: newPrice * item.quantity,
-          }
+          ...item,
+          sellingPrice: newPrice,
+          cost: newPrice * item.quantity,
+        }
         : item
     );
 
@@ -2662,7 +2661,7 @@ const ProductRepairList = ({ darkMode }) => {
       setLoading(false);
     }
   };
- 
+
 
   // Add this function to handle cashier changes view
   const handleViewCashierChanges = async () => {
@@ -2703,25 +2702,25 @@ const ProductRepairList = ({ darkMode }) => {
 
 
   const handleSort = (key) => {
-  setSortConfig((prevConfig) => {
-    const direction =
-      prevConfig.key === key && prevConfig.direction === 'asc' ? 'desc' : 'asc';
-    return { key, direction };
-  });
-};
+    setSortConfig((prevConfig) => {
+      const direction =
+        prevConfig.key === key && prevConfig.direction === 'asc' ? 'desc' : 'asc';
+      return { key, direction };
+    });
+  };
 
   return (
 
     <div className={`product-repair-list-container ${darkMode ? "dark" : ""}`}>
-      
+
       <div className="header-section">
-        
+
 
         <h2 className={`product-repair-list-title ${darkMode ? "dark" : ""}`}>
           Job List
         </h2>
       </div>
-      
+
       <div className="search-action-container">
         <div className={`search-bar-container ${darkMode ? "dark" : ""}`}>
           <FontAwesomeIcon icon={faSearch} className="search-icon" />
@@ -2741,59 +2740,59 @@ const ProductRepairList = ({ darkMode }) => {
             </button>
           )}
         </div>
-      <div className="filter-action-row">
-        <div className="status-filter-dropdown" style={{
-          display: 'flex',
-          justifyContent: 'center',
-          margin: '20px 0',
-          flexWrap: 'wrap'
-        }}>
-          <select
-            value={currentStatusFilter}
-            onChange={e => {
-              setCurrentStatusFilter(e.target.value);
+        <div className="filter-action-row">
+          <div className="status-filter-dropdown" style={{
+            display: 'flex',
+            justifyContent: 'center',
+            margin: '20px 0',
+            flexWrap: 'wrap'
+          }}>
+            <select
+              value={currentStatusFilter}
+              onChange={e => {
+                setCurrentStatusFilter(e.target.value);
                 setCurrentPage(1);
               }}
-            className={`status-filter-select ${darkMode ? 'dark' : ''}`}
+              className={`status-filter-select ${darkMode ? 'dark' : ''}`}
               style={{
                 padding: '10px 20px',
                 borderRadius: '5px',
                 border: 'none',
-              backgroundColor: darkMode ? '#4a5568' : '#e2e8f0',
-              color: darkMode ? '#e2e8f0' : '#2d3748',
+                backgroundColor: darkMode ? '#4a5568' : '#e2e8f0',
+                color: darkMode ? '#e2e8f0' : '#2d3748',
                 fontWeight: '500',
-              fontSize: '16px',
-              minWidth: '180px',
-              cursor: 'pointer',
-              transition: 'all 0.2s',
-              outline: 'none',
-              marginRight: '10px'
-            }}
-          >
-            {statusFilters.map((status) => (
-              <option key={status} value={status}>
-              {status} ({repairs.filter(r => status === "All" || r.repairStatus === status).length})
-              </option>
-          ))}
-          </select>
+                fontSize: '16px',
+                minWidth: '180px',
+                cursor: 'pointer',
+                transition: 'all 0.2s',
+                outline: 'none',
+                marginRight: '10px'
+              }}
+            >
+              {statusFilters.map((status) => (
+                <option key={status} value={status}>
+                  {status} ({repairs.filter(r => status === "All" || r.repairStatus === status).length})
+                </option>
+              ))}
+            </select>
+          </div>
         </div>
-      </div>
-      <div className="filter-action-row">
-        <button onClick={() => setShowAddModal(true)} className="-btn-primary">
-          <FontAwesomeIcon icon={faPlus} /> Add Repair
-        </button>
-        <button onClick={() => setShowReportOptions(true)} className="btn-report">
-          <FontAwesomeIcon icon={faFile} /> Reports
-        </button>
-      
-        {localStorage.getItem('role') === 'admin' && (
-          <button
-            onClick={handleViewCashierChanges}
-            className={`view-history-btn ${darkMode ? 'dark' : ''}`}
-          >
-            <FontAwesomeIcon icon={faHistory} /> &nbsp; View Changes
+        <div className="filter-action-row">
+          <button onClick={() => setShowAddModal(true)} className="-btn-primary">
+            <FontAwesomeIcon icon={faPlus} /> Add Repair
           </button>
-        )}
+          <button onClick={() => setShowReportOptions(true)} className="btn-report">
+            <FontAwesomeIcon icon={faFile} /> Reports
+          </button>
+
+          {localStorage.getItem('role') === 'admin' && (
+            <button
+              onClick={handleViewCashierChanges}
+              className={`view-history-btn ${darkMode ? 'dark' : ''}`}
+            >
+              <FontAwesomeIcon icon={faHistory} /> &nbsp; View Changes
+            </button>
+          )}
         </div>
       </div>
       {showReportOptions && (
@@ -2818,10 +2817,10 @@ const ProductRepairList = ({ darkMode }) => {
             </div>
             <div className="report-modal-buttons">
               <button onClick={generateExcel} className="report-btn black">
-                <FontAwesomeIcon icon={faFileExcel} style={{marginRight: 8}} /> Excel
+                <FontAwesomeIcon icon={faFileExcel} style={{ marginRight: 8 }} /> Excel
               </button>
               <button onClick={generatePDF} className="report-btn black">
-                <FontAwesomeIcon icon={faFilePdf} style={{marginRight: 8}} /> Pdf
+                <FontAwesomeIcon icon={faFilePdf} style={{ marginRight: 8 }} /> Pdf
               </button>
             </div>
           </div>
@@ -2837,24 +2836,197 @@ const ProductRepairList = ({ darkMode }) => {
       {error && (<p className="error-message">{error}</p>)}
       {message && <p className="success-message">{message}</p>}
       {loading ? (
-  <p className="loading">Loading repairs...</p>
-) : filteredRepairs.length === 0 ? (
-  <p className="no-repairs">No repair records available.</p>
-) : currentStatusFilter === "All" ? (
-  statusFilters
-    .filter(status => status !== "All")
-    .map(status => {
-      const repairsByStatus = currentItems.filter(r => r.repairStatus === status);
-      const totalrepairsByStatusPages = Math.ceil(repairsByStatus.length / repairsPerPage);
-      const paginatedrepairsByStatusForModal = repairsByStatus.slice((repairPage - 1) * repairsPerPage, repairPage * repairsPerPage);
-      if (repairsByStatus.length === 0) return null;
-      return (
-        <div key={status} style={{ marginBottom: '40px' }}>
-          
-          <h3 style={{ textAlign: "left", color: darkMode ? "#e2e8f0" : "#2d3748", marginBottom: '10px' }}>
-            {status} ({repairsByStatus.length})
-          </h3>
-          <div className="table-responsive">
+        <p className="loading">Loading repairs...</p>
+      ) : filteredRepairs.length === 0 ? (
+        <p className="no-repairs">No repair records available.</p>
+      ) : currentStatusFilter === "All" ? (
+        statusFilters
+          .filter(status => status !== "All")
+          .map(status => {
+            const repairsByStatus = currentItems.filter(r => r.repairStatus === status);
+            const totalrepairsByStatusPages = Math.ceil(repairsByStatus.length / repairsPerPage);
+            const paginatedrepairsByStatusForModal = repairsByStatus.slice((repairPage - 1) * repairsPerPage, repairPage * repairsPerPage);
+            if (repairsByStatus.length === 0) return null;
+            return (
+              <div key={status} style={{ marginBottom: '40px' }}>
+
+                <h3 style={{ textAlign: "left", color: darkMode ? "#e2e8f0" : "#2d3748", marginBottom: '10px' }}>
+                  {status} ({repairsByStatus.length})
+                </h3>
+                <div className="table-responsive">
+
+                  <table className={`repair-table ${darkMode ? "dark" : ""}`}>
+                    <thead>
+                      <tr>
+                        <th onClick={() => handleSort('repairInvoice')} style={{ cursor: 'pointer', userSelect: 'none' }}>
+                          Job Number
+                          {sortConfig.key === 'repairInvoice' && (
+                            <span style={{ marginLeft: '8px' }}>
+                              {sortConfig.direction === 'asc' ? ' 🔼' : ' 🔽'}
+                            </span>
+                          )}
+                        </th>
+                        <th onClick={() => handleSort('customerName')} style={{ cursor: 'pointer', userSelect: 'none' }}>
+                          Customer Name
+                          {sortConfig.key === 'customerName' && (
+                            <span style={{ marginLeft: '8px' }}>
+                              {sortConfig.direction === 'asc' ? ' 🔼' : ' 🔽'}
+                            </span>
+                          )}
+                        </th>
+                        <th onClick={() => handleSort('customerPhone')} style={{ cursor: 'pointer', userSelect: 'none' }}>
+                          Mobile
+                          {sortConfig.key === 'customerPhone' && (
+                            <span style={{ marginLeft: '8px' }}>
+                              {sortConfig.direction === 'asc' ? ' 🔼' : ' 🔽'}
+                            </span>
+                          )}
+                        </th>
+                        <th onClick={() => handleSort('deviceType')} style={{ cursor: 'pointer', userSelect: 'none' }}>
+                          Device
+                          {sortConfig.key === 'deviceType' && (
+                            <span style={{ marginLeft: '8px' }}>
+                              {sortConfig.direction === 'asc' ? ' 🔼' : ' 🔽'}
+                            </span>
+                          )}
+                        </th>
+                        <th onClick={() => handleSort('serialNumber')} style={{ cursor: 'pointer', userSelect: 'none' }}>
+                          IMEI/Serial No
+                          {sortConfig.key === 'serialNumber' && (
+                            <span style={{ marginLeft: '8px' }}>
+                              {sortConfig.direction === 'asc' ? ' 🔼' : ' 🔽'}
+                            </span>
+                          )}
+                        </th>
+                        <th onClick={() => handleSort('issueDescription')} style={{ cursor: 'pointer', userSelect: 'none' }}>
+                          Issue Description
+                          {sortConfig.key === 'issueDescription' && (
+                            <span style={{ marginLeft: '8px' }}>
+                              {sortConfig.direction === 'asc' ? ' 🔼' : ' 🔽'}
+                            </span>
+                          )}
+                        </th>
+                        <th onClick={() => handleSort('repairStatus')} style={{ cursor: 'pointer', userSelect: 'none' }}>
+                          Status
+                          {sortConfig.key === 'repairStatus' && (
+                            <span style={{ marginLeft: '8px' }}>
+                              {sortConfig.direction === 'asc' ? ' 🔼' : ' 🔽'}
+                            </span>
+                          )}
+                        </th>
+                        <th>Action</th>
+                        <th>Technician Review</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {paginatedrepairsByStatusForModal.map((repair) => (
+                        <tr key={repair._id}>
+                          <td data-label="Job Number">{repair.repairInvoice || repair.repairCode}</td>
+                          <td data-label="Customer Name">{repair.customerName}</td>
+                          <td data-label="Mobile">{repair.customerPhone || "N/A"}</td>
+                          <td data-label="Device">{repair.deviceType || repair.itemName}</td>
+                          <td data-label="IMEI/Serial No">{repair.serialNumber || "N/A"}</td>
+                          <td data-label="Issue Description">{repair.issueDescription}</td>
+                          <td data-label="Status">{repair.repairStatus}</td>
+                          <td data-label="Action">
+                            <div className="action-container">
+                              <button
+                                onClick={(e) => {
+                                  e.preventDefault();
+                                  setShowActionMenu(showActionMenu === repair._id ? null : repair._id);
+                                }}
+                                className="action-dot-btn"
+                              >
+                                ⋮
+                              </button>
+                              {showActionMenu === repair._id && (
+                                <>
+                                  <div className="action-menu-overlay" onClick={() => setShowActionMenu(null)} />
+                                  <div className="action-menu">
+                                    <button onClick={() => handleView(repair)} className="view-btn">
+                                      <div className="action-btn-content">
+                                        <img src={viewicon} alt="view" width="20" height="20" className="p-view-btn-icon" />
+                                        <span>View</span>
+                                      </div>
+                                    </button>
+                                    {repair.repairStatus !== "Completed" && (
+                                      <button onClick={() => handleSelectProducts(repair)} className="select-btn">
+                                        <div className="action-btn-content">
+                                          <img src={selecticon} alt="select" width="20" height="20" className="p-select-btn-icon" />
+                                          <span>Select</span>
+                                        </div>
+                                      </button>
+                                    )}
+
+                                    <button onClick={() => handleEdit(repair)} className="p-edit-btn">
+                                      <div className="action-btn-content">
+                                        <img src={edticon} alt="edit" width="30" height="30" className="p-edit-btn-icon" />
+                                        <span>Edit</span>
+                                      </div>
+                                    </button>
+                                    {userRole === 'admin' && (
+                                      <button
+                                        onClick={() => handleDelete(repair._id)}
+                                        className="p-delete-btn"
+                                        disabled={repair.repairCart?.length > 0}
+                                        title={repair.repairCart?.length > 0 ? "Cannot delete: items exist in repair cart" : "Delete repair"}
+                                      >
+                                        <div className="action-btn-content">
+                                          <img src={deleteicon} alt="delete" width="30" height="30" className="p-delete-btn-icon" />
+                                          <span>Delete</span>
+                                        </div>
+                                      </button>
+                                    )}
+                                    <button onClick={() => generateBill(repair)} className="p-bill-btn">
+                                      <div className="action-btn-content">
+                                        <img src={paymenticon} alt="bill" width="30" height="30" className="p-bill-btn-icon" />
+                                        <span>Bill</span>
+                                      </div>
+                                    </button>
+                                    <button onClick={() => generateJobBill(repair)} className="p-job-bill-btn">
+                                      <div className="action-btn-content">
+                                        <img src={jobBillIcon} alt="job bill" width="30" height="30" className="p-job-bill-btn-icon" />
+                                        <span>Job Bill</span>
+                                      </div>
+                                    </button>
+                                  </div>
+                                </>
+                              )}
+                            </div>
+                          </td>
+                          <td data-label="Technician Review">
+                            <div className="review-container">
+                              {localStorage.getItem('role') !== 'admin' && (
+                                <span>{repair.technicianReview || 'No review added yet'}</span>
+                              )}
+                              {localStorage.getItem('role') === 'admin' && (
+                                <button
+                                  onClick={() => handleAddReview(repair)}
+                                  className={`review-btn ${darkMode ? "dark" : ""}`}
+                                >
+                                  {repair.technicianReview ? "Review" : "Add Review"}
+                                </button>
+                              )}
+                            </div>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+                {/* Pagination controls below the table */}
+                {totalrepairsByStatusPages > 1 && (
+                  <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', margin: '16px 0', gap: 10 }}>
+                    <button onClick={() => setRepairPage(p => Math.max(1, p - 1))} disabled={repairPage === 1}>Prev</button>
+                    <span>Page {repairPage} of {totalrepairsByStatusPages}</span>
+                    <button onClick={() => setRepairPage(p => Math.min(totalrepairsByStatusPages, p + 1))} disabled={repairPage === totalrepairsByStatusPages}>Next</button>
+                  </div>
+                )}
+              </div>
+            );
+          })
+      ) : (
+        <div className="table-responsive">
 
           <table className={`repair-table ${darkMode ? "dark" : ""}`}>
             <thead>
@@ -2920,7 +3092,7 @@ const ProductRepairList = ({ darkMode }) => {
               </tr>
             </thead>
             <tbody>
-              {paginatedrepairsByStatusForModal.map((repair) => (
+              {paginatedRepairsForModal.map((repair) => (
                 <tr key={repair._id}>
                   <td data-label="Job Number">{repair.repairInvoice || repair.repairCode}</td>
                   <td data-label="Customer Name">{repair.customerName}</td>
@@ -2930,274 +3102,101 @@ const ProductRepairList = ({ darkMode }) => {
                   <td data-label="Issue Description">{repair.issueDescription}</td>
                   <td data-label="Status">{repair.repairStatus}</td>
                   <td data-label="Action">
-                  <div className="action-container">
-                    <button
-                      onClick={(e) => {
-                        e.preventDefault();
-                        setShowActionMenu(showActionMenu === repair._id ? null : repair._id);
-                      }}
-                      className="action-dot-btn"
-                    >
-                      ⋮
-                    </button>
-                    {showActionMenu === repair._id && (
-                      <>
-                        <div className="action-menu-overlay" onClick={() => setShowActionMenu(null)} />
-                        <div className="action-menu">
-                          <button onClick={() => handleView(repair)} className="view-btn">
-                            <div className="action-btn-content">
-                              <img src={viewicon} alt="view" width="20" height="20" className="p-view-btn-icon" />
-                              <span>View</span>
-                            </div>
-                          </button>
-                          {repair.repairStatus !== "Completed" && (
-                            <button onClick={() => handleSelectProducts(repair)} className="select-btn">
-                              <div className="action-btn-content">
-                                <img src={selecticon} alt="select" width="20" height="20" className="p-select-btn-icon" />
-                                <span>Select</span>
-                              </div>
-                            </button>
-                          )}
-                          
-                          <button onClick={() => handleEdit(repair)} className="p-edit-btn">
-                            <div className="action-btn-content">
-                              <img src={edticon} alt="edit" width="30" height="30" className="p-edit-btn-icon" />
-                              <span>Edit</span>
-                            </div>
-                          </button>
-                          {userRole === 'admin' && (
-                            <button
-                              onClick={() => handleDelete(repair._id)}
-                              className="p-delete-btn"
-                              disabled={repair.repairCart?.length > 0}
-                              title={repair.repairCart?.length > 0 ? "Cannot delete: items exist in repair cart" : "Delete repair"}
-                            >
-                              <div className="action-btn-content">
-                                <img src={deleteicon} alt="delete" width="30" height="30" className="p-delete-btn-icon" />
-                                <span>Delete</span>
-                              </div>
-                            </button>
-                          )}
-                          <button onClick={() => generateBill(repair)} className="p-bill-btn">
-                            <div className="action-btn-content">
-                              <img src={paymenticon} alt="bill" width="30" height="30" className="p-bill-btn-icon" />
-                              <span>Bill</span>
-                            </div>
-                          </button>
-                          <button onClick={() => generateJobBill(repair)} className="p-job-bill-btn">
-                            <div className="action-btn-content">
-                              <img src={jobBillIcon} alt="job bill" width="30" height="30" className="p-job-bill-btn-icon" />
-                              <span>Job Bill</span>
-                            </div>
-                          </button>
-                        </div>
-                      </>
-                    )}
-                  </div>
-                </td>
-                  <td data-label="Technician Review">
-                  <div className="review-container">
-                    {localStorage.getItem('role') !== 'admin' && (
-                      <span>{repair.technicianReview || 'No review added yet'}</span>
-                    )}
-                    {localStorage.getItem('role') === 'admin' && (
+                    <div className="action-container">
                       <button
-                        onClick={() => handleAddReview(repair)}
-                        className={`review-btn ${darkMode ? "dark" : ""}`}
+                        onClick={(e) => {
+                          e.preventDefault();
+                          setShowActionMenu(showActionMenu === repair._id ? null : repair._id);
+                        }}
+                        className="action-dot-btn"
                       >
-                        {repair.technicianReview ? "Review" : "Add Review"}
+                        ⋮
                       </button>
-                    )}
-                  </div>
-                </td>
-                 </tr>
+                      {showActionMenu === repair._id && (
+                        <>
+                          <div className="action-menu-overlay" onClick={() => setShowActionMenu(null)} />
+                          <div className="action-menu">
+                            <button onClick={() => handleView(repair)} className="view-btn">
+                              <div className="action-btn-content">
+                                <img src={viewicon} alt="view" width="20" height="20" className="p-view-btn-icon" />
+                                <span>View</span>
+                              </div>
+                            </button>
+                            {repair.repairStatus !== "Completed" && (
+                              <button onClick={() => handleSelectProducts(repair)} className="select-btn">
+                                <div className="action-btn-content">
+                                  <img src={selecticon} alt="select" width="20" height="20" className="p-select-btn-icon" />
+                                  <span>Select</span>
+                                </div>
+                              </button>
+                            )}
+                            {userRole === 'admin' && (
+                              <>
+                                <button onClick={() => handleEdit(repair)} className="p-edit-btn">
+                                  <div className="action-btn-content">
+                                    <img src={edticon} alt="edit" width="30" height="30" className="p-edit-btn-icon" />
+                                    <span>Edit</span>
+                                  </div>
+                                </button>
+                                <button
+                                  onClick={() => handleDelete(repair._id)}
+                                  className="p-delete-btn"
+                                  disabled={repair.repairCart?.length > 0}
+                                  title={repair.repairCart?.length > 0 ? "Cannot delete: items exist in repair cart" : "Delete repair"}
+                                >
+                                  <div className="action-btn-content">
+                                    <img src={deleteicon} alt="delete" width="30" height="30" className="p-delete-btn-icon" />
+                                    <span>Delete</span>
+                                  </div>
+                                </button>
+                              </>
+                            )}
+                            <button onClick={() => generateBill(repair)} className="p-bill-btn">
+                              <div className="action-btn-content">
+                                <img src={paymenticon} alt="bill" width="30" height="30" className="p-bill-btn-icon" />
+                                <span>Bill</span>
+                              </div>
+                            </button>
+                            <button onClick={() => generateJobBill(repair)} className="p-job-bill-btn">
+                              <div className="action-btn-content">
+                                <img src={jobBillIcon} alt="job bill" width="30" height="30" className="p-job-bill-btn-icon" />
+                                <span>Job Bill</span>
+                              </div>
+                            </button>
+                          </div>
+                        </>
+                      )}
+                    </div>
+                  </td>
+                  <td data-label="Technician Review">
+                    <div className="review-container">
+                      {localStorage.getItem('role') !== 'admin' && (
+                        <span>{repair.technicianReview || 'No review added yet'}</span>
+                      )}
+                      {localStorage.getItem('role') === 'admin' && (
+                        <button
+                          onClick={() => handleAddReview(repair)}
+                          className={`review-btn ${darkMode ? "dark" : ""}`}
+                        >
+                          {repair.technicianReview ? "Review" : "Add Review"}
+                        </button>
+                      )}
+                    </div>
+                  </td>
+                </tr>
               ))}
             </tbody>
           </table>
-          </div>
           {/* Pagination controls below the table */}
-          {totalrepairsByStatusPages > 1 && (
+          {totalRepairPages > 1 && (
             <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', margin: '16px 0', gap: 10 }}>
               <button onClick={() => setRepairPage(p => Math.max(1, p - 1))} disabled={repairPage === 1}>Prev</button>
-              <span>Page {repairPage} of {totalrepairsByStatusPages}</span>
-              <button onClick={() => setRepairPage(p => Math.min(totalrepairsByStatusPages, p + 1))} disabled={repairPage === totalrepairsByStatusPages}>Next</button>
+              <span>Page {repairPage} of {totalRepairPages}</span>
+              <button onClick={() => setRepairPage(p => Math.min(totalRepairPages, p + 1))} disabled={repairPage === totalRepairPages}>Next</button>
             </div>
           )}
         </div>
-      );
-    })
-) : (
-  <div className="table-responsive">
-
-  <table className={`repair-table ${darkMode ? "dark" : ""}`}>
-    <thead>
-      <tr>
-        <th onClick={() => handleSort('repairInvoice')} style={{ cursor: 'pointer', userSelect: 'none' }}>
-          Job Number
-          {sortConfig.key === 'repairInvoice' && (
-            <span style={{ marginLeft: '8px' }}>
-              {sortConfig.direction === 'asc' ? ' 🔼' : ' 🔽'}
-            </span>
-          )}
-        </th>
-        <th onClick={() => handleSort('customerName')} style={{ cursor: 'pointer', userSelect: 'none' }}>
-                  Customer Name
-                  {sortConfig.key === 'customerName' && (
-                    <span style={{ marginLeft: '8px' }}>
-                      {sortConfig.direction === 'asc' ? ' 🔼' : ' 🔽'}
-                    </span>
-                  )}
-                </th>
-        <th onClick={() => handleSort('customerPhone')} style={{ cursor: 'pointer', userSelect: 'none' }}>
-          Mobile
-          {sortConfig.key === 'customerPhone' && (
-            <span style={{ marginLeft: '8px' }}>
-              {sortConfig.direction === 'asc' ? ' 🔼' : ' 🔽'}
-            </span>
-          )}
-        </th>
-        <th onClick={() => handleSort('deviceType')} style={{ cursor: 'pointer', userSelect: 'none' }}>
-          Device
-          {sortConfig.key === 'deviceType' && (
-            <span style={{ marginLeft: '8px' }}>
-              {sortConfig.direction === 'asc' ? ' 🔼' : ' 🔽'}
-            </span>
-          )}
-        </th>
-        <th onClick={() => handleSort('serialNumber')} style={{ cursor: 'pointer', userSelect: 'none' }}>
-          IMEI/Serial No
-          {sortConfig.key === 'serialNumber' && (
-            <span style={{ marginLeft: '8px' }}>
-              {sortConfig.direction === 'asc' ? ' 🔼' : ' 🔽'}
-            </span>
-          )}
-        </th>
-        <th onClick={() => handleSort('issueDescription')} style={{ cursor: 'pointer', userSelect: 'none' }}>
-          Issue Description
-          {sortConfig.key === 'issueDescription' && (
-            <span style={{ marginLeft: '8px' }}>
-              {sortConfig.direction === 'asc' ? ' 🔼' : ' 🔽'}
-            </span>
-          )}
-        </th>
-        <th onClick={() => handleSort('repairStatus')} style={{ cursor: 'pointer', userSelect: 'none' }}>
-          Status
-          {sortConfig.key === 'repairStatus' && (
-            <span style={{ marginLeft: '8px' }}>
-              {sortConfig.direction === 'asc' ? ' 🔼' : ' 🔽'}
-            </span>
-          )}
-        </th>
-        <th>Action</th>
-        <th>Technician Review</th>
-      </tr>
-    </thead>
-    <tbody>
-      {paginatedRepairsForModal.map((repair) => (
-        <tr key={repair._id}>
-          <td data-label="Job Number">{repair.repairInvoice || repair.repairCode}</td>
-          <td data-label="Customer Name">{repair.customerName}</td>
-          <td data-label="Mobile">{repair.customerPhone || "N/A"}</td>
-          <td data-label="Device">{repair.deviceType || repair.itemName}</td>
-          <td data-label="IMEI/Serial No">{repair.serialNumber || "N/A"}</td>
-          <td data-label="Issue Description">{repair.issueDescription}</td>
-          <td data-label="Status">{repair.repairStatus}</td>
-          <td data-label="Action">
-                  <div className="action-container">
-                    <button
-                      onClick={(e) => {
-                        e.preventDefault();
-                        setShowActionMenu(showActionMenu === repair._id ? null : repair._id);
-                      }}
-                      className="action-dot-btn"
-                    >
-                      ⋮
-                    </button>
-                    {showActionMenu === repair._id && (
-                      <>
-                        <div className="action-menu-overlay" onClick={() => setShowActionMenu(null)} />
-                        <div className="action-menu">
-                          <button onClick={() => handleView(repair)} className="view-btn">
-                            <div className="action-btn-content">
-                              <img src={viewicon} alt="view" width="20" height="20" className="p-view-btn-icon" />
-                              <span>View</span>
-                            </div>
-                          </button>
-                          {repair.repairStatus !== "Completed" && (
-                            <button onClick={() => handleSelectProducts(repair)} className="select-btn">
-                              <div className="action-btn-content">
-                                <img src={selecticon} alt="select" width="20" height="20" className="p-select-btn-icon" />
-                                <span>Select</span>
-                              </div>
-                            </button>
-                          )}
-                          {userRole === 'admin' && (
-                            <>
-                              <button onClick={() => handleEdit(repair)} className="p-edit-btn">
-                                <div className="action-btn-content">
-                                  <img src={edticon} alt="edit" width="30" height="30" className="p-edit-btn-icon" />
-                                  <span>Edit</span>
-                                </div>
-                              </button>
-                              <button
-                                onClick={() => handleDelete(repair._id)}
-                                className="p-delete-btn"
-                                disabled={repair.repairCart?.length > 0}
-                                title={repair.repairCart?.length > 0 ? "Cannot delete: items exist in repair cart" : "Delete repair"}
-                              >
-                                <div className="action-btn-content">
-                                  <img src={deleteicon} alt="delete" width="30" height="30" className="p-delete-btn-icon" />
-                                  <span>Delete</span>
-                                </div>
-                              </button>
-                            </>
-                          )}
-                          <button onClick={() => generateBill(repair)} className="p-bill-btn">
-                            <div className="action-btn-content">
-                              <img src={paymenticon} alt="bill" width="30" height="30" className="p-bill-btn-icon" />
-                              <span>Bill</span>
-                            </div>
-                          </button>
-                          <button onClick={() => generateJobBill(repair)} className="p-job-bill-btn">
-                            <div className="action-btn-content">
-                              <img src={jobBillIcon} alt="job bill" width="30" height="30" className="p-job-bill-btn-icon" />
-                              <span>Job Bill</span>
-                            </div>
-                          </button>
-                        </div>
-                      </>
-                    )}
-                  </div>
-                </td>
-          <td data-label="Technician Review">
-                  <div className="review-container">
-                    {localStorage.getItem('role') !== 'admin' && (
-                      <span>{repair.technicianReview || 'No review added yet'}</span>
-                    )}
-                    {localStorage.getItem('role') === 'admin' && (
-                      <button
-                        onClick={() => handleAddReview(repair)}
-                        className={`review-btn ${darkMode ? "dark" : ""}`}
-                      >
-                        {repair.technicianReview ? "Review" : "Add Review"}
-                      </button>
-                    )}
-                  </div>
-                </td>
-         </tr>
-      ))}
-    </tbody>
-  </table>
-  {/* Pagination controls below the table */}
-  {totalRepairPages > 1 && (
-    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', margin: '16px 0', gap: 10 }}>
-      <button onClick={() => setRepairPage(p => Math.max(1, p - 1))} disabled={repairPage === 1}>Prev</button>
-      <span>Page {repairPage} of {totalRepairPages}</span>
-      <button onClick={() => setRepairPage(p => Math.min(totalRepairPages, p + 1))} disabled={repairPage === totalRepairPages}>Next</button>
-    </div>
-  )}
-  </div>
-)}
+      )}
 
       {showEditModal && selectedRepair && (
         <EditProductRepair
@@ -3699,7 +3698,7 @@ const ProductRepairList = ({ darkMode }) => {
                 </table>
               ) : (
                 <p style={{ color: darkMode ? "#ccc" : "#666", fontStyle: "italic" }}>No items in cart.</p>
-              )}            
+              )}
             </div>
             {/* ✅ RETURNED ITEMS */}
             {selectedRepair.returnCart && selectedRepair.returnCart.length > 0 && (
@@ -3881,7 +3880,7 @@ const ProductRepairList = ({ darkMode }) => {
               ) : (
                 <p style={{ color: darkMode ? "#ccc" : "#666", fontStyle: "italic", marginBottom: "15px" }}>No Discounts added yet.</p>
               )}
-              
+
               {/* Add New Service Form */}
               {(selectedRepair.repairStatus === "In Progress" || selectedRepair.repairStatus === "Pending") && (
                 <div style={{
@@ -3990,7 +3989,7 @@ const ProductRepairList = ({ darkMode }) => {
                         Add Discount
                       </button>
                     </div>
-                    
+
                   </div>
                 </div>
               )}
@@ -4005,7 +4004,7 @@ const ProductRepairList = ({ darkMode }) => {
                   color: darkMode ? "#ddd" : "#333",
                   fontSize: "16px"
                 }}> */}
-                {/* Quick Discount
+              {/* Quick Discount
                 </h4>
                 <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
                   <label style={{ color: darkMode ? "#ddd" : "#555" }}>
@@ -4043,7 +4042,7 @@ const ProductRepairList = ({ darkMode }) => {
                 </div>
               </div>*/}
             </div>
-            
+
 
             {/* Additional Services Section - Always visible, even for completed repairs */}
             <div style={{ marginBottom: "20px" }}>
@@ -4090,21 +4089,21 @@ const ProductRepairList = ({ darkMode }) => {
                           <td style={{ border: "1px solid #ddd", padding: "10px", color: darkMode ? "#fff" : "#333" }}>
                             {!service.isPaid && (
                               <>
-                              <button
-                                onClick={() => handlePayAdditionalService(index)}
-                                style={{
-                                  backgroundColor: "#28a745",
-                                  color: "white",
-                                  border: "none",
-                                  padding: "5px 10px",
-                                  borderRadius: "3px",
-                                  cursor: "pointer"
-                                }}
-                              >
-                                Mark as Paid
-                              </button>
-                              {(selectedRepair.repairStatus === "In Progress" || selectedRepair.repairStatus === "Pending") && (
                                 <button
+                                  onClick={() => handlePayAdditionalService(index)}
+                                  style={{
+                                    backgroundColor: "#28a745",
+                                    color: "white",
+                                    border: "none",
+                                    padding: "5px 10px",
+                                    borderRadius: "3px",
+                                    cursor: "pointer"
+                                  }}
+                                >
+                                  Mark as Paid
+                                </button>
+                                {(selectedRepair.repairStatus === "In Progress" || selectedRepair.repairStatus === "Pending") && (
+                                  <button
                                     onClick={() => handleRemoveAdditionalService(index)}
                                     style={{
                                       backgroundColor: "#dc3545",
@@ -4115,10 +4114,10 @@ const ProductRepairList = ({ darkMode }) => {
                                       cursor: "pointer"
                                     }}
                                     title="Remove unpaid service"
-                                >
+                                  >
                                     Remove
-                                </button>
-                              )}
+                                  </button>
+                                )}
                               </>
                             )}
                             {service.isPaid && (
@@ -4147,7 +4146,7 @@ const ProductRepairList = ({ darkMode }) => {
                           Total Additional Services:
                         </td>
                         <td style={{ border: "1px solid #ddd", padding: "10px", fontWeight: "bold", color: darkMode ? "#fff" : "#333" }}>
-                          Rs. {additionalServices.reduce((total, service) => total + ( Math.max(0, parseFloat(service.serviceAmount || 0))), 0).toFixed(2)}
+                          Rs. {additionalServices.reduce((total, service) => total + (Math.max(0, parseFloat(service.serviceAmount || 0))), 0).toFixed(2)}
                         </td>
                       </tr>
                     </tfoot>
@@ -4200,7 +4199,7 @@ const ProductRepairList = ({ darkMode }) => {
                   </table>
                 </div>
               )}
-            
+
               {/* Add New Additional Service Form */}
               {((selectedRepair.repairStatus === "In Progress" || selectedRepair.repairStatus === "Pending") || selectedRepair.repairStatus === "Returned") && (
                 <div style={{
@@ -4353,7 +4352,7 @@ const ProductRepairList = ({ darkMode }) => {
                       color: darkMode ? "#fff" : "#333"
                     }}>
                       Rs. {((selectedRepair.totalAdditionalServicesAmount || 0)
-                      ).toFixed(2)}                    
+                      ).toFixed(2)}
                     </span>
                   </div>
                   <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
@@ -4370,7 +4369,7 @@ const ProductRepairList = ({ darkMode }) => {
                       color: darkMode ? "#fff" : "#333"
                     }}>
                       Rs. {((selectedRepair.totalDiscountAmount || 0)
-                      ).toFixed(2)}                    
+                      ).toFixed(2)}
                     </span>
                   </div>
 
@@ -4380,7 +4379,7 @@ const ProductRepairList = ({ darkMode }) => {
                       fontSize: "16px",
                       color: darkMode ? "#fff" : "#333"
                     }}>
-                       Final Amount:
+                      Final Amount:
                     </span>
                     <span style={{
                       fontWeight: "bold",
@@ -4389,7 +4388,7 @@ const ProductRepairList = ({ darkMode }) => {
                     }}>
                       Rs. {((selectedRepair.totalRepairCost || 0) - (selectedRepair.totalDiscountAmount || 0) +
                         (selectedRepair.totalAdditionalServicesAmount || 0)
-                      ).toFixed(2)}                    
+                      ).toFixed(2)}
                     </span>
                   </div>
 
@@ -4414,45 +4413,45 @@ const ProductRepairList = ({ darkMode }) => {
 
                   {selectedRepair.repairStatus === "Returned" && (
                     <>
-                    <div style={{
-                      display: "flex",
-                      justifyContent: "space-between",
-                      alignItems: "center",
-                      marginTop: "10px",
-                      borderTop: `2px solid ${darkMode ? "#4a5568" : "#b3e0ff"}`,
-                      paddingTop: "10px"
-                    }}>
-                      <span style={{
-                        fontWeight: "bold",
-                        fontSize: "16px",
-                        color: darkMode ? "#fff" : "#f20000ff"
+                      <div style={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        alignItems: "center",
+                        marginTop: "10px",
+                        borderTop: `2px solid ${darkMode ? "#4a5568" : "#b3e0ff"}`,
+                        paddingTop: "10px"
                       }}>
-                        Total Return Item Cost:
-                      </span>
-                      <span style={{
-                        fontWeight: "bold",
-                        fontSize: "16px",
-                        color: darkMode ? "#fff" : "#f20000ff"
-                      }}>
-                        Rs. {((selectedRepair.totalReturnCost || 0)).toFixed(2)}                    
-                      </span>
-                    </div>
-                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: "10px" }}>
-                      <span style={{
-                        fontWeight: "bold",
-                        fontSize: "16px",
-                        color: darkMode ? "#fff" : "#f20000ff"
-                      }}>
-                        Total Return Additional Services:
-                      </span>
-                      <span style={{
-                        fontWeight: "bold",
-                        fontSize: "16px",
-                        color: darkMode ? "#fff" : "#f20000ff"
-                      }}>
-                        Rs. {((selectedRepair.rettotalAdditionalServicesAmount || 0)).toFixed(2)}                    
-                      </span>
-                    </div>
+                        <span style={{
+                          fontWeight: "bold",
+                          fontSize: "16px",
+                          color: darkMode ? "#fff" : "#f20000ff"
+                        }}>
+                          Total Return Item Cost:
+                        </span>
+                        <span style={{
+                          fontWeight: "bold",
+                          fontSize: "16px",
+                          color: darkMode ? "#fff" : "#f20000ff"
+                        }}>
+                          Rs. {((selectedRepair.totalReturnCost || 0)).toFixed(2)}
+                        </span>
+                      </div>
+                      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: "10px" }}>
+                        <span style={{
+                          fontWeight: "bold",
+                          fontSize: "16px",
+                          color: darkMode ? "#fff" : "#f20000ff"
+                        }}>
+                          Total Return Additional Services:
+                        </span>
+                        <span style={{
+                          fontWeight: "bold",
+                          fontSize: "16px",
+                          color: darkMode ? "#fff" : "#f20000ff"
+                        }}>
+                          Rs. {((selectedRepair.rettotalAdditionalServicesAmount || 0)).toFixed(2)}
+                        </span>
+                      </div>
                     </>
                   )}
 
@@ -4479,7 +4478,7 @@ const ProductRepairList = ({ darkMode }) => {
                       Rs. {((selectedRepair.repairStatus === "Completed" || selectedRepair.repairStatus === "Returned")
                         ? additionalServices.reduce((total, service) => total + (service.isPaid ? 0 : Math.max(0, parseFloat(service.serviceAmount || 0))), 0)
                         : (selectedRepair.totalRepairCost || 0) - (selectedRepair.totalDiscountAmount || 0) +
-                          additionalServices.reduce((total, service) => total + (service.isPaid ? 0 : Math.max(0, parseFloat(service.serviceAmount || 0))), 0)
+                        additionalServices.reduce((total, service) => total + (service.isPaid ? 0 : Math.max(0, parseFloat(service.serviceAmount || 0))), 0)
                       ).toFixed(2)}
                     </span>
                   </div>
@@ -4740,7 +4739,7 @@ const ProductRepairList = ({ darkMode }) => {
             )}
 
             <div className="modal-buttons" style={{ display: "flex", justifyContent: "space-between", marginTop: "20px" }}>
-              
+
               {/* Cancel Button — only for Pending status */}
               {selectedRepair.repairStatus === "Pending" && (
                 <button
@@ -4781,7 +4780,7 @@ const ProductRepairList = ({ darkMode }) => {
                   Repair Collected
                 </button>
               )}
-              
+
               {(selectedRepair.repairStatus === "In Progress" || selectedRepair.repairStatus === "Pending") && (
                 <button
                   onClick={handleCompletePayment}
@@ -4888,34 +4887,34 @@ const ProductRepairList = ({ darkMode }) => {
             ) : filteredProductsForModal.length === 0 ? (
               <p className="loading">Products Not Found..  </p>
             ) : (
-            <table className={`repair-table ${darkMode ? "dark" : ""}`}> 
-              <thead>
-                <tr>
-                  <th>Item Name</th>
-                  <th>Category</th>
-                  <th>Stock</th>
-                  <th>Action</th>
-                </tr>
-              </thead>
-              <tbody>
-                {paginatedProductsForModal.map((product) => (
-                  <tr key={product._id}>
-                    <td>{product.itemName}</td>
-                    <td>{product.category}</td>
-                    <td>{product.stock}</td>
-                    <td className="action-buttons">
-                      <button
-                        onClick={() => handleProductSelection(product)}
-                        disabled={product.stock === 0}
-                        className={`select-btn ${darkMode ? "dark" : ""}`}
-                      >
-                        Add
-                      </button>
-                    </td>
+              <table className={`repair-table ${darkMode ? "dark" : ""}`}>
+                <thead>
+                  <tr>
+                    <th>Item Name</th>
+                    <th>Category</th>
+                    <th>Stock</th>
+                    <th>Action</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody>
+                  {paginatedProductsForModal.map((product) => (
+                    <tr key={product._id}>
+                      <td>{product.itemName}</td>
+                      <td>{product.category}</td>
+                      <td>{product.stock}</td>
+                      <td className="action-buttons">
+                        <button
+                          onClick={() => handleProductSelection(product)}
+                          disabled={product.stock === 0}
+                          className={`select-btn ${darkMode ? "dark" : ""}`}
+                        >
+                          Add
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
             )}
             {/* Pagination controls below the table */}
             {totalProductPages > 1 && (
@@ -4940,91 +4939,91 @@ const ProductRepairList = ({ darkMode }) => {
             </div>
             <br />
             <div>
-            {selectedProducts.length > 0 ? (
-              <div className="selected-products-table-container">
-                <table className={`repair-table ${darkMode ? "dark" : ""}`}>
-                  <thead>
-                    <tr>
-                      <th>Item Name</th>
-                      <th>Category</th>
-                      <th>Qty</th>
-                      <th>Selling Price</th>
-                      <th>Total Cost</th>
-                      <th>Actions</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {selectedProducts.map((item, index) => (
-                      <tr key={index}>
-                        <td>{item.itemName || "Unknown"}</td>
-                        <td>{item.category || "Unknown"}</td>
-                        <td style={{ textAlign: "center" }}>
-                          <div className="quantity-controls-inline">
-                            <button
-                              onClick={() => handleUpdateQuantity(index, -1)}
-                              className="remove-btn"
-                              disabled={item.quantity <= 1}
-                              title="Decrease quantity"
-                            >
-                              −
-                            </button>
-                            <span className="quantity-display">{item.quantity}</span>
-                            <button
-                              onClick={() => handleUpdateQuantity(index, 1)}
-                              className="remove-btn"
-                              title="Increase quantity"
-                            >
-                              +
-                            </button>
-                          </div>
-                        </td>
-                        <td>
-                          <input
-                            type="number"
-                            step="0.01"
-                            min="0"
-                            onFocus={(e) => e.target.select()}
-                            onWheel={(e) => e.target.blur()}
-                            value={item.sellingPrice || ""}
-                            onChange={(e) => {
-                              const value = e.target.value === "" ? "" : parseFloat(e.target.value);
-                              const updated = [...selectedProducts];
-                              updated[index] = {
-                                ...updated[index],
-                                sellingPrice: value,
-                                cost: value && updated[index].quantity ? value * updated[index].quantity : 0,
-                              };
-                              setSelectedProducts(updated);
-                            }}
-                            className={`selling-price-input ${darkMode ? "dark" : ""}`}
-                            placeholder="Price"
-                            required
-                            style={{ width: "90px", padding: "4px", fontSize: "14px", textAlign: "center" }}
-                          />
-                        </td>
-                        <td>
-                          <strong>
-                            Rs. {item.cost?.toFixed(2) || (item.sellingPrice * item.quantity)?.toFixed(2) || "0.00"}
-                          </strong>
-                        </td>
-                        <td>
-                          <button
-                            onClick={() => handleRemoveProduct(index)}
-                            className="remove-btn"
-                            title="Remove product"
-                          >
-                            🗑
-                          </button>
-                        </td>
+              {selectedProducts.length > 0 ? (
+                <div className="selected-products-table-container">
+                  <table className={`repair-table ${darkMode ? "dark" : ""}`}>
+                    <thead>
+                      <tr>
+                        <th>Item Name</th>
+                        <th>Category</th>
+                        <th>Qty</th>
+                        <th>Selling Price</th>
+                        <th>Total Cost</th>
+                        <th>Actions</th>
                       </tr>
-                    ))}
-                  </tbody>
-                </table>
-              
-              </div>
-            ) : (
-              <p>No products selected.</p>
-            )}
+                    </thead>
+                    <tbody>
+                      {selectedProducts.map((item, index) => (
+                        <tr key={index}>
+                          <td>{item.itemName || "Unknown"}</td>
+                          <td>{item.category || "Unknown"}</td>
+                          <td style={{ textAlign: "center" }}>
+                            <div className="quantity-controls-inline">
+                              <button
+                                onClick={() => handleUpdateQuantity(index, -1)}
+                                className="remove-btn"
+                                disabled={item.quantity <= 1}
+                                title="Decrease quantity"
+                              >
+                                −
+                              </button>
+                              <span className="quantity-display">{item.quantity}</span>
+                              <button
+                                onClick={() => handleUpdateQuantity(index, 1)}
+                                className="remove-btn"
+                                title="Increase quantity"
+                              >
+                                +
+                              </button>
+                            </div>
+                          </td>
+                          <td>
+                            <input
+                              type="number"
+                              step="0.01"
+                              min="0"
+                              onFocus={(e) => e.target.select()}
+                              onWheel={(e) => e.target.blur()}
+                              value={item.sellingPrice || ""}
+                              onChange={(e) => {
+                                const value = e.target.value === "" ? "" : parseFloat(e.target.value);
+                                const updated = [...selectedProducts];
+                                updated[index] = {
+                                  ...updated[index],
+                                  sellingPrice: value,
+                                  cost: value && updated[index].quantity ? value * updated[index].quantity : 0,
+                                };
+                                setSelectedProducts(updated);
+                              }}
+                              className={`selling-price-input ${darkMode ? "dark" : ""}`}
+                              placeholder="Price"
+                              required
+                              style={{ width: "90px", padding: "4px", fontSize: "14px", textAlign: "center" }}
+                            />
+                          </td>
+                          <td>
+                            <strong>
+                              Rs. {item.cost?.toFixed(2) || (item.sellingPrice * item.quantity)?.toFixed(2) || "0.00"}
+                            </strong>
+                          </td>
+                          <td>
+                            <button
+                              onClick={() => handleRemoveProduct(index)}
+                              className="remove-btn"
+                              title="Remove product"
+                            >
+                              🗑
+                            </button>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+
+                </div>
+              ) : (
+                <p>No products selected.</p>
+              )}
             </div>
             <br />
             <div className="modal-buttons-container">

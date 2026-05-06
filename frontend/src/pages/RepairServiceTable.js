@@ -22,7 +22,7 @@ const CartDetailsTable = ({ supplierId, darkMode, refreshSuppliers }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const productsPerPage = 8;
   const [searchQuery, setSearchQuery] = useState('');
-  
+
 
   const fetchItems = async () => {
     setLoading(true);
@@ -106,41 +106,41 @@ const CartDetailsTable = ({ supplierId, darkMode, refreshSuppliers }) => {
   };
 
   const normalize = (str) => str.toLowerCase().replace(/\s+/g, ' ');
-  
-    const sortedAndFilteredProducts = useMemo(() => {
-      let result = items;
 
-      const query = searchQuery.trim();
-      if (query === '') return result;
+  const sortedAndFilteredProducts = useMemo(() => {
+    let result = items;
 
-      const normalizedQuery = normalize(query);
-      const queryWords = normalizedQuery.split(/\s+/).filter(word => word);
+    const query = searchQuery.trim();
+    if (query === '') return result;
 
-      result = items.filter(product => {
-        const searchableText = normalize(
-          (product.repairDevice || '') + ' ' +
-          (product.jobNumber?.toString() || '') + ' ' +
-          (product.serielNo || '') + ' ' +
-          (product.deviceIssue || '') + ' ' +
-          (product.paymentdescription || '')
-        );
+    const normalizedQuery = normalize(query);
+    const queryWords = normalizedQuery.split(/\s+/).filter(word => word);
 
-        return queryWords.every(word => {
-          const escapedWord = word.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    result = items.filter(product => {
+      const searchableText = normalize(
+        (product.repairDevice || '') + ' ' +
+        (product.jobNumber?.toString() || '') + ' ' +
+        (product.serielNo || '') + ' ' +
+        (product.deviceIssue || '') + ' ' +
+        (product.paymentdescription || '')
+      );
 
-          // 🔍 Always do case-insensitive substring search
-          const regex = new RegExp(escapedWord, 'i');
-          return regex.test(searchableText);
-        });
+      return queryWords.every(word => {
+        const escapedWord = word.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+
+        // 🔍 Always do case-insensitive substring search
+        const regex = new RegExp(escapedWord, 'i');
+        return regex.test(searchableText);
       });
+    });
 
-      return result;
-    }, [items, searchQuery]);
-  
-    const handleClearSearch = () => {
-      setSearchQuery('');
-      setCurrentPage(1);
-    };
+    return result;
+  }, [items, searchQuery]);
+
+  const handleClearSearch = () => {
+    setSearchQuery('');
+    setCurrentPage(1);
+  };
 
   const totalProductPages = Math.ceil(sortedAndFilteredProducts.length / productsPerPage);
   const ProductsForModal = sortedAndFilteredProducts.slice((currentPage - 1) * productsPerPage, currentPage * productsPerPage);
@@ -158,7 +158,7 @@ const CartDetailsTable = ({ supplierId, darkMode, refreshSuppliers }) => {
         </>
       )}
       <div className={`search-bar-container ${darkMode ? 'dark' : ''}`}>
-        {(!searchQuery) ? <FontAwesomeIcon icon={faSearch} className="search-icon" /> : <></> }
+        {(!searchQuery) ? <FontAwesomeIcon icon={faSearch} className="search-icon" /> : <></>}
         <input
           type="text"
           placeholder="       Search..."
@@ -200,7 +200,7 @@ const CartDetailsTable = ({ supplierId, darkMode, refreshSuppliers }) => {
                 <td>{item.serielNo || 'N/A'}</td>
                 <td>{item.deviceIssue || 'N/A'}</td>
                 <td>{item.paymentdescription || 'N/A'}</td>
-                
+
                 <td>Rs. {item.paymentCharge || '0'}</td>
                 {/* <td>
                   <div className="action-container">
@@ -248,7 +248,7 @@ const CartDetailsTable = ({ supplierId, darkMode, refreshSuppliers }) => {
       )}
       {showEditModal && editItem && (
         <CartForm
-          supplier={{ _id: supplierId, supplierName:supplierName }}
+          supplier={{ _id: supplierId, supplierName: supplierName }}
           item={editItem}
           closeModal={() => {
             setShowEditModal(false);

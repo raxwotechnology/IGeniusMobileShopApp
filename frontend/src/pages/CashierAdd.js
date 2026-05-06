@@ -25,7 +25,7 @@ const CashierAdd = ({ isOpen, onClose, refreshCashiers, darkMode }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     const token = localStorage.getItem('token');
     try {
       await axios.post(API_URL, cashier, {
@@ -51,29 +51,29 @@ const CashierAdd = ({ isOpen, onClose, refreshCashiers, darkMode }) => {
         <form className="add-cashier-form" onSubmit={handleSubmit}>
           <div className="form-row">
             <div className="left-column">
-           
+
               <label className={`cash-add-lable ${darkMode ? "dark" : ""}`}>ID</label>
               <input className={`cash-add-input ${darkMode ? "dark" : ""}`} type="text" name="id" value={cashier.id} onChange={handleChange} required />
-             
-             
+
+
               <label className={`cash-add-lable ${darkMode ? "dark" : ""}`}>Name</label>
               <input className={`cash-add-input ${darkMode ? "dark" : ""}`} type="text" name="cashierName" value={cashier.cashierName} onChange={handleChange} required />
-              
-              
+
+
               <label className={`cash-add-lable ${darkMode ? "dark" : ""}`}>Phone</label>
               <input className={`cash-add-input ${darkMode ? "dark" : ""}`} type="text" name="phone" value={cashier.phone} onChange={handleChange} required />
 
 
               <label className={`cash-add-lable ${darkMode ? "dark" : ""}`}>NIC</label>
               <input className={`cash-add-input ${darkMode ? "dark" : ""}`} type="text" name="nic" value={cashier.nic} onChange={handleChange} required />
-             
+
             </div>
             <div className="right-column">
-            
+
               <label className={`cash-add-lable ${darkMode ? "dark" : ""}`}>Email</label>
               <input className={`cash-add-input ${darkMode ? "dark" : ""}`} type="email" name="email" value={cashier.email} onChange={handleChange} required />
-              
-             
+
+
               <label className={`cash-add-lable ${darkMode ? "dark" : ""}`}>Job Role</label>
               <select name="jobRole" value={cashier.jobRole} onChange={handleChange} required>
                 <option value="Cashier">Cashier</option>
@@ -94,7 +94,7 @@ const CashierAdd = ({ isOpen, onClose, refreshCashiers, darkMode }) => {
                 min="0"
                 step="0.01" // or step="1" if only whole numbers
               />
-              
+
             </div>
           </div>
           <div className="button-group">

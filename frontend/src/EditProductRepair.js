@@ -17,7 +17,7 @@ const EditProductRepair = ({ repair, closeModal, darkMode }) => {
     // Job Details
     repairInvoice: repair.repairInvoice || "",
     deviceType: repair.deviceType || "",
-    serialNumber: repair.serialNumber || "", 
+    serialNumber: repair.serialNumber || "",
     estimationValue: repair.estimationValue || "",
     checkingCharge: repair.checkingCharge || "",
     issueDescription: repair.issueDescription || "",
@@ -88,10 +88,10 @@ const EditProductRepair = ({ repair, closeModal, darkMode }) => {
   }, []);
 
   const token = localStorage.getItem('token');
-  
+
   const handleAddNewIssue = async () => {
     if (!newIssue.trim()) return;
-    
+
     try {
       const response = await fetch('https://igeniusmobileshopapp.onrender.com/api/deviceIssues', {
         method: 'POST',
@@ -396,7 +396,7 @@ const EditProductRepair = ({ repair, closeModal, darkMode }) => {
                 </select>
 
                 {showNewIssueInput && (
-                  <div style={{ 
+                  <div style={{
                     marginTop: '10px',
                     padding: '10px',
                     backgroundColor: darkMode ? '#444' : '#f5f5f5',
